@@ -1,0 +1,7 @@
+/SpookSuite/Resources/0Harmony.dll
+/SpookSuite/Resources/Newtonsoft.Json.dll
+/SpookSuite/Resources/BaseGame
+
+.vs/
+bin/
+obj/
