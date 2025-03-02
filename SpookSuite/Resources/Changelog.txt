@@ -1,0 +1,54 @@
+v1.3.0
+- Added AntiPickup
+- Added AntiKick (Experimental, still being worked on)
+- Added RollingFace
+- Added GiveFlight
+- Added Limbo Stuff
+- Added Kick Individually
+- Added SendAway
+- Added Protections
+- Added Notifications
+- Added Reactions
+- Moved Face Stuff To Self
+- Added Join Lobbies With Plugins
+- Added Preventative Measure Against Inf Loading
+- Fixed Dying In Invis
+- Fixed UnlimitedBattery for newer items
+- Fixed Teleport works way better
+- Fixed Monster ESP Displays Names
+
+v1.2.0
+- Support for newest update
+- Added Give Meta Coins
+- Added Unlock All Upgrades
+- Added Hat Options
+- Added Freeze Player
+- Added Heal Player
+- Added Force Sit
+- Added Bomball
+- Added SuperSpeed for others
+- Added Reverse
+- Removed Goo Em
+
+v1.1.0
+- Spinbot
+- Smooth AF RainbowFace
+- Face Editor
+- Switch Voice Channel (Dead vc doesnt switch to dead )
+- Noclip is now synced in the air and you dont slam into the ground on disable anymore
+- Invisibility
+- Rainbow Chams
+- Cham Opacity
+- Fixed Item Spawning (Would spawn away from you if you werent on ground)
+- Disable Visor
+- Added Color Changers (They use hex code)
+- Added Goo Em
+- Added Spawn BigSlap Synced (other monsters cannot be synced!)
+- Give Views	
+- No Push To Talk (for all players, if someone has push to talk on you can still hear them without them pressing the button)
+- Several Fixes
+- Added toggle for Anti Spawner
+- Added Menu Panic Button (Press END on you keyboard, menu will not turn back on after this is pressed, even when reinjected)
+
+v1.0.0
+- Release
