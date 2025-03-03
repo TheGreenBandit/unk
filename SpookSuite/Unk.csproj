@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Manager\" />
     <Folder Include="Resources\BaseGame\" />
   </ItemGroup>
 
@@ -34,26 +33,23 @@
     <Reference Include="0Harmony">
       <HintPath>Resources\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="AmplifyShaderEditor.Samples.BuiltIn">
-      <HintPath>Resources\BaseGame\AmplifyShaderEditor.Samples.BuiltIn.dll</HintPath>
-    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>Resources\BaseGame\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>Resources\BaseGame\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="com.rlabrecque.steamworks.net">
-      <HintPath>Resources\BaseGame\com.rlabrecque.steamworks.net.dll</HintPath>
+    <Reference Include="Autodesk.Fbx">
+      <HintPath>Resources\BaseGame\Autodesk.Fbx.dll</HintPath>
     </Reference>
-    <Reference Include="DE_Environment.Tool">
-      <HintPath>Resources\BaseGame\DE_Environment.Tool.dll</HintPath>
+    <Reference Include="Facepunch.Steamworks.Win64">
+      <HintPath>Resources\BaseGame\Facepunch.Steamworks.Win64.dll</HintPath>
     </Reference>
-    <Reference Include="DE_Environment.Tool.Editor">
-      <HintPath>Resources\BaseGame\DE_Environment.Tool.Editor.dll</HintPath>
+    <Reference Include="FbxBuildTestAssets">
+      <HintPath>Resources\BaseGame\FbxBuildTestAssets.dll</HintPath>
     </Reference>
-    <Reference Include="DE_EnvironmentControllerGlobal">
-      <HintPath>Resources\BaseGame\DE_EnvironmentControllerGlobal.dll</HintPath>
+    <Reference Include="Klattersynth">
+      <HintPath>Resources\BaseGame\Klattersynth.dll</HintPath>
     </Reference>
     <Reference Include="DE_EnvironmentControllerGlobal.Editor">
       <HintPath>Resources\BaseGame\DE_EnvironmentControllerGlobal.Editor.dll</HintPath>

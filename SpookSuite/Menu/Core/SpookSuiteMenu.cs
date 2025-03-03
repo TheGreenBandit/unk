@@ -1,14 +1,14 @@
-﻿using SpookSuite.Menu.Tab;
-using SpookSuite.Util;
+﻿using Unk.Menu.Tab;
+using Unk.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace SpookSuite.Menu.Core
+namespace Unk.Menu.Core
 {
-    internal class SpookSuiteMenu : MenuFragment
+    internal class UnkMenu : MenuFragment
     {
 
         public Rect windowRect = new Rect(50f, 50f, 700f, 450f);
@@ -21,17 +21,17 @@ namespace SpookSuite.Menu.Core
         public int spaceFromTop = 60;
         public int spaceFromLeft = 10;
 
-        private static SpookSuiteMenu instance;
-        public static SpookSuiteMenu Instance
+        private static UnkMenu instance;
+        public static UnkMenu Instance
         {
             get
             {
-                if (instance == null) instance = new SpookSuiteMenu();
+                if (instance == null) instance = new UnkMenu();
                 return instance;
             }
         }
 
-        public SpookSuiteMenu()
+        public UnkMenu()
         {
             instance = this;
             tabs.Add(new DebugTab());
@@ -84,7 +84,7 @@ namespace SpookSuite.Menu.Core
 
             Stylize();
             GUI.color = new Color(1f, 1f, 1f, Settings.f_menuAlpha);
-            windowRect = GUILayout.Window(0, windowRect, new GUI.WindowFunction(DrawContent), "SpookSuite");
+            windowRect = GUILayout.Window(0, windowRect, new GUI.WindowFunction(DrawContent), "Unk");
             GUI.color = Color.white;
         }
 

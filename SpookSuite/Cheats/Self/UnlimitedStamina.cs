@@ -1,14 +1,12 @@
-﻿using HarmonyLib;
-using SpookSuite.Cheats.Core;
+﻿using Unk.Cheats.Core;
 
-namespace SpookSuite.Cheats
+namespace Unk.Cheats
 {
-    [HarmonyPatch]
     internal class UnlimitedStamina : ToggleCheat
     {
         public override void Update()
         {
-
+            PlayerController.instance.EnergyCurrent = 100; //done lmao
         }
     }
 }

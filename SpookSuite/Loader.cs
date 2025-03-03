@@ -4,7 +4,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 
-namespace SpookSuite
+namespace Unk
 {
     public class Loader : MonoBehaviour
     {
@@ -15,13 +15,13 @@ namespace SpookSuite
         {
             LoadHarmony();
             Loader.Load = new GameObject();
-            Load.AddComponent<SpookSuite>();
+            Load.AddComponent<Unk>();
             Object.DontDestroyOnLoad(Loader.Load);
         }
 
         public static void LoadHarmony()
         {
-            String name = "SpookSuite.Resources.0Harmony.dll";
+            String name = "Unk.Resources.0Harmony.dll";
             Assembly assembly = Assembly.GetExecutingAssembly();
             System.IO.Stream stream = assembly.GetManifestResourceStream(name);
             byte[] rawAssembly = new byte[stream.Length];

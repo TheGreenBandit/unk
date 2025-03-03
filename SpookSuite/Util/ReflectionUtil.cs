@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace SpookSuite.Util
+namespace Unk.Util
 {
     public class ReflectionUtil<R>
     {

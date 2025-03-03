@@ -1,13 +1,13 @@
-﻿using SpookSuite.Util;
+﻿using Unk.Util;
 using UnityEngine;
 
-namespace SpookSuite
+namespace Unk
 {
     public static class Extensions
     {
-        public static Camera GetCamera(this FaceCamera mainCamera)
+        public static Camera GetCamera(this CameraAim mainCamera)
         {
-            return mainCamera.GetComponent<Camera>(); //todo make camera thing work?
+            return mainCamera.GetComponent<Camera>(); //todo
         }
     }
 }

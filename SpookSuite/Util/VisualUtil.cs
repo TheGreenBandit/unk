@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using UnityEngine;
 
-namespace SpookSuite.Util
+namespace Unk.Util
 {
     public class RGBAColor
     {

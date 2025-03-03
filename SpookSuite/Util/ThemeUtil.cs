@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace SpookSuite.Util
+namespace Unk.Util
 {
     public class ThemeUtil
     {
@@ -20,7 +20,7 @@ namespace SpookSuite.Util
         //        Skin = null;
         //    }
 
-        //    string resourceName = $"SpookSuite.Resources.Theme.{themeName}.skin";
+        //    string resourceName = $"Unk.Resources.Theme.{themeName}.skin";
 
         //    try
         //    {

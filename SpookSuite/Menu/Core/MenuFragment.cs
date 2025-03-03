@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SpookSuite.Menu.Core
+namespace Unk.Menu.Core
 {
     internal class MenuFragment
     {

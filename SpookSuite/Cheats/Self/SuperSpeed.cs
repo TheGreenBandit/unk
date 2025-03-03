@@ -1,17 +1,19 @@
-﻿using SpookSuite.Cheats.Core;
+﻿using Unk.Cheats.Core;
 
-namespace SpookSuite.Cheats
+namespace Unk.Cheats
 {
-    internal class SuperSpeed : ToggleCheat, IVariableCheat<float>
+    internal class SuperSpeed : ToggleCheat, IVariableCheat<float> //we can change this to be seperate between crouch / sprint etc 
     {
-        public float Value { get; set; } = 60f;
-        private float ogvalue;
+        public float Value { get; set; } = .5f;
 
         public override void Update()
         {
-            Player localp = Network.ഡഢദസഝലബമഡ.GetLocalPlayerSpot().player;
-            localp.SetPlayerSpeed(Value);
+            PlayerController.instance.MoveSpeed = Value;
         }
 
+        public override void OnDisable()
+        {
+            PlayerController.instance.MoveSpeed = .5f;
+        }
     }
 }

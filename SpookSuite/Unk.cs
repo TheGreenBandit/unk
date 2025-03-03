@@ -1,8 +1,8 @@
 ﻿using HarmonyLib;
 using Photon.Pun;
-using SpookSuite.Cheats.Core;
-using SpookSuite.Menu.Core;
-using SpookSuite.Util;
+using Unk.Cheats.Core;
+using Unk.Menu.Core;
+using Unk.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +10,20 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 
-namespace SpookSuite
+namespace Unk
 {
-    public class SpookSuite : MonoBehaviour
+    public class Unk : MonoBehaviour
     {
         private List<ToggleCheat> cheats;
         private Harmony harmony;
-        private SpookSuiteMenu menu;
+        private UnkMenu menu;
 
-        private static SpookSuite instance;
-        public static SpookSuite Instance
+        private static Unk instance;
+        public static Unk Instance
         {
             get
             {
-                if (instance == null) instance = new SpookSuite();
+                if (instance == null) instance = new Unk();
                 return instance;
             }
         }
@@ -39,7 +39,7 @@ namespace SpookSuite
 
         private void DoPatching()
         {
-            harmony = new Harmony("SpookSuite");
+            harmony = new Harmony("Unk");
             Harmony.DEBUG = false;
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
@@ -47,8 +47,8 @@ namespace SpookSuite
         private void LoadCheats()
         {
             cheats = new List<ToggleCheat>();
-            menu = new SpookSuiteMenu();
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes().Where(t => String.Equals(t.Namespace, "SpookSuite.Cheats", StringComparison.Ordinal) && t.IsSubclassOf(typeof(ToggleCheat))))
+            menu = new UnkMenu();
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes().Where(t => String.Equals(t.Namespace, "Unk.Cheats", StringComparison.Ordinal) && t.IsSubclassOf(typeof(ToggleCheat))))
             {
                 cheats.Add((ToggleCheat)Activator.CreateInstance(type));
             }
@@ -91,7 +91,7 @@ namespace SpookSuite
             {
                 if (Event.current.type == EventType.Repaint)
                 {
-                    VisualUtil.DrawString(new Vector2(5f, 2f), "SpookSuite", new RGBAColor(128, 0, 255, 1f), centered: false, bold: true, fontSize: 16);
+                    VisualUtil.DrawString(new Vector2(5f, 2f), "Unk", new RGBAColor(128, 0, 255, 1f), centered: false, bold: true, fontSize: 16);
 
                     if (PhotonNetwork.InRoom) cheats.ForEach(cheat => cheat.OnGui());
                 }

@@ -1,17 +1,49 @@
-﻿using SpookSuite.Util;
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-using Vector3 = UnityEngine.Vector3;
-
-namespace SpookSuite.Cheats.Core
+namespace Unk.Cheats.Core
 {
-    public class ToggleCheat : Cheat
+    public abstract class ToggleCheat : Cheat
     {
-        public bool Enabled { get; set; }
+        private bool _enabled;
+        private bool lastenabled;
+        public bool Enabled
+        {
+            get => _enabled;
 
+            set
+            {
+                _enabled = value;
+                RunOns();      
+            }
+        }
+
+        private void RunOns()
+        {
+            if (!lastenabled && _enabled)
+            {
+                OnEnable();
+                lastenabled = true;
+            }
+            else if (lastenabled && !_enabled)
+            {
+                OnDisable();
+                lastenabled = false;
+            } 
+        }
+
+        public ToggleCheat() { }
+        public ToggleCheat(KeyCode defaultKeybind) : base(defaultKeybind) { }
+
+        public void Toggle()
+        {
+            Enabled = !Enabled;
+        }
         public virtual void OnGui() { }
         public virtual void Update() { }
         public virtual void FixedUpdate() { }
+
+        public virtual void OnEnable() { }
+        public virtual void OnDisable() { }
+
     }
 }

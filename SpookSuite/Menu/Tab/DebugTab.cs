@@ -1,9 +1,9 @@
 ﻿using ExitGames.Client.Photon;
 using Photon.Pun;
-using SpookSuite.Menu.Core;
+using Unk.Menu.Core;
 using UnityEngine;
 
-namespace SpookSuite.Menu.Tab
+namespace Unk.Menu.Tab
 {
     internal class DebugTab : MenuTab
     {
