@@ -9,6 +9,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using SpookSuite.Cheats;
+using Unk.Manager;
 
 namespace Unk
 {
@@ -31,26 +34,37 @@ namespace Unk
         public void Start()
         {
             instance = this;
-            //ThemeUtil.LoadTheme("Default");
+            ThemeUtil.SetTheme("Default");
             LoadCheats();
             DoPatching();
-            LoadKeybinds();
+            this.StartCoroutine(GameObjectManager.Instance.CollectObjects());
         }
 
         private void DoPatching()
         {
-            harmony = new Harmony("Unk");
-            Harmony.DEBUG = false;
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            //try
+            //{
+            //    harmony = new Harmony("SpookSuite");
+            //    Harmony.DEBUG = true;
+            //    harmony.PatchAll(Assembly.GetExecutingAssembly());
+            //}
+            //catch (Exception e)
+            //{
+            //    Debug.Log($"Error in DoPatching: {e}");
+            //}
         }
 
         private void LoadCheats()
         {
             cheats = new List<ToggleCheat>();
             menu = new UnkMenu();
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes().Where(t => String.Equals(t.Namespace, "Unk.Cheats", StringComparison.Ordinal) && t.IsSubclassOf(typeof(ToggleCheat))))
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes().Where(t => String.Equals(t.Namespace, "SpookSuite.Cheats", StringComparison.Ordinal) && t.IsSubclassOf(typeof(Cheat))))
             {
-                cheats.Add((ToggleCheat)Activator.CreateInstance(type));
+                if (type.IsSubclassOf(typeof(ToggleCheat)))
+                    cheats.Add((ToggleCheat)Activator.CreateInstance(type));
+                else Activator.CreateInstance(type);
+
+                Debug.Log($"Loaded Cheat: {type.Name}");
             }
         }
 
@@ -63,7 +77,7 @@ namespace Unk
         {
             try
             {
-                if(PhotonNetwork.InRoom) cheats.ForEach(cheat => cheat.FixedUpdate());
+                if (PhotonNetwork.InRoom) cheats.ForEach(cheat => cheat.FixedUpdate());
             }
             catch (Exception e)
             {
@@ -75,13 +89,19 @@ namespace Unk
         {
             try
             {
-                if(Input.GetKeyDown(Settings.MenuToggleKey)) Settings.b_isMenuOpen = !Settings.b_isMenuOpen;
+                if (Cheat.instances.Where(c => c.WaitingForKeybind).Count() == 0)
+                    Cheat.instances.FindAll(c => c.HasKeybind && Input.GetKeyDown(c.keybind)).ForEach(c =>
+                    {
+                        if (c.GetType().IsSubclassOf(typeof(ToggleCheat))) ((ToggleCheat)c).Toggle();
+                        else if (c.GetType().IsSubclassOf(typeof(ExecutableCheat))) ((ExecutableCheat)c).Execute();
+                        else Debug.LogError($"Unknown Cheat Type: {c.GetType().Name}");
+                    });
 
                 if (PhotonNetwork.InRoom) cheats.ForEach(cheat => cheat.Update());
             }
             catch (Exception e)
             {
-                Debug.Log($"Error in Update: {e}");
+                Debug.LogError($"Error in Update: {e}");
             }
         }
 
@@ -90,12 +110,8 @@ namespace Unk
             try
             {
                 if (Event.current.type == EventType.Repaint)
-                {
-                    VisualUtil.DrawString(new Vector2(5f, 2f), "Unk", new RGBAColor(128, 0, 255, 1f), centered: false, bold: true, fontSize: 16);
-
-                    if (PhotonNetwork.InRoom) cheats.ForEach(cheat => cheat.OnGui());
-                }
-
+                    VisualUtil.DrawString(new Vector2(5f, 2f), "SpookSuite| "/* + "Open / Close: " + Cheat.Instance<ToggleMenuCheat>().keybind.ToString()*/, new RGBAColor(128, 0, 255, 1f), centered: false, bold: true, fontSize: 16);
+                //cheats.ForEach(cheat => { if (cheat.Enabled) cheat.OnGui(); });
                 menu.Draw();
             }
             catch (Exception e)

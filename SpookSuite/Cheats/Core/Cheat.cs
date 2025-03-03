@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Unk.Util;
 
 namespace Unk.Cheats.Core
 {
@@ -37,7 +38,7 @@ namespace Unk.Cheats.Core
 
         protected static bool WorldToScreen(Vector3 world, out Vector3 screen)
         {
-            screen = MainCamera.instance.GetCamera().WorldToViewportPoint(world);
+            screen = PlayerAvatar.instance.Reflect().GetValue<Camera>("localCamera").WorldToViewportPoint(world);
             screen.x *= Screen.width;
             screen.y *= Screen.height;
             screen.y = Screen.height - screen.y;
@@ -45,7 +46,7 @@ namespace Unk.Cheats.Core
         }
         protected float GetDistanceToPos(Vector3 position)
         {
-            return (float)Math.Round((double)Vector3.Distance(Player.localPlayer.refs.cameraPos.position, position));
+            return (float)Math.Round((double)Vector3.Distance(PlayerAvatar.instance.localCameraTransform.position, position));
         }
     }
 }

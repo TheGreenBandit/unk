@@ -80,7 +80,7 @@ namespace Unk.Menu.Core
 
         public void Draw()
         {
-            if (!Settings.b_isMenuOpen) return;
+            //if (!Settings.b_isMenuOpen) return;
 
             Stylize();
             GUI.color = new Color(1f, 1f, 1f, Settings.f_menuAlpha);
