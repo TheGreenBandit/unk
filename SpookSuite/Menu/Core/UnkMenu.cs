@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using Unk.Cheats.Core;
+using Unk.Cheats;
 
 namespace Unk.Menu.Core
 {
@@ -80,7 +82,7 @@ namespace Unk.Menu.Core
 
         public void Draw()
         {
-            //if (!Settings.b_isMenuOpen) return;
+            if (!Settings.b_isMenuOpen) return;
 
             Stylize();
             GUI.color = new Color(1f, 1f, 1f, Settings.f_menuAlpha);
@@ -90,7 +92,6 @@ namespace Unk.Menu.Core
 
         private void DrawContent(int windowID)
         {
-
             GUI.color = new Color(1f, 1f, 1f, 0.1f);
             GUIStyle watermark = new GUIStyle(GUI.skin.label) { fontSize = 20, fontStyle = FontStyle.Bold };
             string text = "Placeholder Text";
@@ -113,6 +114,10 @@ namespace Unk.Menu.Core
             //scrollPos = GUILayout.BeginScrollView(scrollPos);
 
             GUILayout.BeginHorizontal();
+            UI.Checkbox("Unlimited Energy", Cheat.Instance<UnlimitedStamina>());
+            UI.Checkbox("Godmode", Cheat.Instance<UnlimitedStamina>());
+            UI.CheatToggleSlider(Cheat.Instance<SuperSpeed>(), "Super Speed", SuperSpeed.Value.ToString("#"), ref SuperSpeed.Value, 10f, 100f);
+
             tabs[selectedTab].Draw();
             GUILayout.EndHorizontal();
 

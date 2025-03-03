@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Unk.Cheats.Core;
+﻿using Unk.Cheats.Core;
 using Unk.Util;
 
-namespace Unk.Cheats.Self
+namespace Unk.Cheats
 {
     internal class Godmode : ToggleCheat
     {
         public override void Update()
         {
+            if (!Enabled) return;
+
             PlayerAvatar.instance.playerHealth.Reflect().SetValue("godMode", true);
         }
 

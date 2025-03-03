@@ -14,12 +14,10 @@ namespace SpookSuite.Cheats
         {
             Settings.b_isMenuOpen = !Settings.b_isMenuOpen;
 
-            if (!PhotonNetwork.InRoom) return;
-
-            //if (Settings.b_isMenuOpen)
-            //    .ShowCursor();
-            //else
-            //    MenuUtil.HideCursor();
+            if (Settings.b_isMenuOpen)
+                MenuUtil.ShowCursor();
+            else
+                MenuUtil.HideCursor();
         }
 
     }

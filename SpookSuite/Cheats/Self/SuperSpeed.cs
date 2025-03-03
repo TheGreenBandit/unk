@@ -4,10 +4,11 @@ namespace Unk.Cheats
 {
     internal class SuperSpeed : ToggleCheat, IVariableCheat<float> //we can change this to be seperate between crouch / sprint etc 
     {
-        public float Value { get; set; } = .5f;
+        public static float Value = .5f;
 
         public override void Update()
         {
+            if (!enabled) return;
             PlayerController.instance.MoveSpeed = Value;
         }
 

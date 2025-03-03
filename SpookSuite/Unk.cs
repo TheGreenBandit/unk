@@ -76,7 +76,7 @@ namespace Unk
         public void FixedUpdate()
         {
             try
-            {
+            {//for some reason cheat not working??
                 if (PhotonNetwork.InRoom) cheats.ForEach(cheat => cheat.FixedUpdate());
             }
             catch (Exception e)
