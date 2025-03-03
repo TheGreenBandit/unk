@@ -8,7 +8,7 @@ namespace Unk.Cheats
 
         public override void Update()
         {
-            if (!enabled) return;
+            if (!Enabled) return;
             PlayerController.instance.MoveSpeed = Value;
         }
 

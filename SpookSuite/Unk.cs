@@ -7,11 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using SpookSuite.Cheats;
 using Unk.Manager;
+using Unk.Cheats;
 
 namespace Unk
 {
@@ -34,7 +32,7 @@ namespace Unk
         public void Start()
         {
             instance = this;
-            ThemeUtil.SetTheme("Default");
+            //ThemeUtil.SetTheme("Default");
             LoadCheats();
             DoPatching();
             this.StartCoroutine(GameObjectManager.Instance.CollectObjects());
@@ -58,13 +56,13 @@ namespace Unk
         {
             cheats = new List<ToggleCheat>();
             menu = new UnkMenu();
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes().Where(t => String.Equals(t.Namespace, "SpookSuite.Cheats", StringComparison.Ordinal) && t.IsSubclassOf(typeof(Cheat))))
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes().Where(t => String.Equals(t.Namespace, "Unk.Cheats", StringComparison.Ordinal) && t.IsSubclassOf(typeof(Cheat))))
             {
                 if (type.IsSubclassOf(typeof(ToggleCheat)))
                     cheats.Add((ToggleCheat)Activator.CreateInstance(type));
                 else Activator.CreateInstance(type);
 
-                Debug.Log($"Loaded Cheat: {type.Name}");
+                Debug.LogError($"Loaded Cheat: {type.Name}");
             }
         }
 
@@ -85,7 +83,7 @@ namespace Unk
             }
         }
 
-        public void Update()
+        public void Update() //[Error  : Unity Log] Loaded Cheat: ToggleMenuCheat only this seems to load
         {
             try
             {
@@ -110,7 +108,7 @@ namespace Unk
             try
             {
                 if (Event.current.type == EventType.Repaint)
-                    VisualUtil.DrawString(new Vector2(5f, 2f), "SpookSuite| "/* + "Open / Close: " + Cheat.Instance<ToggleMenuCheat>().keybind.ToString()*/, new RGBAColor(128, 0, 255, 1f), centered: false, bold: true, fontSize: 16);
+                    VisualUtil.DrawString(new Vector2(5f, 2f), "SpookSuite| " + "Open / Close: " + Cheat.Instance<ToggleMenuCheat>().keybind.ToString(), new RGBAColor(128, 0, 255, 1f), centered: false, bold: true, fontSize: 16);
                 //cheats.ForEach(cheat => { if (cheat.Enabled) cheat.OnGui(); });
                 menu.Draw();
             }

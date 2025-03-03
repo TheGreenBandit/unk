@@ -73,8 +73,8 @@ namespace Unk.Menu.Core
             GUI.skin.verticalSlider.fontSize = Settings.i_menuFontSize;
             GUI.skin.verticalSliderThumb.fontSize = Settings.i_menuFontSize;
 
-            GUI.skin.customStyles.Where(x => x.name == "TabBtn").First().fontSize = Settings.i_menuFontSize;
-            GUI.skin.customStyles.Where(x => x.name == "SelectedTab").First().fontSize = Settings.i_menuFontSize;
+           // GUI.skin.customStyles.Where(x => x.name == "TabBtn").First().fontSize = Settings.i_menuFontSize;
+            //GUI.skin.customStyles.Where(x => x.name == "SelectedTab").First().fontSize = Settings.i_menuFontSize;
 
             Resize();
         }
@@ -114,10 +114,7 @@ namespace Unk.Menu.Core
             //scrollPos = GUILayout.BeginScrollView(scrollPos);
 
             GUILayout.BeginHorizontal();
-            UI.Checkbox("Unlimited Energy", Cheat.Instance<UnlimitedStamina>());
-            UI.Checkbox("Godmode", Cheat.Instance<UnlimitedStamina>());
-            UI.CheatToggleSlider(Cheat.Instance<SuperSpeed>(), "Super Speed", SuperSpeed.Value.ToString("#"), ref SuperSpeed.Value, 10f, 100f);
-
+            
             tabs[selectedTab].Draw();
             GUILayout.EndHorizontal();
 

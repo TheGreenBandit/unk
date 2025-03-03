@@ -13,7 +13,7 @@ namespace Unk.Util
         public static void Initialize() => SetTheme(string.IsNullOrEmpty(name) ? "Default" : name);
         public static void SetTheme(string t) => LoadTheme(name = ThemeExists(t) ? t : "Default");
         private static bool ThemeExists(string t) => Assembly.GetExecutingAssembly().GetManifestResourceStream($"SpookSuite.Resources.Theme.{t}.skin") != null;
-        private static AssetBundle LoadAssetBundle(string r) => AssetBundle.LoadFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(r));
+        private static AssetBundle LoadAssetBundle(string r) => AssetBundle.LoadFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(r)); //null
         public static string[] GetThemes() => Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(r => r.StartsWith("SpookSuite.Resources.Theme.") && r.EndsWith(".skin")).Select(r => r["SpookSuite.Resources.Theme.".Length..^".skin".Length]).OrderBy(name => name).ToArray();
         private static void LoadTheme(string t)
         {

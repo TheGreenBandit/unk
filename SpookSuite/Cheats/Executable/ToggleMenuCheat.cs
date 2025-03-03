@@ -2,9 +2,8 @@
 using Unk.Cheats.Core;
 using Unk.Util;
 using UnityEngine;
-using Unk;
 
-namespace SpookSuite.Cheats
+namespace Unk.Cheats
 {
     internal class ToggleMenuCheat : ExecutableCheat
     {

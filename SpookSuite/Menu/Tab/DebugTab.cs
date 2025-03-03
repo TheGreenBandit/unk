@@ -2,6 +2,9 @@
 using Photon.Pun;
 using Unk.Menu.Core;
 using UnityEngine;
+using Unk.Util;
+using Unk.Cheats.Core;
+using Unk.Cheats;
 
 namespace Unk.Menu.Tab
 {
@@ -29,26 +32,10 @@ namespace Unk.Menu.Tab
             GUILayout.Label(PhotonNetwork.IsMasterClient ? "Yes" : "No");
             GUILayout.EndHorizontal();
 
+            UI.Checkbox("Unlimited Energy", Cheat.Instance<UnlimitedStamina>());
+            UI.Checkbox("Godmode", Cheat.Instance<Godmode>());
+            UI.CheatToggleSlider(Cheat.Instance<SuperSpeed>(), "Super Speed", SuperSpeed.Value.ToString("#"), ref SuperSpeed.Value, 10f, 100f);
 
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Become Master Client");
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Execute"))
-            {
-                //PhotonNetwork.SetMasterClient(PhotonNetwork.LocalPlayer);
-
-                //PhotonNetwork.CurrentRoom.SetMasterClient(PhotonNetwork.LocalPlayer);
-
-            }
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Add $1000");
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Execute"))
-            {
-            }
-            GUILayout.EndHorizontal();
 
             //GUILayout.EndScrollView();
         }
