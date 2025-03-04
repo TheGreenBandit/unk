@@ -35,7 +35,7 @@ namespace Unk
             ThemeUtil.SetTheme("Default");
             LoadCheats();
             DoPatching();
-            this.StartCoroutine(GameObjectManager.Instance.CollectObjects());
+            GameObjectManager.CollectObjects();
         }
 
         private void DoPatching()
@@ -44,6 +44,7 @@ namespace Unk
             {
                 harmony = new Harmony("Unk");
                 Harmony.DEBUG = true;
+                Debug.Log("attempting harmony patches.");
                 harmony.PatchAll(Assembly.GetExecutingAssembly());
             }
             catch (Exception e)

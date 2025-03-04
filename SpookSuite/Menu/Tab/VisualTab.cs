@@ -26,13 +26,13 @@ namespace Unk.Menu.Tab
 
         private void VisualContent()
         {
-            //fov etc
+            UI.CheatToggleSlider(Cheat.Instance<FOV>(), "FOV", Cheats.FOV.Value.ToString(), ref Cheats.FOV.Value, 1, 170);
         }
 
         private void ESPContent()
         {
             scrollPos = GUILayout.BeginScrollView(scrollPos);
-
+            UI.Checkbox("Toggle lights", Cheat.Instance<LightsOn>());
             UI.Checkbox("Enable ESP", Cheat.Instance<ESP>());
             UI.Button("Toggle All ESP", () => ESP.ToggleAll());
             UI.Checkbox("Display Players", ref ESP.displayPlayers);

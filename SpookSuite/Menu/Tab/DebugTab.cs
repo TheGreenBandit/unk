@@ -18,8 +18,7 @@ namespace Unk.Menu.Tab
         {
             GUILayout.BeginVertical();
             MenuContent();
-            GUILayout.EndVertical();
-             
+            GUILayout.EndVertical();         
         }
 
         private void MenuContent()
@@ -31,9 +30,10 @@ namespace Unk.Menu.Tab
             GUILayout.FlexibleSpace();
             GUILayout.Label(PhotonNetwork.IsMasterClient ? "Yes" : "No");
             GUILayout.EndHorizontal();
-
+            UI.Button("Log RPCS", () => { foreach (string s in PhotonNetwork.PhotonServerSettings.RpcList) Debug.Log(s); });
             UI.Checkbox("Unlimited Energy", Cheat.Instance<UnlimitedStamina>());
             UI.Checkbox("Godmode", Cheat.Instance<Godmode>());
+            UI.Checkbox("No Tumble", Cheat.Instance<NoTumble>());
             UI.CheatToggleSlider(Cheat.Instance<SuperSpeed>(), "Super Speed", SuperSpeed.Value.ToString("#"), ref SuperSpeed.Value, 10f, 100f);
             UI.Checkbox("Override Flashlight Color", Cheat.Instance<FlashlightColors>());
             UI.TextboxAction("Color", ref FlashlightColors.s_color, 8,

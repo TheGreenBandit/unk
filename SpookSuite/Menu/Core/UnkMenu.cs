@@ -38,6 +38,7 @@ namespace Unk.Menu.Core
             instance = this;
             tabs.Add(new DebugTab());
             tabs.Add(new VisualTab());
+            tabs.Add(new EnemyTab());
         }
 
         public void Resize()

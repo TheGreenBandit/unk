@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 using Object = UnityEngine.Object;
 using Unk.Menu.Core;
+using Unk.Manager;
 
 namespace Unk.Util
 {
@@ -18,8 +19,6 @@ namespace Unk.Util
         public static float maxWidth = Screen.width - (Screen.width * 0.1f);
         public static float maxHeight = Screen.height - (Screen.height * 0.1f);
         private static int oldWidth, oldHeight;
-
-        private static CursorLockMode lockMode = CursorLockMode.Confined;
 
         public static void BeginResizeMenu()
         {
@@ -68,19 +67,15 @@ namespace Unk.Util
         }
         public static void ShowCursor()
         {
-            //LethalMenu.localPlayer?.playerActions.Disable();
             Object.FindObjectOfType<CursorManager>().enabled = false;
             Cursor.visible = true;
-            lockMode = Cursor.lockState;
-            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.lockState = CursorLockMode.None;
         }
 
         public static void HideCursor()
         {
-            //LethalMenu.localPlayer?.playerActions.Enable();
             Cursor.visible = false;
-            Cursor.lockState = lockMode;
-            Object.FindObjectOfType<CursorManager>().enabled = true;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         public static void ToggleCursor()

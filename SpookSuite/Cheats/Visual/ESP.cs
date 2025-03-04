@@ -35,6 +35,7 @@ namespace Unk.Cheats
             displayItems = !displayItems;
             displayTraps = !displayTraps;
         }
+
         private void DisplayObjects<T>(IEnumerable<T> objects, Func<T, string> labelSelector, Func<T, RGBAColor> colorSelector) where T : Component
         {
             try
@@ -56,9 +57,12 @@ namespace Unk.Cheats
 
         private void DisplayPlayers()
         {
+            if ((GameObjectManager.players.Count == 1) || (!GameManager.Multiplayer()))
+                return;
+
             foreach (PlayerController p in GameObjectManager.players)
             {
-                if (p == PlayerController.instance) continue; //check if local
+                if (p == PlayerController.instance || p is null || p.transform == null) continue; //check if local
 
                 float distance = GetDistanceToPos(p.transform.up);
 
@@ -70,23 +74,28 @@ namespace Unk.Cheats
 
         private void DisplayItems()
         {
-            //DisplayObjects(GameObjectManager.items, item => item.item.GetName(), item => Settings.c_espItems);
+            DisplayObjects(GameObjectManager.items, item => $"{item.name} ( {item.dollarValueCurrent} )".Format(), item => Settings.c_espItems);
         }
 
         private void DisplayTraps()
         {
-            DisplayObjects(GameObjectManager.traps, trap => trap.name.Replace("(Clone)", ""), trap => Settings.c_espTraps);
+            DisplayObjects(GameObjectManager.traps, trap => trap.name.Format(), trap => Settings.c_espTraps);
         }
 
         private void DisplayEnemies()
         {
             foreach (Enemy e in GameObjectManager.enemies)
             {
-                if (e is null) continue;
+                if (e is null || e.transform == null) continue;
                 float distance = GetDistanceToPos(e.CenterTransform.position);
                 if (!WorldToScreen(e.CenterTransform.position, out Vector3 screen)) continue;
                 VisualUtil.DrawDistanceString(screen, e.Reflect().GetValue<EnemyParent>("EnemyParent").enemyName, Settings.c_espEnemies, distance);
             }
         }
+    }
+
+    public static class ESPExtensions
+    {
+        public static string Format(this string @string) => @string.Replace("(Clone)", "").Trim();
     }
 }

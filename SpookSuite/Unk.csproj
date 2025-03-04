@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Cheats\Players\" />
+    <Folder Include="Handlers\" />
     <Folder Include="Resources\BaseGame\" />
   </ItemGroup>
 
