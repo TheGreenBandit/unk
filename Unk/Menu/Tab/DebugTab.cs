@@ -5,6 +5,7 @@ using UnityEngine;
 using Unk.Util;
 using Unk.Cheats.Core;
 using Unk.Cheats;
+using System.Linq;
 
 namespace Unk.Menu.Tab
 {
@@ -30,7 +31,7 @@ namespace Unk.Menu.Tab
             GUILayout.FlexibleSpace();
             GUILayout.Label(PhotonNetwork.IsMasterClient ? "Yes" : "No");
             GUILayout.EndHorizontal();
-            UI.Button("Log RPCS", () => { foreach (string s in PhotonNetwork.PhotonServerSettings.RpcList) Debug.Log(s); });
+            UI.Button("Log RPCS", () => PhotonNetwork.PhotonServerSettings.RpcList.ToList().ForEach(r => Debug.Log(r)));
             UI.Checkbox("Unlimited Energy", Cheat.Instance<UnlimitedStamina>());
             UI.Checkbox("Godmode", Cheat.Instance<Godmode>());
             UI.Checkbox("No Tumble", Cheat.Instance<NoTumble>());

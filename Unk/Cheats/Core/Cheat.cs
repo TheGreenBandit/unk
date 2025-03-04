@@ -8,7 +8,7 @@ namespace Unk.Cheats.Core
     public class Cheat : MonoBehaviour
     {
         public static List<Cheat> instances = new List<Cheat>();
-        public static T? Instance<T>() where T : Cheat => instances.Find(x => x is T) as T;
+        public static T Instance<T>() where T : Cheat => instances.Find(x => x is T) as T;
 
         public KeyCode defaultKeybind = KeyCode.None;
         public KeyCode keybind = KeyCode.None;
@@ -38,7 +38,7 @@ namespace Unk.Cheats.Core
 
         protected static bool WorldToScreen(Vector3 world, out Vector3 screen)
         {
-            screen = PlayerAvatar.instance.Reflect().GetValue<Camera>("localCamera").WorldToViewportPoint(world);
+            screen = GameDirector.instance.MainCamera.WorldToViewportPoint(world);
             screen.x *= Screen.width;
             screen.y *= Screen.height;
             screen.y = Screen.height - screen.y;
@@ -46,7 +46,7 @@ namespace Unk.Cheats.Core
         }
         protected float GetDistanceToPos(Vector3 position)
         {
-            return (float)Math.Round((double)Vector3.Distance(PlayerAvatar.instance.localCameraTransform.position, position));
+            return GameDirector.instance.MainCamera.transform == null ? 0f : (float)Math.Round((double)Vector3.Distance(GameDirector.instance.MainCamera.transform.position, position));
         }
     }
 }

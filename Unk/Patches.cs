@@ -10,10 +10,9 @@ namespace Unk
     internal class Patches
     {
         [HarmonyPatch(typeof(PlayerAvatar), "OnPhotonSerializeView"), HarmonyPrefix]
-        public bool OnPhotonSerializeView(PlayerAvatar __instance, PhotonStream stream, PhotonMessageInfo info)
+        public static bool OnPhotonSerializeView(PlayerAvatar __instance, PhotonStream stream, PhotonMessageInfo info)
         {
-            if (__instance != PlayerController.instance.playerAvatar)
-                return true; //do normal
+            if (__instance != PlayerController.instance.playerAvatar) return true; 
             if (stream.IsWriting)
             {
                 stream.SendNext(__instance.Reflect().GetValue("isCrouching"));

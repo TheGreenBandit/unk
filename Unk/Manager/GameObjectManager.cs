@@ -1,14 +1,14 @@
-﻿using System;
-using HarmonyLib;
-using System.Collections.Generic;
+﻿using HarmonyLib;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
-using Unk.Util;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Unk.Manager
 {
+    [HarmonyPatch]
     public static class GameObjectManager
     {
         private static Queue<Action> ObjectQueue = new Queue<Action>();
@@ -29,7 +29,7 @@ namespace Unk.Manager
         public static void Awake(Enemy __instance) => AddToObjectQueue(() => enemies.Add(__instance));
 
         [HarmonyPatch(typeof(Trap), "Start"), HarmonyPostfix]
-        public static void Start(Trap __instance) { Debug.Log("aaa"); AddToObjectQueue(() => traps.Add(__instance)); }
+        public static void Start(Trap __instance) => AddToObjectQueue(() => traps.Add(__instance));
 
         public static void CollectObjects()
         {

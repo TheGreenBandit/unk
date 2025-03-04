@@ -2,8 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Nullable>enable</Nullable>
-    <LangVersion>12</LangVersion>
+    <ErrorReport>none</ErrorReport>
+    <LangVersion>12.0</LangVersion>
+    </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,19 +23,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Newtonsoft.Json.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="Resources\0Harmony.dll" />
+    <EmbeddedResource Include="Resources\Newtonsoft.Json.dll" />
     <EmbeddedResource Include="Resources\Theme\Blue.skin" />
     <EmbeddedResource Include="Resources\Theme\Default.skin" />
     <EmbeddedResource Include="Resources\Theme\Green.skin" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Cheats\Players\" />
-    <Folder Include="Handlers\" />
     <Folder Include="Resources\BaseGame\" />
   </ItemGroup>
 
@@ -53,59 +56,11 @@
     <Reference Include="Klattersynth">
       <HintPath>Resources\BaseGame\Klattersynth.dll</HintPath>
     </Reference>
-    <Reference Include="DE_EnvironmentControllerGlobal.Editor">
-      <HintPath>Resources\BaseGame\DE_EnvironmentControllerGlobal.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="DE_EnvironmentCore.Utils">
-      <HintPath>Resources\BaseGame\DE_EnvironmentCore.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="DE_EnvironmentCore.Utils.Editor">
-      <HintPath>Resources\BaseGame\DE_EnvironmentCore.Utils.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="DoozyRuntime">
-      <HintPath>Resources\BaseGame\DoozyRuntime.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTween">
-      <HintPath>Resources\BaseGame\DOTween.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTweenPro">
-      <HintPath>Resources\BaseGame\DOTweenPro.dll</HintPath>
-    </Reference>
-    <Reference Include="EasySave3">
-      <HintPath>Resources\BaseGame\EasySave3.dll</HintPath>
-    </Reference>
-    <Reference Include="Estrada">
-      <HintPath>Resources\BaseGame\Estrada.dll</HintPath>
-    </Reference>
-    <Reference Include="GameAnalytics">
-      <HintPath>Resources\BaseGame\GameAnalytics.dll</HintPath>
-    </Reference>
-    <Reference Include="Il2CppDummyDll">
-      <HintPath>Resources\BaseGame\Il2CppDummyDll.dll</HintPath>
-    </Reference>
-    <Reference Include="KS.Diagnostics.Process">
-      <HintPath>Resources\BaseGame\KS.Diagnostics.Process.dll</HintPath>
-    </Reference>
-    <Reference Include="KS.Diagnostics.Process.Example">
-      <HintPath>Resources\BaseGame\KS.Diagnostics.Process.Example.dll</HintPath>
-    </Reference>
-    <Reference Include="MeshExtension">
-      <HintPath>Resources\BaseGame\MeshExtension.dll</HintPath>
-    </Reference>
-    <Reference Include="Micosmo.SensorToolkit">
-      <HintPath>Resources\BaseGame\Micosmo.SensorToolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Data.Sqlite">
-      <HintPath>Resources\BaseGame\Mono.Data.Sqlite.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Security">
       <HintPath>Resources\BaseGame\Mono.Security.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Resources\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="OccaSoftware.AutoExposure.Runtime">
-      <HintPath>Resources\BaseGame\OccaSoftware.AutoExposure.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
       <HintPath>Resources\BaseGame\Photon3Unity3D.dll</HintPath>
@@ -122,146 +77,23 @@
     <Reference Include="PhotonUnityNetworking.Utilities">
       <HintPath>Resources\BaseGame\PhotonUnityNetworking.Utilities.dll</HintPath>
     </Reference>
-    <Reference Include="ProfilerStats">
-      <HintPath>Resources\BaseGame\ProfilerStats.dll</HintPath>
-    </Reference>
-    <Reference Include="Recognissimo">
-      <HintPath>Resources\BaseGame\Recognissimo.dll</HintPath>
-    </Reference>
-    <Reference Include="Recognissimo.Utils">
-      <HintPath>Resources\BaseGame\Recognissimo.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="RTLTMPro">
-      <HintPath>Resources\BaseGame\RTLTMPro.dll</HintPath>
-    </Reference>
     <Reference Include="System.Configuration">
       <HintPath>Resources\BaseGame\System.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="unity-websocket-sharp">
-      <HintPath>Resources\BaseGame\unity-websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Unity.AI.Navigation">
       <HintPath>Resources\BaseGame\Unity.AI.Navigation.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Burst">
-      <HintPath>Resources\BaseGame\Unity.Burst.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Burst.Unsafe">
-      <HintPath>Resources\BaseGame\Unity.Burst.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Collections">
-      <HintPath>Resources\BaseGame\Unity.Collections.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.InputSystem">
       <HintPath>Resources\BaseGame\Unity.InputSystem.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Mathematics">
-      <HintPath>Resources\BaseGame\Unity.Mathematics.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
-      <HintPath>Resources\BaseGame\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.RenderPipelines.Core.Runtime">
       <HintPath>Resources\BaseGame\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Runtime">
-      <HintPath>Resources\BaseGame\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Authentication">
-      <HintPath>Resources\BaseGame\Unity.Services.Authentication.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Authentication.PlayerAccounts">
-      <HintPath>Resources\BaseGame\Unity.Services.Authentication.PlayerAccounts.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.CloudCode">
-      <HintPath>Resources\BaseGame\Unity.Services.CloudCode.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.CloudCode.GeneratedBindings">
-      <HintPath>Resources\BaseGame\Unity.Services.CloudCode.GeneratedBindings.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.CloudSave">
-      <HintPath>Resources\BaseGame\Unity.Services.CloudSave.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Core">
-      <HintPath>Resources\BaseGame\Unity.Services.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Core.Configuration">
-      <HintPath>Resources\BaseGame\Unity.Services.Core.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Core.Device">
-      <HintPath>Resources\BaseGame\Unity.Services.Core.Device.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Core.Environments">
-      <HintPath>Resources\BaseGame\Unity.Services.Core.Environments.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Core.Environments.Internal">
-      <HintPath>Resources\BaseGame\Unity.Services.Core.Environments.Internal.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Core.Internal">
-      <HintPath>Resources\BaseGame\Unity.Services.Core.Internal.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Core.Registration">
-      <HintPath>Resources\BaseGame\Unity.Services.Core.Registration.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Core.Scheduler">
-      <HintPath>Resources\BaseGame\Unity.Services.Core.Scheduler.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Core.Telemetry">
-      <HintPath>Resources\BaseGame\Unity.Services.Core.Telemetry.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Core.Threading">
-      <HintPath>Resources\BaseGame\Unity.Services.Core.Threading.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Leaderboards">
-      <HintPath>Resources\BaseGame\Unity.Services.Leaderboards.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.RemoteConfig">
-      <HintPath>Resources\BaseGame\Unity.Services.RemoteConfig.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Vivox">
-      <HintPath>Resources\BaseGame\Unity.Services.Vivox.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Services.Wire.Internal">
-      <HintPath>Resources\BaseGame\Unity.Services.Wire.Internal.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>Resources\BaseGame\Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
       <HintPath>Resources\BaseGame\Unity.Timeline.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualEffectGraph.Runtime">
-      <HintPath>Resources\BaseGame\Unity.VisualEffectGraph.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.CoreUtils">
-      <HintPath>Resources\BaseGame\Unity.XR.CoreUtils.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.Interaction.Toolkit">
-      <HintPath>Resources\BaseGame\Unity.XR.Interaction.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.Management">
-      <HintPath>Resources\BaseGame\Unity.XR.Management.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.Oculus">
-      <HintPath>Resources\BaseGame\Unity.XR.Oculus.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.OpenXR">
-      <HintPath>Resources\BaseGame\Unity.XR.OpenXR.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.OpenXR.Features.ConformanceAutomation">
-      <HintPath>Resources\BaseGame\Unity.XR.OpenXR.Features.ConformanceAutomation.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.OpenXR.Features.MetaQuestSupport">
-      <HintPath>Resources\BaseGame\Unity.XR.OpenXR.Features.MetaQuestSupport.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.OpenXR.Features.MockRuntime">
-      <HintPath>Resources\BaseGame\Unity.XR.OpenXR.Features.MockRuntime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.OpenXR.Features.OculusQuestSupport">
-      <HintPath>Resources\BaseGame\Unity.XR.OpenXR.Features.OculusQuestSupport.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.OpenXR.Features.RuntimeDebugger">
-      <HintPath>Resources\BaseGame\Unity.XR.OpenXR.Features.RuntimeDebugger.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>Resources\BaseGame\UnityEngine.dll</HintPath>
@@ -322,9 +154,6 @@
     </Reference>
     <Reference Include="UnityEngine.SharedInternalsModule">
       <HintPath>Resources\BaseGame\UnityEngine.SharedInternalsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.SpatialTracking">
-      <HintPath>Resources\BaseGame\UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpriteMaskModule">
       <HintPath>Resources\BaseGame\UnityEngine.SpriteMaskModule.dll</HintPath>
@@ -388,18 +217,6 @@
     </Reference>
     <Reference Include="UnityEngine.XRModule">
       <HintPath>Resources\BaseGame\UnityEngine.XRModule.dll</HintPath>
-    </Reference>
-    <Reference Include="VisualDesignCafe.Nature">
-      <HintPath>Resources\BaseGame\VisualDesignCafe.Nature.dll</HintPath>
-    </Reference>
-    <Reference Include="VisualDesignCafe.Packages">
-      <HintPath>Resources\BaseGame\VisualDesignCafe.Packages.dll</HintPath>
-    </Reference>
-    <Reference Include="VisualDesignCafe.ShaderX">
-      <HintPath>Resources\BaseGame\VisualDesignCafe.ShaderX.dll</HintPath>
-    </Reference>
-    <Reference Include="VIVE.OpenXR">
-      <HintPath>Resources\BaseGame\VIVE.OpenXR.dll</HintPath>
     </Reference>
   </ItemGroup>
 

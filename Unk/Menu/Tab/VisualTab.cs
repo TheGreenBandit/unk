@@ -26,7 +26,7 @@ namespace Unk.Menu.Tab
 
         private void VisualContent()
         {
-            UI.CheatToggleSlider(Cheat.Instance<FOV>(), "FOV", Cheats.FOV.Value.ToString(), ref Cheats.FOV.Value, 1, 170);
+            UI.CheatToggleSlider(Cheat.Instance<FOV>(), "FOV", Cheats.FOV.Value.ToString(), ref FOV.Value, 1, 170);
         }
 
         private void ESPContent()
@@ -38,7 +38,6 @@ namespace Unk.Menu.Tab
             UI.Checkbox("Display Players", ref ESP.displayPlayers);
             UI.Checkbox("Display Enemies", ref ESP.displayEnemies);
             UI.Checkbox("Display Items", ref ESP.displayItems);
-            UI.Checkbox("Display Traps", ref ESP.displayTraps);
 
             GUILayout.EndScrollView();
         }
