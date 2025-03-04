@@ -32,7 +32,7 @@ namespace Unk
         public void Start()
         {
             instance = this;
-            //ThemeUtil.SetTheme("Default");
+            ThemeUtil.SetTheme("Default");
             LoadCheats();
             DoPatching();
             this.StartCoroutine(GameObjectManager.Instance.CollectObjects());

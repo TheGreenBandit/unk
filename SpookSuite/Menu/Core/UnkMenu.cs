@@ -60,7 +60,7 @@ namespace Unk.Menu.Core
 
         public void Stylize()
         {
-            //GUI.skin = ThemeUtil.Skin;
+            GUI.skin = ThemeUtil.Skin;
             GUI.color = Color.white;
 
             GUI.skin.label.fontSize = Settings.i_menuFontSize;
@@ -74,8 +74,8 @@ namespace Unk.Menu.Core
             GUI.skin.verticalSlider.fontSize = Settings.i_menuFontSize;
             GUI.skin.verticalSliderThumb.fontSize = Settings.i_menuFontSize;
 
-           // GUI.skin.customStyles.Where(x => x.name == "TabBtn").First().fontSize = Settings.i_menuFontSize;
-            //GUI.skin.customStyles.Where(x => x.name == "SelectedTab").First().fontSize = Settings.i_menuFontSize;
+            GUI.skin.customStyles.Where(x => x.name == "TabBtn").First().fontSize = Settings.i_menuFontSize;
+            GUI.skin.customStyles.Where(x => x.name == "SelectedTab").First().fontSize = Settings.i_menuFontSize;
 
             Resize();
         }

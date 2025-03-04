@@ -20,8 +20,8 @@ namespace Unk.Util
             AssetBundle?.Unload(true);
             AssetBundle = null;
             Skin = null;
-            AssetBundle = LoadAssetBundle($"SpookSuite.Resources.Theme.{t}.skin");
-            if (AssetBundle == null) Debug.LogError($"[ERROR] Failed to load theme file => {$"SpookSuite.Resources.Theme.{t}.skin"}");
+            AssetBundle = LoadAssetBundle($"Unk.Resources.Theme.{t}.skin");
+            if (AssetBundle == null) Debug.LogError($"[ERROR] Failed to load theme file => {$"Unk.Resources.Theme.{t}.skin"}");
             Skin = AssetBundle.LoadAllAssets<GUISkin>().FirstOrDefault();
             if (Skin == null) return;
             Debug.Log($"Loaded Theme {t}");

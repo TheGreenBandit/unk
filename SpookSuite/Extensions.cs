@@ -31,7 +31,7 @@ namespace Unk
         public static Vector3 GetClosestMonster(this Vector3 point) => GameObjectManager.enemies.OrderBy(x => Vector3.Distance(x.transform.position, point)).FirstOrDefault().transform.position;
 
         public static string GetName(this PlayerController player)
-        {
+        {//we can also use photon nickname
             return string.IsNullOrEmpty(player.Reflect().GetValue<string>("playerName")) ? player.name : player.Reflect().GetValue<string>("playerName");
         }
         public static string GetName(this Item item)
