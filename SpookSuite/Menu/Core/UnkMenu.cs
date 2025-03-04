@@ -37,6 +37,7 @@ namespace Unk.Menu.Core
         {
             instance = this;
             tabs.Add(new DebugTab());
+            tabs.Add(new VisualTab());
         }
 
         public void Resize()
@@ -94,31 +95,32 @@ namespace Unk.Menu.Core
         {
             GUI.color = new Color(1f, 1f, 1f, 0.1f);
             GUIStyle watermark = new GUIStyle(GUI.skin.label) { fontSize = 20, fontStyle = FontStyle.Bold };
-            string text = "Placeholder Text";
+            string text = "TGB & Dustin";
 
             GUI.Label(new Rect(windowRect.width - watermark.CalcSize(new GUIContent(text)).x - 10, windowRect.height - watermark.CalcSize(new GUIContent(text)).y - 10, watermark.CalcSize(new GUIContent(text)).x, watermark.CalcSize(new GUIContent(text)).y), text, watermark);
-
             GUI.color = new Color(1f, 1f, 1f, Settings.f_menuAlpha);
 
             GUILayout.BeginVertical();
-            //GUILayout.BeginArea(new Rect(0, 25, windowRect.width, 25), style: "Toolbar");
+
+            GUILayout.BeginArea(new Rect(0, 25, windowRect.width, 25), style: "Toolbar");
 
             GUILayout.BeginHorizontal();
-            //selectedTab = GUILayout.Toolbar(selectedTab, tabs.Select(x => x.name).ToArray(), style: "TabBtn");
+            selectedTab = GUILayout.Toolbar(selectedTab, tabs.Select(x => x.name).ToArray(), style: "TabBtn");
             GUILayout.EndHorizontal();
+
             GUILayout.EndArea();
+
             GUILayout.Space(spaceFromTop);
 
             GUILayout.BeginArea(new Rect(spaceFromLeft, spaceFromTop, windowRect.width - spaceFromLeft, contentHeight - 15));
 
-            //scrollPos = GUILayout.BeginScrollView(scrollPos);
+            scrollPos = GUILayout.BeginScrollView(scrollPos);
 
             GUILayout.BeginHorizontal();
-            
             tabs[selectedTab].Draw();
             GUILayout.EndHorizontal();
 
-            //GUILayout.EndScrollView();
+            GUILayout.EndScrollView();
 
             GUILayout.EndArea();
 

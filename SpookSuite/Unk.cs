@@ -40,16 +40,16 @@ namespace Unk
 
         private void DoPatching()
         {
-            //try
-            //{
-            //    harmony = new Harmony("SpookSuite");
-            //    Harmony.DEBUG = true;
-            //    harmony.PatchAll(Assembly.GetExecutingAssembly());
-            //}
-            //catch (Exception e)
-            //{
-            //    Debug.Log($"Error in DoPatching: {e}");
-            //}
+            try
+            {
+                harmony = new Harmony("Unk");
+                Harmony.DEBUG = true;
+                harmony.PatchAll(Assembly.GetExecutingAssembly());
+            }
+            catch (Exception e)
+            {
+                Debug.Log($"Error in DoPatching: {e}");
+            }
         }
 
         private void LoadCheats()
@@ -109,7 +109,7 @@ namespace Unk
             {
                 if (Event.current.type == EventType.Repaint)
                     VisualUtil.DrawString(new Vector2(5f, 2f), "SpookSuite| " + "Open / Close: " + Cheat.Instance<ToggleMenuCheat>().keybind.ToString(), new RGBAColor(128, 0, 255, 1f), centered: false, bold: true, fontSize: 16);
-                //cheats.ForEach(cheat => { if (cheat.Enabled) cheat.OnGui(); });
+                cheats.ForEach(cheat => { if (cheat.Enabled) cheat.OnGui(); });
                 menu.Draw();
             }
             catch (Exception e)

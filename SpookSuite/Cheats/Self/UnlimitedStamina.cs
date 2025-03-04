@@ -7,7 +7,7 @@ namespace Unk.Cheats
         public override void Update()
         {
             if (!Enabled) return;
-            PlayerController.instance.EnergyCurrent = 100; //done lmao
+            PlayerController.instance.EnergyCurrent = 40; //done lmao
         }
     }
 }

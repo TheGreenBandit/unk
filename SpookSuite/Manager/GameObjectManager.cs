@@ -26,6 +26,7 @@ namespace Unk.Manager
         public static List<Enemy> enemies = new List<Enemy>();
         public static List<PlayerController> players = new List<PlayerController>();
         public static List<Trap> traps = new List<Trap>();
+        public static List<Item> items = new List<Item>(); //changeme
 
         public IEnumerator CollectObjects()
         {
@@ -34,6 +35,7 @@ namespace Unk.Manager
                 CollectObjects(enemies);
                 CollectObjects(players);
                 CollectObjects(traps);
+                //CollectObjects(items); //todo
 
                 yield return new WaitForSeconds(collectInterval);
             }

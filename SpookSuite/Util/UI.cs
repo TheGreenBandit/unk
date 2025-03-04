@@ -61,6 +61,12 @@ namespace Unk.Util
     }
     public class UI
     {
+        public static void SetColor(ref RGBAColor color, string hexCode)
+        {
+            while (hexCode.Length < 6) hexCode += "0";
+            color = new RGBAColor(hexCode);
+            Settings.Config.SaveConfig();
+        }
         public static void Image(Rect rect, Sprite image)
         {
             GUIUtility.RotateAroundPivot(180, image.pivot);
@@ -257,50 +263,51 @@ namespace Unk.Util
             GUILayout.EndHorizontal();
         }
 
-        //public static void Textbox<T>(string label, ref T value, bool big = true, int length = -1, params Action<T>[] onChanged) where T : struct, IConvertible, IComparable<T>
-        //{
-        //    GUILayout.BeginHorizontal();
-        //    GUILayout.Label(label);
-        //    GUILayout.FlexibleSpace();
-        //    if (GUILayout.TextField(value.ToString(), length, GUILayout.Width(big ? Settings.i_textboxWidth * 3 : Settings.i_textboxWidth)).Parse<T>(out T result))
-        //    {
-        //        if (!value.Equals(result)) onChanged.ToList().ForEach(action => action.Invoke(result));
-        //        value = result;
-        //    }
-        //    GUILayout.EndHorizontal();
-        //}
+        public static void Textbox<T>(string label, ref T value, bool big = true, int length = -1, params Action<T>[] onChanged) where T : struct, IConvertible, IComparable<T>
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(label);
+            GUILayout.FlexibleSpace();
+            if (GUILayout.TextField(value.ToString(), length, GUILayout.Width(big ? Settings.i_textboxWidth * 3 : Settings.i_textboxWidth)).Parse<T>(out T result))
+            {
+                if (!value.Equals(result)) onChanged.ToList().ForEach(action => action.Invoke(result));
+                value = result;
+            }
+            GUILayout.EndHorizontal();
+        }
 
-        //public static void Textbox(string label, ref string value, bool big = true, int length = -1, params Action<string>[] onChanged)
-        //{
-        //    GUILayout.BeginHorizontal();
-        //    GUILayout.Label(label);
-        //    GUILayout.FlexibleSpace();
-        //    string s = GUILayout.TextField(value, length, GUILayout.Width(big ? Settings.i_textboxWidth * 3 : Settings.i_textboxWidth));
-        //    if (s != value) onChanged.ToList().ForEach(action => action.Invoke(s));
-        //    value = s;
-        //    GUILayout.EndHorizontal();
-        //}
+        public static void Textbox(string label, ref string value, bool big = true, int length = -1, params Action<string>[] onChanged)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(label);
+            GUILayout.FlexibleSpace();
+            string s = GUILayout.TextField(value, length, GUILayout.Width(big ? Settings.i_textboxWidth * 3 : Settings.i_textboxWidth));
+            if (s != value) onChanged.ToList().ForEach(action => action.Invoke(s));
+            value = s;
+            GUILayout.EndHorizontal();
+        }
 
-        //public static void TextboxAction<T>(string label, ref T value, int length = -1, params UIButton[] buttons) where T : struct, IConvertible, IComparable<T>
-        //{
-        //    GUILayout.BeginHorizontal();
-        //    GUILayout.Label(label);
-        //    GUILayout.FlexibleSpace();
-        //    if (GUILayout.TextField(value.ToString(), length, GUILayout.Width(Settings.i_textboxWidth)).Parse<T>(out T result))
-        //        value = result;
-        //    buttons.ToList().ForEach(btn => btn.Draw());
-        //    GUILayout.EndHorizontal();
-        //}
+        public static void TextboxAction<T>(string label, ref T value, int length = -1, params UIButton[] buttons) where T : struct, IConvertible, IComparable<T>
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(label);
+            GUILayout.FlexibleSpace();
+            if (GUILayout.TextField(value.ToString(), length, GUILayout.Width(Settings.i_textboxWidth)).Parse<T>(out T result))
+                value = result;
+            buttons.ToList().ForEach(btn => btn.Draw());
+            GUILayout.EndHorizontal();
+        }
 
-        //public static void TextboxAction(string label, ref string value, int length = 1, params UIButton[] buttons)
-        //{
-        //    GUILayout.BeginHorizontal();
-        //    GUILayout.Label(label);
-        //    GUILayout.FlexibleSpace();
-        //    value = GUILayout.TextField(value, length, GUILayout.Width(Settings.i_textboxWidth));
-        //    buttons.ToList().ForEach(btn => btn.Draw());
-        //    GUILayout.EndHorizontal();
-        //}
+        public static void TextboxAction(string label, ref string value, int length = 1, params UIButton[] buttons)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(label);
+            GUILayout.FlexibleSpace();
+            value = GUILayout.TextField(value, length, GUILayout.Width(Settings.i_textboxWidth));
+            buttons.ToList().ForEach(btn => btn.Draw());
+            GUILayout.EndHorizontal();
+        }
+
         public static void Actions(params UIButton[] buttons)
         {
             GUILayout.BeginHorizontal();

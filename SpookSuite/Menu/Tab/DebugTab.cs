@@ -35,7 +35,10 @@ namespace Unk.Menu.Tab
             UI.Checkbox("Unlimited Energy", Cheat.Instance<UnlimitedStamina>());
             UI.Checkbox("Godmode", Cheat.Instance<Godmode>());
             UI.CheatToggleSlider(Cheat.Instance<SuperSpeed>(), "Super Speed", SuperSpeed.Value.ToString("#"), ref SuperSpeed.Value, 10f, 100f);
-
+            UI.Checkbox("Override Flashlight Color", Cheat.Instance<FlashlightColors>());
+            UI.TextboxAction("Color", ref FlashlightColors.s_color, 8,
+                new UIButton("Set", () => UI.SetColor(ref FlashlightColors.c_color, FlashlightColors.s_color))
+            );
 
             //GUILayout.EndScrollView();
         }

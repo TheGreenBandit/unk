@@ -32,8 +32,8 @@ namespace Unk
         public static RGBAColor c_menuText = new RGBAColor(255, 255, 255, 1f);
         public static RGBAColor c_espPlayers = new RGBAColor(0, 255, 0, 1f);
         public static RGBAColor c_espItems = new RGBAColor(255, 255, 255, 1f);
-        public static RGBAColor c_espMonsters = new RGBAColor(255, 0, 0, 1f);
-        public static RGBAColor c_espDivingBells = new RGBAColor(0, 0, 255, 1f);
+        public static RGBAColor c_espEnemies = new RGBAColor(255, 0, 0, 1f);
+        public static RGBAColor c_espTraps = new RGBAColor(0, 0, 255, 1f);
         //public static RGBAColor c_chams = new RGBAColor(238, 111, 255, 0.1f);
         public static RGBAColor c_chamItems = new RGBAColor(238, 111, 255, 0.1f);
         public static RGBAColor c_chamMonsters = new RGBAColor(238, 111, 255, 0.1f);
@@ -113,8 +113,8 @@ namespace Unk
                 colors["MenuText"] = JsonConvert.SerializeObject(c_menuText);
                 colors["ESPPlayers"] = JsonConvert.SerializeObject(c_espPlayers);
                 colors["ESPItems"] = JsonConvert.SerializeObject(c_espItems);
-                colors["ESPMonsters"] = JsonConvert.SerializeObject(c_espMonsters);
-                colors["ESPDivingBells"] = JsonConvert.SerializeObject(c_espDivingBells);
+                colors["ESPEnemies"] = JsonConvert.SerializeObject(c_espEnemies);
+                colors["ESPTraps"] = JsonConvert.SerializeObject(c_espTraps);
                 colors["ChamPlayers"] = JsonConvert.SerializeObject(c_chamPlayers);
                 colors["ChamItems"] = JsonConvert.SerializeObject(c_chamItems);
                 colors["ChamMonsters"] = JsonConvert.SerializeObject(c_chamMonsters);
@@ -214,10 +214,10 @@ namespace Unk
                         c_espPlayers = JsonConvert.DeserializeObject<RGBAColor>(espPlayersToken.ToString());
                     if (colors.TryGetValue("ESPItems", out JToken espItemsToken))
                         c_espItems = JsonConvert.DeserializeObject<RGBAColor>(espItemsToken.ToString());
-                    if (colors.TryGetValue("ESPMonsters", out JToken espMonstersToken))
-                        c_espMonsters = JsonConvert.DeserializeObject<RGBAColor>(espMonstersToken.ToString());
-                    if (colors.TryGetValue("ESPDivingBells", out JToken espDivingBellsToken))
-                        c_espDivingBells = JsonConvert.DeserializeObject<RGBAColor>(espDivingBellsToken.ToString());
+                    if (colors.TryGetValue("ESPEnemies", out JToken espMonstersToken))
+                        c_espEnemies = JsonConvert.DeserializeObject<RGBAColor>(espMonstersToken.ToString());
+                    if (colors.TryGetValue("ESPTraps", out JToken espDivingBellsToken))
+                        c_espTraps = JsonConvert.DeserializeObject<RGBAColor>(espDivingBellsToken.ToString());
                     if (colors.TryGetValue("ChamPlayers", out JToken chamPlayersToken))
                         c_chamPlayers = JsonConvert.DeserializeObject<RGBAColor>(chamPlayersToken.ToString());
                     if (colors.TryGetValue("ChamItems", out JToken chamItemsToken))
