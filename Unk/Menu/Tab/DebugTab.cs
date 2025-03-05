@@ -49,10 +49,12 @@ namespace Unk.Menu.Tab
                 GameObjectManager.players.Where(p => p != null).ToList().ForEach(p => p.Revive());
             });
 
-            UI.Button("Revive all", () =>
+            UI.Button("Revive localPlayer", () =>
             {
                 GameObjectManager.players.FirstOrDefault(p => p != null && p.IsLocalPlayer()).Revive();
             });
+
+            // use for target enemy.SetChaseTarget
 
             UI.Button("Raycast", () =>
             {

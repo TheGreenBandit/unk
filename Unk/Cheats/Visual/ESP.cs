@@ -83,16 +83,16 @@ namespace Unk.Cheats
             DisplayObjects(
                 GameObjectManager.deathHeads?.Where(d => d != null && d.playerAvatar != null && d.playerAvatar.IsDead()),
                 deathHead => $"{deathHead.playerAvatar.GetName()}'s Death Head",
-                deathHead => Settings.c_espEnemies
+                deathHead => Settings.c_espDeathHeads
             );
         }
 
         private void DisplayExtractions()
         {
             DisplayObjects(
-                GameObjectManager.extractions?.Where(e => e != null),
+                GameObjectManager.extractions?.Where(e => e != null && !e.isLocked), // check if isLocked works and only on alreayd ised extractions
                 extraction => "Extraction",
-                extraction => Settings.c_espEnemies
+                extraction => Settings.c_espExtractions
             );
         }
 

@@ -34,6 +34,8 @@ namespace Unk
         public static RGBAColor c_espItems = new RGBAColor(255, 255, 255, 1f);
         public static RGBAColor c_espEnemies = new RGBAColor(255, 0, 0, 1f);
         public static RGBAColor c_espCart = new RGBAColor(0, 0, 255, 1f);
+        public static RGBAColor c_espExtractions = new RGBAColor(255, 165, 0, 1f);
+        public static RGBAColor c_espDeathHeads = new RGBAColor(128, 0, 128, 1f);
 
         internal class Changelog
         {
@@ -43,7 +45,7 @@ namespace Unk
             {
                 changes = new List<string>();
 
-                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SpookSuite.Resources.Changelog.txt"))
+                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Unk.Resources.Changelog.txt"))
                 using (StreamReader reader = new StreamReader(stream))
                 {
                     while (!reader.EndOfStream)
