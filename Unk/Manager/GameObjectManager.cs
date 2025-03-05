@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Unk.Util;
 using Object = UnityEngine.Object;
 
 namespace Unk.Manager
@@ -15,15 +16,18 @@ namespace Unk.Manager
         private static bool CoroutineStarted = false;
 
         public static List<Enemy> enemies = new List<Enemy>();
-        public static List<PlayerController> players = new List<PlayerController>();
+        public static List<PlayerAvatar> players = new List<PlayerAvatar>();
         public static List<Trap> traps = new List<Trap>();
         public static List<ValuableObject> items = new List<ValuableObject>();
+        public static List<ExtractionPoint> extractions = new List<ExtractionPoint>();
+        public static List<PlayerDeathHead> deathHeads = new List<PlayerDeathHead>();
+        public static PhysGrabCart cart;
 
         [HarmonyPatch(typeof(ValuableObject), "Awake"), HarmonyPostfix]
         public static void Awake(ValuableObject __instance) => AddToObjectQueue(() => items.Add(__instance));
 
-        [HarmonyPatch(typeof(PlayerController), "Awake"), HarmonyPostfix]
-        public static void Awake(PlayerController __instance) => AddToObjectQueue(() => players.Add(__instance));
+        [HarmonyPatch(typeof(PlayerAvatar), "Awake"), HarmonyPostfix]
+        public static void Awake(PlayerAvatar __instance) => AddToObjectQueue(() => players.Add(__instance));
 
         [HarmonyPatch(typeof(Enemy), "Awake"), HarmonyPostfix]
         public static void Awake(Enemy __instance) => AddToObjectQueue(() => enemies.Add(__instance));
@@ -31,20 +35,39 @@ namespace Unk.Manager
         [HarmonyPatch(typeof(Trap), "Start"), HarmonyPostfix]
         public static void Start(Trap __instance) => AddToObjectQueue(() => traps.Add(__instance));
 
+        [HarmonyPatch(typeof(ExtractionPoint), "Start"), HarmonyPostfix]
+        public static void Start(ExtractionPoint __instance) => AddToObjectQueue(() => extractions.Add(__instance));
+
+        [HarmonyPatch(typeof(PlayerDeathHead), "Start"), HarmonyPostfix]
+        public static void Start(PlayerDeathHead __instance) => AddToObjectQueue(() => deathHeads.Add(__instance));
+
+        [HarmonyPatch(typeof(PhysGrabCart), "Start"), HarmonyPostfix]
+        public static void Start(PhysGrabCart __instance) => AddToObjectQueue(() => cart = __instance);
+
+        [HarmonyPatch(typeof(EnemyHealth), "Death"), HarmonyPostfix]
+        public static void Death(EnemyHealth __instance) => AddToObjectQueue(() => enemies.Remove(__instance.Reflect().GetValue<Enemy>("enemy")));
+
+
         public static void CollectObjects()
         {
             CollectObjects(enemies);
             CollectObjects(players);
             CollectObjects(traps);
             CollectObjects(items);
+            CollectObjects(extractions);
+            CollectObjects(deathHeads);
+            cart = Object.FindAnyObjectByType<PhysGrabCart>();
         }
 
         public static void ClearObjects()
         {
-            enemies.Clear();
-            players.Clear();
-            traps.Clear();
-            items.Clear();
+            enemies?.Clear();
+            players?.Clear();
+            traps?.Clear();
+            items?.Clear();
+            extractions?.Clear();
+            deathHeads?.Clear();
+            cart = null;
         }
 
         private static void CollectObjects<T>(List<T> list, Func<T, bool> filter = null) where T : MonoBehaviour

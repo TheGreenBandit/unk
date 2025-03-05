@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Unk.Manager;
 using Unk.Menu.Core;
 using Unk.Util;
@@ -19,6 +22,8 @@ namespace Unk.Menu.Tab
         private int selectedTab = 0;
         private readonly string[] tabs = ["Enemy List", "Spawn Enemies"];
         private static int selectedEnemy = -1;
+        private static int selectedEnemySetup = -1;
+        private string s_spawnAmount = "1";
         private int damage = 0;
         private int heal = 0;
         private float freeze = 1;
@@ -64,12 +69,12 @@ namespace Unk.Menu.Tab
             {
                 case 0:
                     if (!GameObjectManager.enemies.Exists(e => e.GetInstanceID() == selectedEnemy)) selectedEnemy = -1;
-                    DrawList<Enemy>("Enemy List", GameObjectManager.enemies.OrderBy(e => e.GetName()).ToList(), e => e.Reflect().GetValue<EnemyHealth>("Health").Reflect().GetValue<bool>("dead"), e => e.GetName(), ref scrollPos, ref selectedEnemy);
+                    DrawList<Enemy>("Enemy List", GameObjectManager.enemies.OrderBy(e => e.GetName()).ToList(), e => e.IsDead(), e => e.GetName(), ref scrollPos, ref selectedEnemy);
                     break;
-                    //case 1:
-                    //if (!GameUtil.GetEnemyTypes().Exists(e => e.GetInstanceID() == selectedEnemyType)) selectedEnemyType = -1;
-                    //DrawList<EnemyType>("EnemyTab.EnemyTypes", GameUtil.GetEnemyTypes().OrderBy(e => e.name).ToList(), _ => false, e => e.name, ref scrollPos3, ref selectedEnemyType);
-                    //break;
+                case 1:
+                    if (!GetEnemies().Exists(e => e.GetInstanceID() == selectedEnemySetup)) selectedEnemySetup = -1;
+                    DrawList<EnemySetup>("EnemyTab.EnemyTypes", GetEnemies().OrderBy(e => e.GetName()).ToList(), _ => false, e => e.GetName(), ref scrollPos3, ref selectedEnemySetup);
+                   break;
             }
         }
 
@@ -105,42 +110,64 @@ namespace Unk.Menu.Tab
         private void GeneralActions()
         {
             UI.Header("General Actions");
-            UI.Label("Features Coming Soon!");
-
+            UI.Button("Kill All", () => GameObjectManager.enemies.Where(e => e != null && !e.IsDead()).ToList().ForEach(e => e.Kill()));
         }
 
         private void EnemyActions()
         {
             Enemy enemy = GetSelectedEnemy();
-
             if (enemy == null) return;
 
             UI.Header("Selected Monster Actions");
-            EnemyHealth health = enemy.Reflect().GetValue<EnemyHealth>("Health");
-            if (health != null)
-            {
-                UI.Button("Kill", () => health.Reflect().Invoke("Death", new Vector3(0, 0, 0)));
-                UI.TextboxAction("Damage", ref damage, 3,
-                    new UIButton("Amount", () => health.Reflect().Invoke("Hurt", damage, new Vector3(0, 0, 0)))
-                );
-                UI.TextboxAction("Heal", ref damage, 3,
-                    new UIButton("Amount", () => health.Reflect().Invoke("Hurt", -heal, new Vector3(0, 0, 0)))
-                );
-                UI.TextboxAction("Freeze", ref freeze, 3,
-                    new UIButton("Time", () => enemy.Freeze(freeze))
-                );
-            }
+
+            UI.Button("Kill", () => enemy.Kill());
+            UI.TextboxAction("Damage", ref damage, 3,
+                new UIButton("Amount", () => enemy.Hurt(damage))
+            );
+            UI.TextboxAction("Heal", ref heal, 3,
+                new UIButton("Amount", () => enemy.Heal(heal))
+            );
+            UI.TextboxAction("Freeze", ref freeze, 3,
+                new UIButton("Time", () => enemy.Freeze(freeze))
+            );
         }
 
         private void EnemySpawnerContent()
         {
+            if (selectedEnemySetup == -1) return;
+            EnemySetup enemySetup = GetEnemies().Find(x => x.GetInstanceID() == selectedEnemySetup);
+            if (enemySetup == null) return;
+
             UI.Header("Enemy Spawner Content");
 
+            UI.Label("Selected Enemy:", enemySetup.GetName(), Settings.c_menuText);
+            UI.Textbox("Spawn Amount", ref s_spawnAmount, @"[^0-9]");
+
+            UI.Button("Spawn", () => SpawnEnemy(enemySetup, int.Parse(s_spawnAmount)));
         }
 
         private Enemy GetSelectedEnemy()
         {
             return GameObjectManager.enemies.FirstOrDefault(x => x.GetInstanceID() == selectedEnemy);
+        }
+
+        private List<EnemySetup> GetEnemies()
+        {
+            List<EnemySetup> enemies = new List<EnemySetup>();
+            enemies.AddRange(EnemyDirector.instance.enemiesDifficulty1);
+            enemies.AddRange(EnemyDirector.instance.enemiesDifficulty2);
+            enemies.AddRange(EnemyDirector.instance.enemiesDifficulty3);
+            return enemies;
+        }
+
+        private void SpawnEnemy(EnemySetup enemy, int amount)
+        {
+            if (LevelGenerator.Instance == null || enemy == null) return;
+            RoomVolume roomVolume = Object.FindObjectsOfType<RoomVolume>().FirstOrDefault(i => i.Truck);
+            if (roomVolume?.transform == null) return;
+            LevelPoint levelPoint = LevelGenerator.Instance.LevelPathPoints.OrderByDescending(p => Vector3.Distance(p.transform.position, roomVolume.transform.position)).FirstOrDefault();
+            if (levelPoint?.transform == null) return;
+            for (int i = 0; i < amount; i++) LevelGenerator.Instance.Reflect().InvokeCustom("EnemySpawn", BindingFlags.Instance | BindingFlags.NonPublic, enemy, levelPoint.transform.position);
         }
     }
 }

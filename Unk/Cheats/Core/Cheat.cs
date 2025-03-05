@@ -38,7 +38,7 @@ namespace Unk.Cheats.Core
 
         protected static bool WorldToScreen(Vector3 world, out Vector3 screen)
         {
-            screen = GameDirector.instance.MainCamera.WorldToViewportPoint(world);
+            screen = SemiFunc.MainCamera().WorldToViewportPoint(world);
             screen.x *= Screen.width;
             screen.y *= Screen.height;
             screen.y = Screen.height - screen.y;
@@ -46,7 +46,7 @@ namespace Unk.Cheats.Core
         }
         protected float GetDistanceToPos(Vector3 position)
         {
-            return GameDirector.instance.MainCamera.transform == null ? 0f : (float)Math.Round((double)Vector3.Distance(GameDirector.instance.MainCamera.transform.position, position));
+            return SemiFunc.MainCamera().transform == null ? 0f : (float)Math.Round((double)Vector3.Distance(SemiFunc.MainCamera().transform.position, position));
         }
     }
 }

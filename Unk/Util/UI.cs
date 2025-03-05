@@ -7,6 +7,7 @@ using Unk.Cheats.Core;
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using System.Text.RegularExpressions;
 
 namespace Unk.Util
 {
@@ -284,6 +285,16 @@ namespace Unk.Util
             string s = GUILayout.TextField(value, length, GUILayout.Width(big ? Settings.i_textboxWidth * 3 : Settings.i_textboxWidth));
             if (s != value) onChanged.ToList().ForEach(action => action.Invoke(s));
             value = s;
+            GUILayout.EndHorizontal();
+        }
+
+        public static void Textbox(string label, ref string value, string regex = "", int size = 3, bool big = true)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(label);
+            GUILayout.FlexibleSpace();
+            value = GUILayout.TextField(value, GUILayout.Width(big ? Settings.i_textboxWidth * size : Settings.i_textboxWidth));
+            value = Regex.Replace(value, regex, "");
             GUILayout.EndHorizontal();
         }
 

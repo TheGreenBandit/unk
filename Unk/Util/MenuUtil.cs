@@ -67,23 +67,22 @@ namespace Unk.Util
         }
         public static void ShowCursor()
         {
-            Object.FindObjectOfType<CursorManager>().enabled = false;
+            //Object.FindObjectOfType<CursorManager>().enabled = false;
             Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            Cursor.lockState = CursorLockMode.Confined;
         }
 
         public static void HideCursor()
         {
+            //Object.FindObjectOfType<CursorManager>().enabled = true;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
 
         public static void ToggleCursor()
         {
-            if (Cursor.visible)
-                HideCursor();
-            else
-                ShowCursor();
+            if (Cursor.visible) HideCursor();
+            else ShowCursor();
         }
     }
 }

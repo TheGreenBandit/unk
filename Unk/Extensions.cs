@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System;
 using Unk.Manager;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Unk.Cheats;
 
 namespace Unk
 {
@@ -30,10 +32,59 @@ namespace Unk
         //}
         public static Vector3 GetClosestMonster(this Vector3 point) => GameObjectManager.enemies.OrderBy(x => Vector3.Distance(x.transform.position, point)).FirstOrDefault().transform.position;
 
+        public static void Kill(this Enemy enemy)
+        {
+            enemy.GetHealth()?.Reflect().Invoke("Death", new Vector3(0, 0, 0));
+        }
+
+        public static void Hurt(this Enemy enemy, int damage)
+        {
+            enemy.GetHealth().Reflect().Invoke("Hurt", damage, new Vector3(0, 0, 0));
+        }
+
+        public static void Heal(this Enemy enemy, int heal)
+        {
+            enemy.GetHealth().Reflect().Invoke("Hurt", -heal, new Vector3(0, 0, 0));
+        }
+
+        public static EnemyHealth GetHealth(this Enemy enemy)
+        {
+            return enemy.Reflect().GetValue<EnemyHealth>("Health");
+        }
+
+        public static bool IsDead(this Enemy enemy) => enemy != null && enemy.Reflect().GetValue<EnemyHealth>("Health").Reflect().GetValue<bool>("dead");
+        public static bool IsLocalPlayer(this PlayerAvatar player) => player != null && player.Reflect().GetValue<bool>("isLocal");
+        public static bool IsDead(this PlayerAvatar player) => player != null && player.Reflect().GetValue<bool>("deadSet");
+
+        public static string GetName(this EnemySetup enemy)
+        {
+            string name = enemy.name;
+            name = name.Replace("Enemy -", "").Trim();  
+            name = Regex.Replace(name, @"Enemy Group - \d+", "").Trim();  
+            return name;
+        }
 
         public static string GetName(this Enemy enemy) => enemy.Reflect().GetValue<EnemyParent>("EnemyParent").enemyName;
-        public static string GetName(this PlayerController player) => string.IsNullOrEmpty(player.Reflect().GetValue<string>("playerName")) ? player.name : player.Reflect().GetValue<string>("playerName");
-        public static string GetName(this Item item) => string.IsNullOrEmpty(item.itemName) ? item.name : item.itemName;
+        public static string GetName(this PlayerAvatar player) => string.IsNullOrEmpty(player.Reflect().GetValue<string>("playerName")) ? player.name : player.Reflect().GetValue<string>("playerName");
+        public static string Format(this string @string) => @string.Replace("(Clone)", "").Replace("Valuable", "").Trim();
+
+        public static RaycastHit[] SphereCastForward(this Transform transform, float sphereRadius = 1.0f)
+        {
+            try
+            {
+                return Physics.SphereCastAll(
+                    transform.position + (transform.forward * (sphereRadius + 1.75f)),
+                    sphereRadius,
+                    transform.forward,
+                    float.MaxValue
+                );
+            }
+
+            catch (NullReferenceException)
+            {
+                return null;
+            }
+        }
 
         public static bool Parse<T>(this string s, out T result) where T : struct, IConvertible, IComparable<T>
         {

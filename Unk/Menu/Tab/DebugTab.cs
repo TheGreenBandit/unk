@@ -6,6 +6,9 @@ using Unk.Util;
 using Unk.Cheats.Core;
 using Unk.Cheats;
 using System.Linq;
+using System.Collections.Generic;
+using System;
+using Unk.Manager;
 
 namespace Unk.Menu.Tab
 {
@@ -40,6 +43,32 @@ namespace Unk.Menu.Tab
             UI.TextboxAction("Color", ref FlashlightColors.s_color, 8,
                 new UIButton("Set", () => UI.SetColor(ref FlashlightColors.c_color, FlashlightColors.s_color))
             );
+
+            UI.Button("Revive all", () =>
+            {
+                GameObjectManager.players.Where(p => p != null).ToList().ForEach(p => p.Revive());
+            });
+
+            UI.Button("Revive all", () =>
+            {
+                GameObjectManager.players.FirstOrDefault(p => p != null && p.IsLocalPlayer()).Revive();
+            });
+
+            UI.Button("Raycast", () =>
+            {
+                string debugMessage = "";
+                foreach (RaycastHit hit in SemiFunc.MainCamera().transform.SphereCastForward())
+                {
+                    Collider collider = hit.collider;
+                    debugMessage += $"Hit: {collider.name} => {collider.gameObject.name} => Layer {LayerMask.LayerToName(collider.gameObject.layer)} {collider.gameObject.layer}\n";
+                }
+                Debug.Log(debugMessage);
+            });
+
+            UI.Button("Unload test", () =>
+            {
+                Loader.Unload();
+            });
 
             //GUILayout.EndScrollView();
         }

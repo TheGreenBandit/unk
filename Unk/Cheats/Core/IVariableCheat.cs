@@ -2,6 +2,6 @@
 {
     internal interface IVariableCheat<T>
     {
-        static T Value;
+        static T Value = default;
     }
 }

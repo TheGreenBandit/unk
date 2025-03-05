@@ -108,7 +108,7 @@ namespace Unk
             try
             {
                 if (Event.current.type == EventType.Repaint)
-                    VisualUtil.DrawString(new Vector2(5f, 2f), "Unk | " + "Open / Close: " + Cheat.Instance<ToggleMenuCheat>().keybind.ToString(), new RGBAColor(128, 0, 255, 1f), centered: false, bold: true, fontSize: 16);
+                    VisualUtil.DrawString(new Vector2(5f, 2f), "Unk | " + "Toggle Menu: " + Cheat.Instance<ToggleMenuCheat>().keybind.ToString(), new RGBAColor(128, 0, 255, 1f), centered: false, bold: true, fontSize: 16);
                 cheats.ForEach(cheat => { if (cheat.Enabled) cheat.OnGui(); });
                 menu.Draw();
             }
