@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Unk.Cheats.Core;
+using Unk.Handler;
 
 namespace Unk.Cheats
 {
@@ -15,13 +16,13 @@ namespace Unk.Cheats
         {
             if (!Enabled) return;
             PhotonNetwork.LocalPlayer.NickName = Value;
-            PlayerController.instance.PlayerSetName(Value, SemiFunc.PlayerGetSteamID(PlayerAvatar.instance));
+            PlayerAvatar.instance.photonView.RPC("AddToStatsManagerRPC", RpcTarget.All, Value, PlayerAvatar.instance.GetSteamID());
         }
 
         public override void OnDisable()
         {
             PhotonNetwork.LocalPlayer.NickName = SteamClient.Name;
-            PlayerController.instance.PlayerSetName(SteamClient.Name, SemiFunc.PlayerGetSteamID(PlayerAvatar.instance));
+            PlayerAvatar.instance.photonView.RPC("AddToStatsManagerRPC", RpcTarget.All, SteamClient.Name, PlayerAvatar.instance.GetSteamID());
         }
     }
 }

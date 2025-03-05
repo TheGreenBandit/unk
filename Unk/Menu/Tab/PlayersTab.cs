@@ -81,6 +81,8 @@ namespace Unk.Menu.Tab
 
         private void PlayersList()
         {
+            if (GameObjectManager.players.Count == 0)
+                return;
             float width = UnkMenu.Instance.contentWidth * 0.3f - UnkMenu.Instance.spaceFromLeft * 2;
             float height = UnkMenu.Instance.contentHeight - 20;
 

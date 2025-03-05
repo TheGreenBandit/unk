@@ -36,6 +36,7 @@ namespace Unk
             LoadCheats();
             DoPatching();
             GameObjectManager.CollectObjects();
+            LobbyManager.RefreshLobbies();
         }
 
         private void DoPatching()

@@ -37,6 +37,7 @@ namespace Unk.Menu.Core
             tabs.Add(new VisualTab());
             tabs.Add(new PlayersTab());
             tabs.Add(new EnemyTab());
+            tabs.Add(new LobbyManagerTab());
             tabs.Add(new DebugTab());
         }
 
