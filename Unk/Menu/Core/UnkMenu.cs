@@ -86,8 +86,6 @@ namespace Unk.Menu.Core
             else if (MenuUtil.showCursor)
             {
                 PlayerController.instance.InputDisable(0.1f);
-                SemiFunc.CursorUnlock(0.1f);
-                CursorManager.instance.enabled = false;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
             }

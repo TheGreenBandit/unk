@@ -25,6 +25,12 @@ namespace Unk.Cheats
             movement.Configure(GameDirector.instance.MainCameraParent.forward, GameDirector.instance.MainCameraParent.right, GameDirector.instance.MainCameraParent.up); //normal, right, up check me
             movement.movementSpeed = Value;
             PlayerController.instance.GetComponentsInChildren<Collider>().ToList().ForEach(c => c.enabled = false);
+            if (PlayerController.instance.CollisionController)
+                PlayerController.instance.CollisionController.enabled = false;
+            //PlayerAvatar.instance.PlayerAvatarSetColor()
+            PlayerAvatar.instance.Reflect().GetValue<PlayerAvatarCollision>("playerAvatarCollision").Collider.enabled = false;
+            PlayerController.instance.CustomGravity = 0;
+            PlayerCollision.instance.enabled = false;
             PlayerController.instance.rb.useGravity = false; //todo get no gravity working
             PlayerController.instance.rb.AddForce(movement.movement, ForceMode.Impulse);
         }
@@ -35,7 +41,10 @@ namespace Unk.Cheats
             movement = null;
             PlayerController.instance.GetComponentsInChildren<Collider>().ToList().ForEach(c => c.enabled = true);
             PlayerController.instance.CollisionController.enabled = true;
-            PlayerController.instance.rb.useGravity = true;
+            PlayerAvatar.instance.Reflect().GetValue<PlayerAvatarCollision>("playerAvatarCollision").Collider.enabled = true;
+            PlayerController.instance.CustomGravity = 20;
+            PlayerCollision.instance.enabled = true;
+            PlayerController.instance.rb.useGravity = true; //todo get no gravity working
         }
     }
 }
