@@ -10,5 +10,10 @@ namespace Unk.Cheats
             if (!Enabled) return;
             PlayerController.instance.Reflect().SetValue("JumpGroundedBuffer", 1f);
         }
+
+        public override void OnDisable() //prevent getting stuck in air
+        {
+            PlayerController.instance.Reflect().SetValue("JumpGroundedBuffer", 0f);
+        }
     }
 }

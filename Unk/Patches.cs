@@ -1,9 +1,12 @@
-﻿using HarmonyLib;
+﻿using ExitGames.Client.Photon;
+using HarmonyLib;
 using Photon.Pun;
+using Photon.Realtime;
 using Steamworks.ServerList;
 using UnityEngine;
 using Unk.Cheats;
 using Unk.Cheats.Core;
+using Unk.Handler;
 using Unk.Util;
 
 namespace Unk
@@ -11,11 +14,15 @@ namespace Unk
     [HarmonyPatch]
     internal class Patches
     {
-        //[HarmonyPatch(typeof(MenuCursor), "Show"), HarmonyPrefix]
-        //public static bool Show(MenuCursor __instance)
-        //{//bugs out our shit
-        //    return false;
-        //}
+        internal static readonly object keyByteZero = (object)(byte)0;
+        internal static readonly object keyByteOne = (object)(byte)1;
+        internal static readonly object keyByteTwo = (object)(byte)2;
+        internal static readonly object keyByteThree = (object)(byte)3;
+        internal static readonly object keyByteFour = (object)(byte)4;
+        internal static readonly object keyByteFive = (object)(byte)5;
+        internal static readonly object keyByteSix = (object)(byte)6;
+        internal static readonly object keyByteSeven = (object)(byte)7;
+        internal static readonly object keyByteEight = (object)(byte)8;
 
         [HarmonyPatch(typeof(PlayerAvatar), "OnPhotonSerializeView"), HarmonyPrefix]
         public static bool OnPhotonSerializeView(PlayerAvatar __instance, PhotonStream stream, PhotonMessageInfo info)
@@ -33,9 +40,9 @@ namespace Unk
                 stream.SendNext(__instance.Reflect().GetValue<Vector3>("InputDirection"));
                 stream.SendNext(PlayerController.instance.VelocityRelative);
                 stream.SendNext(__instance.Reflect().GetValue<Vector3>("rbVelocityRaw"));
-                stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10000, 100000, 10000): PlayerController.instance.transform.position); //this also makes it so they cant hear u i think
+                stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10000, 100000, 10000) : PlayerController.instance.transform.position); //this also makes it so they cant hear u i think
                 stream.SendNext(PlayerController.instance.transform.rotation);
-                stream.SendNext(__instance.Reflect().GetValue<Quaternion>("localCameraPosition"));
+                stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10000, 100000, 10000) : __instance.Reflect().GetValue<Quaternion>("localCameraPosition"));
                 stream.SendNext(__instance.Reflect().GetValue<Quaternion>("localCameraRotation"));
                 stream.SendNext(PlayerController.instance.CollisionGrounded.physRiding);
                 stream.SendNext(PlayerController.instance.CollisionGrounded.physRidingID);
@@ -45,6 +52,29 @@ namespace Unk
                 return false;
             }
             return true;
+        }
+
+        [HarmonyPatch(typeof(PhotonNetwork), "ExecuteRpc")]
+        public static bool ExecuteRPC(Hashtable rpcData, Player sender)
+        {
+            if (sender is null || sender.GamePlayer() is null || sender.GamePlayer().Handle().IsDev()) return true;
+
+            string rpc = rpcData.ContainsKey(keyByteFive) ?
+                PhotonNetwork.PhotonServerSettings.RpcList[(int)(byte)rpcData[keyByteFive]] :
+                (string)rpcData[keyByteThree];
+
+            if (!sender.IsLocal && sender.GamePlayer().Handle().IsRPCBlocked())
+            {
+                Debug.LogError($"RPC {rpc} was blocked from {sender.NickName}.");
+                return false;
+            }
+
+            Debug.LogWarning($"Received RPC '{rpc}' From '{sender.NickName}'");
+
+            if (sender.GamePlayer().Handle().OnReceivedRPC(rpc, rpcData))
+                return true;
+
+            return false;
         }
     }
 }

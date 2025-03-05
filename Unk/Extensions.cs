@@ -55,7 +55,6 @@ namespace Unk
         public static bool IsDead(this Enemy enemy) => enemy != null && enemy.Reflect().GetValue<EnemyHealth>("Health").Reflect().GetValue<bool>("dead");
         public static bool IsLocalPlayer(this PlayerAvatar player) => player != null && player.Reflect().GetValue<bool>("isLocal");
         public static bool IsDead(this PlayerAvatar player) => player != null && player.Reflect().GetValue<bool>("deadSet");
-
         public static string GetName(this EnemySetup enemy)
         {
             string name = enemy.name;

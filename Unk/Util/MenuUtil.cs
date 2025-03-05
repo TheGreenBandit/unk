@@ -1,11 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Runtime.InteropServices;
-
-using Object = UnityEngine.Object;
 using Unk.Menu.Core;
-using Unk.Manager;
-using Photon.Pun;
 
 namespace Unk.Util
 {
@@ -68,12 +63,6 @@ namespace Unk.Util
             UnkMenu.Instance.Resize();
         }
 
-        public static void ShowCursor()
-        {
-            //Object.FindObjectOfType<CursorManager>().enabled = false;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.Confined;
-        }
         public static void HideCursor()
         {
             PlayerController.instance.cameraAim.enabled = true;
