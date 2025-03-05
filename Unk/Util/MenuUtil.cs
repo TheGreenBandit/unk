@@ -76,6 +76,8 @@ namespace Unk.Util
         }
         public static void HideCursor()
         {
+            PlayerController.instance.cameraAim.enabled = true;
+            CursorManager.instance.enabled = true;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -83,7 +85,7 @@ namespace Unk.Util
         public static void ToggleCursor()
         {
             showCursor = !showCursor;
-            if (showCursor)
+            if (!showCursor)
                 HideCursor();
         }
     }

@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using Unk.Cheats.Core;
+﻿using Unk.Cheats.Core;
 
 namespace Unk.Cheats
 {
@@ -8,9 +7,9 @@ namespace Unk.Cheats
         public static float Value = 70f;
         public override void Update()
         {
-            if (!Enabled || GameDirector.instance.MainCamera is null)
+            if (!Enabled)
                 return;
-            //fixme sometimes works sometimes not
+
             GameDirector.instance.MainCamera.fieldOfView = Value;
         }
         public override void OnDisable()

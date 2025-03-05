@@ -1,10 +1,4 @@
-﻿using Photon.Realtime;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-using UnityEngine.Windows;
+﻿using UnityEngine;
 using Unk.Cheats.Components;
 using Unk.Cheats.Core;
 using Unk.Util;
@@ -19,19 +13,14 @@ namespace Unk.Cheats
         public override void Update()
         {
             if (PlayerController.instance is null || !Enabled || GameDirector.instance.MainCameraParent is null) return;
-            //idk what wrong atp
             if (movement is null) movement = PlayerController.instance.gameObject.AddComponent<KBInput>();
             Quaternion rotation = PlayerController.instance.playerAvatarScript.Reflect().GetValue<Quaternion>("localCameraRotation");
             movement.Configure(GameDirector.instance.MainCameraParent.forward, GameDirector.instance.MainCameraParent.right, GameDirector.instance.MainCameraParent.up); //normal, right, up check me
             movement.movementSpeed = Value;
-            PlayerController.instance.GetComponentsInChildren<Collider>().ToList().ForEach(c => c.enabled = false);
-            if (PlayerController.instance.CollisionController)
-                PlayerController.instance.CollisionController.enabled = false;
-            //PlayerAvatar.instance.PlayerAvatarSetColor()
-            PlayerAvatar.instance.Reflect().GetValue<PlayerAvatarCollision>("playerAvatarCollision").Collider.enabled = false;
-            PlayerController.instance.CustomGravity = 0;
+            
+            PlayerController.instance.MoveFriction = 0; //5
             PlayerCollision.instance.enabled = false;
-            PlayerController.instance.rb.useGravity = false; //todo get no gravity working
+
             PlayerController.instance.rb.AddForce(movement.movement, ForceMode.Impulse);
         }
 
@@ -39,12 +28,8 @@ namespace Unk.Cheats
         {
             Destroy(movement);
             movement = null;
-            PlayerController.instance.GetComponentsInChildren<Collider>().ToList().ForEach(c => c.enabled = true);
-            PlayerController.instance.CollisionController.enabled = true;
-            PlayerAvatar.instance.Reflect().GetValue<PlayerAvatarCollision>("playerAvatarCollision").Collider.enabled = true;
-            PlayerController.instance.CustomGravity = 20;
+            PlayerController.instance.MoveFriction = 5;
             PlayerCollision.instance.enabled = true;
-            PlayerController.instance.rb.useGravity = true; //todo get no gravity working
         }
     }
 }

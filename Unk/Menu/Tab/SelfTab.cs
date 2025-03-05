@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 using Unk.Cheats.Core;
 using Unk.Cheats;
 using Unk.Menu.Core;
@@ -23,6 +20,10 @@ namespace Unk.Menu.Tab
                 UI.Checkbox("No Tumble", Cheat.Instance<NoTumble>());
                 UI.Checkbox("Infinite Jump", Cheat.Instance<InfiniteJump>());
                 UI.Checkbox("Invisibility", Cheat.Instance<Invisibility>());
+                UI.TextboxAction("Change Color", ref ColorChanger.Value, 1,
+                    new UIButton("Change", Cheat.Instance<ColorChanger>().Execute)
+                );
+                UI.Checkbox("Rainbow Mode", Cheat.Instance<RainbowMode>());
                 UI.Textbox("Spoofed Name", ref NameSpoofer.Value, true, 100);
                 UI.Checkbox("Use Spoofed Name", Cheat.Instance<NameSpoofer>());
                 UI.CheatToggleSlider(Cheat.Instance<NoClip>(), "No Clip", NoClip.Value.ToString("#"), ref NoClip.Value, 1f, 20f);

@@ -85,7 +85,9 @@ namespace Unk.Menu.Core
             if (!Settings.b_isMenuOpen) return;
             else if (MenuUtil.showCursor)
             {
-                PlayerController.instance.InputDisable(0.1f);
+                CursorManager.instance.enabled = false;
+                PlayerController.instance.InputDisable(0.4f);
+                PlayerController.instance.cameraAim.enabled = false;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
             }

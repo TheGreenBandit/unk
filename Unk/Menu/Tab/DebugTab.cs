@@ -58,10 +58,7 @@ namespace Unk.Menu.Tab
                 Debug.Log(debugMessage);
             });
 
-            UI.Button("Unload test", () =>
-            {
-                Loader.Unload();
-            });
+            UI.Button("Unload test", Loader.Unload);
 
             //GUILayout.EndScrollView();
         }

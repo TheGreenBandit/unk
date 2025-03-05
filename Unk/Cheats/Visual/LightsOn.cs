@@ -4,9 +4,11 @@ using Unk.Util;
 namespace Unk.Cheats
 {
     internal class LightsOn : ToggleCheat
-    {
+    { //this isnt workig, should get rid of it
         public override void Update()
         {
+            if (!Enabled)
+                return;
             LightManager.instance.Reflect().SetValue("debugMode", true);
         }
 

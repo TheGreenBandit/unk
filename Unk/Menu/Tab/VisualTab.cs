@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 using Unk.Cheats.Core;
 using Unk.Cheats;
 using Unk.Util;
@@ -26,7 +23,7 @@ namespace Unk.Menu.Tab
 
         private void VisualContent()
         {
-            UI.CheatToggleSlider(Cheat.Instance<FOV>(), "FOV", Cheats.FOV.Value.ToString(), ref FOV.Value, 1, 170);
+            UI.CheatToggleSlider(Cheat.Instance<FOV>(), "FOV", Cheats.FOV.Value.ToString(), ref FOV.Value, 1, 140);
         }
 
         private void ESPContent()
@@ -34,7 +31,7 @@ namespace Unk.Menu.Tab
             scrollPos = GUILayout.BeginScrollView(scrollPos);
             UI.Checkbox("Toggle lights", Cheat.Instance<LightsOn>());
             UI.Checkbox("Enable ESP", Cheat.Instance<ESP>());
-            UI.Button("Toggle All ESP", () => ESP.ToggleAll());
+            UI.Button("Toggle All ESP", ESP.ToggleAll);
             UI.Checkbox("Display Players", ref ESP.displayPlayers);
             UI.Checkbox("Display Enemies", ref ESP.displayEnemies);
             UI.Checkbox("Display Items", ref ESP.displayItems);

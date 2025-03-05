@@ -13,6 +13,7 @@ namespace Unk.Cheats
 
         public override void Update()
         {
+            if (!Enabled) return;
             PhotonNetwork.LocalPlayer.NickName = Value;
             PlayerController.instance.PlayerSetName(Value, SemiFunc.PlayerGetSteamID(PlayerAvatar.instance));
         }
