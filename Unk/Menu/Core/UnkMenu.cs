@@ -1,12 +1,8 @@
 ﻿using Unk.Menu.Tab;
 using Unk.Util;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
-using Unk.Cheats.Core;
-using Unk.Cheats;
 
 namespace Unk.Menu.Core
 {
@@ -36,9 +32,11 @@ namespace Unk.Menu.Core
         public UnkMenu()
         {
             instance = this;
-            tabs.Add(new DebugTab());
+            tabs.Add(new StartTab());
+            tabs.Add(new SelfTab());
             tabs.Add(new VisualTab());
             tabs.Add(new EnemyTab());
+            tabs.Add(new DebugTab());
         }
 
         public void Resize()
@@ -85,6 +83,14 @@ namespace Unk.Menu.Core
         public void Draw()
         {
             if (!Settings.b_isMenuOpen) return;
+            else if (MenuUtil.showCursor)
+            {
+                PlayerController.instance.InputDisable(0.1f);
+                SemiFunc.CursorUnlock(0.1f);
+                CursorManager.instance.enabled = false;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
 
             Stylize();
             GUI.color = new Color(1f, 1f, 1f, Settings.f_menuAlpha);

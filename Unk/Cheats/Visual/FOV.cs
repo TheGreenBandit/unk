@@ -6,22 +6,16 @@ namespace Unk.Cheats
     internal class FOV : ToggleCheat, IVariableCheat<float>
     {
         public static float Value = 70f;
-
-        public override void OnEnable()
-        {
-            Debug.Log("FOV + " + GameDirector.instance.MainCamera.fieldOfView);
-        }
-
         public override void Update()
         {
-            if (PlayerController.instance is null || !Enabled)
+            if (!Enabled || GameDirector.instance.MainCamera is null)
                 return;
-
+            //fixme sometimes works sometimes not
             GameDirector.instance.MainCamera.fieldOfView = Value;
         }
         public override void OnDisable()
         {
-            GameDirector.instance.MainCamera.fieldOfView = Value;
+            GameDirector.instance.MainCamera.fieldOfView = 70f;
         }
     }
 }

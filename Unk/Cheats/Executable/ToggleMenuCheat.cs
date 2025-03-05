@@ -13,10 +13,7 @@ namespace Unk.Cheats
         {
             Settings.b_isMenuOpen = !Settings.b_isMenuOpen;
 
-            if (Settings.b_isMenuOpen)
-                MenuUtil.ShowCursor();
-            else
-                MenuUtil.HideCursor();
+            MenuUtil.ToggleCursor();
         }
 
     }

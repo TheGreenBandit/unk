@@ -2,6 +2,8 @@
 using Photon.Pun;
 using Steamworks.ServerList;
 using UnityEngine;
+using Unk.Cheats;
+using Unk.Cheats.Core;
 using Unk.Util;
 
 namespace Unk
@@ -9,6 +11,12 @@ namespace Unk
     [HarmonyPatch]
     internal class Patches
     {
+        //[HarmonyPatch(typeof(MenuCursor), "Show"), HarmonyPrefix]
+        //public static bool Show(MenuCursor __instance)
+        //{//bugs out our shit
+        //    return false;
+        //}
+
         [HarmonyPatch(typeof(PlayerAvatar), "OnPhotonSerializeView"), HarmonyPrefix]
         public static bool OnPhotonSerializeView(PlayerAvatar __instance, PhotonStream stream, PhotonMessageInfo info)
         {
@@ -25,7 +33,7 @@ namespace Unk
                 stream.SendNext(__instance.Reflect().GetValue<Vector3>("InputDirection"));
                 stream.SendNext(PlayerController.instance.VelocityRelative);
                 stream.SendNext(__instance.Reflect().GetValue<Vector3>("rbVelocityRaw"));
-                stream.SendNext(PlayerController.instance.transform.position);
+                stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10000, 100000, 10000): PlayerController.instance.transform.position); //this also makes it so they cant hear u i think
                 stream.SendNext(PlayerController.instance.transform.rotation);
                 stream.SendNext(__instance.Reflect().GetValue<Quaternion>("localCameraPosition"));
                 stream.SendNext(__instance.Reflect().GetValue<Quaternion>("localCameraRotation"));

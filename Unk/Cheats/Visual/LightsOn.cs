@@ -5,7 +5,7 @@ namespace Unk.Cheats
 {
     internal class LightsOn : ToggleCheat
     {
-        public override void OnEnable()
+        public override void Update()
         {
             LightManager.instance.Reflect().SetValue("debugMode", true);
         }

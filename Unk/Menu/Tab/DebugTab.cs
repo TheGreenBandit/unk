@@ -15,7 +15,6 @@ namespace Unk.Menu.Tab
     internal class DebugTab : MenuTab
     {
         public DebugTab() : base("Debug") { }
-
         private Vector2 scrollPos = Vector2.zero;
 
         public override void Draw()
@@ -35,14 +34,6 @@ namespace Unk.Menu.Tab
             GUILayout.Label(PhotonNetwork.IsMasterClient ? "Yes" : "No");
             GUILayout.EndHorizontal();
             UI.Button("Log RPCS", () => PhotonNetwork.PhotonServerSettings.RpcList.ToList().ForEach(r => Debug.Log(r)));
-            UI.Checkbox("Unlimited Energy", Cheat.Instance<UnlimitedStamina>());
-            UI.Checkbox("Godmode", Cheat.Instance<Godmode>());
-            UI.Checkbox("No Tumble", Cheat.Instance<NoTumble>());
-            UI.CheatToggleSlider(Cheat.Instance<SuperSpeed>(), "Super Speed", SuperSpeed.Value.ToString("#"), ref SuperSpeed.Value, 10f, 100f);
-            UI.Checkbox("Override Flashlight Color", Cheat.Instance<FlashlightColors>());
-            UI.TextboxAction("Color", ref FlashlightColors.s_color, 8,
-                new UIButton("Set", () => UI.SetColor(ref FlashlightColors.c_color, FlashlightColors.s_color))
-            );
 
             UI.Button("Revive all", () =>
             {

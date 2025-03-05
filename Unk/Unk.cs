@@ -66,15 +66,10 @@ namespace Unk
             }
         }
 
-        private void LoadKeybinds()
-        {
-            
-        }
-
         public void FixedUpdate()
         {
             try
-            {//for some reason cheat not working??
+            {
                 if (PhotonNetwork.InRoom) cheats.ForEach(cheat => cheat.FixedUpdate());
             }
             catch (Exception e)
@@ -83,7 +78,7 @@ namespace Unk
             }
         }
 
-        public void Update() //[Error  : Unity Log] Loaded Cheat: ToggleMenuCheat only this seems to load
+        public void Update()
         {
             try
             {

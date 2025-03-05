@@ -334,9 +334,9 @@ namespace Unk.Util
             action.Invoke();
             GUILayout.EndHorizontal();
         }
-        public static void VerticalSpace(Action action)
+        public static void VerticalSpace(Action action, params GUILayoutOption[] options)
         {
-            GUILayout.BeginVertical();
+            GUILayout.BeginVertical(options);
             action.Invoke();
             GUILayout.EndVertical();
         }

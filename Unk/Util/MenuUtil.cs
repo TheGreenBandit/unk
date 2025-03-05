@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using Object = UnityEngine.Object;
 using Unk.Menu.Core;
 using Unk.Manager;
+using Photon.Pun;
 
 namespace Unk.Util
 {
@@ -13,6 +14,7 @@ namespace Unk.Util
         [DllImport("user32.dll")]
         public static extern bool SetCursorPos(int X, int Y);
 
+        public static bool showCursor = false;
         public static bool resizing = false;
         public static float MouseX => Input.mousePosition.x;
         public static float MouseY => Screen.height - Input.mousePosition.y;
@@ -65,24 +67,24 @@ namespace Unk.Util
             Settings.i_menuHeight = (int)Mathf.Clamp(MouseY - UnkMenu.Instance.windowRect.y, 250, maxHeight);
             UnkMenu.Instance.Resize();
         }
+
         public static void ShowCursor()
         {
             //Object.FindObjectOfType<CursorManager>().enabled = false;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
         }
-
         public static void HideCursor()
         {
-            //Object.FindObjectOfType<CursorManager>().enabled = true;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
 
         public static void ToggleCursor()
         {
-            if (Cursor.visible) HideCursor();
-            else ShowCursor();
+            showCursor = !showCursor;
+            if (showCursor)
+                HideCursor();
         }
     }
 }
