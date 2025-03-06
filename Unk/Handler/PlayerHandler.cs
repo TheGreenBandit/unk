@@ -18,7 +18,6 @@ namespace Unk.Handler
 {
     public class PlayerHandler
     {
-        private static List<string> UnkClients = new List<string>();
         private static List<string> rpcBlockedClients = new List<string>();
         public static Dictionary<string, Queue<RPCData>> rpcHistory = new Dictionary<string, Queue<RPCData>>();
         public static List<PlayerAvatar> GetAlivePlayers() => GameObjectManager.players.Where(p => p != null && !p.IsDead()).ToList();
@@ -44,7 +43,7 @@ namespace Unk.Handler
 
         public bool IsDev() => (player.GetSteamID() == "76561199159991462") || (player.GetSteamID() == "76561198093261109") || (player.GetSteamID() == "76561198846294221");
 
-        public bool IsUnkUser() => photonPlayer is not null && UnkClients.Contains(steamId);
+        public bool IsUnkUser() => player != null && GameObjectManager.UnkPlayers.Contains(player);
 
         public void BlockRPC()
         {
@@ -120,16 +119,6 @@ namespace Unk.Handler
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to disable you!");
                 rpcData.SetSuspected();
                 return false;
-            }
-
-            if (rpc.Equals("SetColorRPC"))
-            {
-                if (((int)parameters[0] == -1) && !UnkClients.Contains(steamId))
-                {
-                    //Notifications.PushNotifcation(new Notifcation("Spooksuite User!", $"{photonPlayer.NickName} is a spooksuite user, adding them."));
-                    Debug.Log($"{photonPlayer.NickName} is a Unk User!");
-                    UnkClients.Add(steamId);
-                }
             }
 
             GetRPCHistory().Enqueue(rpcData);

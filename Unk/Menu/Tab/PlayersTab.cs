@@ -9,6 +9,7 @@ using Unk.Util;
 using Unk.Menu.Core;
 using Unk.Handler;
 using Unk.Cheats;
+using System.Linq;
 
 namespace Unk.Menu.Tab
 {
@@ -39,13 +40,17 @@ namespace Unk.Menu.Tab
         {
             if (!PhotonNetwork.InRoom) return;
 
-            UI.Header("ALL Players");
-            //options
+            UI.Header("General Actions");
 
-            if (PlayerAvatar.instance.Handle().IsDev()) //all player options we wanna do but dont want our users doing
+            UI.Button("Crash others", () =>
+            {
+                GameObjectManager.players.Where(p => p != null && !p.IsLocalPlayer()).ToList().ForEach(p => p.photonView.RPC("OutroStartRPC", p.PhotonPlayer()));
+            });
+
+            if (PlayerAvatar.instance.Handle().IsDev()) 
             {
                 UI.Header("Dev Only Non Unk Player Options");
-                //UI.Checkbox("Freeze Others", Cheat.Instance<FreezeAll>());
+
             }
         }
 
@@ -72,6 +77,7 @@ namespace Unk.Menu.Tab
                 return;
             }
 
+            UI.Button("Crown", () => selectedPlayer.photonView.RPC("CrownPlayerRPC", RpcTarget.All, selectedPlayer.GetSteamID()));
             UI.Button("Crash", () => selectedPlayer.photonView.RPC("OutroStartRPC", selectedPlayer.PhotonPlayer()));
             UI.Button("Disable", () => selectedPlayer.photonView.RPC("SetDisabledRPC", selectedPlayer.PhotonPlayer()));
             UI.Button("Kill", () => selectedPlayer.photonView.RPC("PlayerDeathRPC", RpcTarget.All, 0));

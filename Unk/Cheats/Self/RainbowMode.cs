@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
-using Unk.Cheats.Core;
+﻿using Unk.Cheats.Core;
 
 namespace Unk.Cheats
 {
@@ -10,8 +6,7 @@ namespace Unk.Cheats
     {
         public override void Update()
         {
-            if (!Enabled)
-                return;
+            if (!Enabled) return;
             for (int i = 0; i < AssetManager.instance.playerColors.Count; i++) //fixme, wayyy to fast, causes major lag
                 PlayerAvatar.instance.PlayerAvatarSetColor(i);
         }

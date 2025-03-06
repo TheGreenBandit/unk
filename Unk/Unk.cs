@@ -1,15 +1,15 @@
 ﻿using HarmonyLib;
 using Photon.Pun;
-using Unk.Cheats.Core;
-using Unk.Menu.Core;
-using Unk.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using Unk.Manager;
 using Unk.Cheats;
+using Unk.Cheats.Core;
+using Unk.Manager;
+using Unk.Menu.Core;
+using Unk.Util;
 
 namespace Unk
 {
@@ -35,6 +35,7 @@ namespace Unk
             ThemeUtil.SetTheme();
             LoadCheats();
             DoPatching();
+            AlertUsingUnkMenu();
             GameObjectManager.CollectObjects();
             LobbyManager.RefreshLobbies();
         }
@@ -112,5 +113,6 @@ namespace Unk
             }
         }
 
+        public void AlertUsingUnkMenu() => PlayerAvatar.instance?.GetLocalPlayer()?.photonView.RPC("ChatMessageSendRPC", RpcTarget.All, "", false);
     }
 }

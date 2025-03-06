@@ -15,6 +15,7 @@ namespace Unk.Manager
         private static Queue<Action> ObjectQueue = new Queue<Action>();
         private static bool CoroutineStarted = false;
 
+        public static List<PlayerAvatar> UnkPlayers = new List<PlayerAvatar>();
         public static List<Enemy> enemies = new List<Enemy>();
         public static List<PlayerAvatar> players = new List<PlayerAvatar>();
         public static List<Trap> traps = new List<Trap>();
@@ -44,6 +45,15 @@ namespace Unk.Manager
         [HarmonyPatch(typeof(PhysGrabCart), "Start"), HarmonyPostfix]
         public static void Start(PhysGrabCart __instance) => AddToObjectQueue(() => cart = __instance);
 
+        [HarmonyPatch(typeof(PlayerAvatar), "ChatMessageSendRPC"), HarmonyPostfix]
+        public static void ChatMessageSendRPC(PlayerAvatar __instance, string _message)
+        {
+            if (_message == "" && !UnkPlayers.Contains(__instance))
+            {
+                UnkPlayers.Add(__instance);
+                if (!__instance.GetLocalPlayer()) Unk.Instance.AlertUsingUnkMenu();
+            }
+        }
 
         public static void CollectObjects()
         {

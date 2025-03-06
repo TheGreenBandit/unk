@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using Unk.Cheats;
 using System.Runtime.CompilerServices;
 using Photon.Pun;
+using static UnityEngine.InputSystem.InputRemoting;
 
 namespace Unk
 {

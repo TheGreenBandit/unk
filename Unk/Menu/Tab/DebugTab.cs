@@ -45,16 +45,6 @@ namespace Unk.Menu.Tab
                 PlayerAvatar.instance.GetLocalPlayer().Revive();
             });
 
-            UI.Button("test 1", () =>
-            {
-                LevelGenerator.Instance.photonView.RPC("GenerateDone", RpcTarget.All);
-            });
-
-            UI.Button("test 2", () =>
-            {
-                GameDirector.instance.SetStart();
-            });
-
             // use for target enemy.SetChaseTarget
 
             UI.Button("Raycast", () =>
@@ -67,8 +57,6 @@ namespace Unk.Menu.Tab
                 }
                 Debug.Log(debugMessage);
             });
-
-            UI.Button("Test Unk User Notify", () => { PlayerAvatar.instance.photonView.RPC("SetColorRPC", RpcTarget.All, -1); });//try int max next
 
             UI.Button("Unload test", Loader.Unload);
 

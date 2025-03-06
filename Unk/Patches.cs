@@ -3,10 +3,12 @@ using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
 using Steamworks.ServerList;
+using System;
 using UnityEngine;
 using Unk.Cheats;
 using Unk.Cheats.Core;
 using Unk.Handler;
+using Unk.Manager;
 using Unk.Util;
 
 namespace Unk
@@ -27,7 +29,7 @@ namespace Unk
         [HarmonyPatch(typeof(PlayerAvatar), "OnPhotonSerializeView"), HarmonyPrefix]
         public static bool OnPhotonSerializeView(PlayerAvatar __instance, PhotonStream stream, PhotonMessageInfo info)
         {
-            if (__instance != PlayerController.instance.playerAvatar) return true; 
+            if (__instance != PlayerController.instance.playerAvatar) return true;
             if (stream.IsWriting)
             {
                 stream.SendNext(__instance.Reflect().GetValue("isCrouching"));
@@ -54,7 +56,9 @@ namespace Unk
             return true;
         }
 
-        [HarmonyPatch(typeof(PhotonNetwork), "ExecuteRpc")]
+        // dummy this is brokenn
+        /*
+        [HarmonyPatch(typeof(PhotonNetwork), "ExecuteRpc"), HarmonyPrefix]
         public static bool ExecuteRPC(Hashtable rpcData, Player sender)
         {
             if (sender is null || sender.GamePlayer() is null || sender.GamePlayer().Handle().IsDev()) return true;
@@ -71,10 +75,19 @@ namespace Unk
 
             Debug.LogWarning($"Received RPC '{rpc}' From '{sender.NickName}'");
 
-            if (sender.GamePlayer().Handle().OnReceivedRPC(rpc, rpcData))
-                return true;
+            if (sender.GamePlayer().Handle().OnReceivedRPC(rpc, rpcData)) return true;
 
             return false;
         }
+        */
+
+        [HarmonyPatch(typeof(GameDirector), "gameStateEnd"), HarmonyPostfix]
+        public static void gameStateEnd()
+        {
+            GameObjectManager.ClearObjects();
+        }
+
+        [HarmonyPatch(typeof(LoadBalancingClient), "OpJoinOrCreateRoom"), HarmonyPostfix]
+        public static void OpJoinOrCreateRoom(LoadBalancingClient __instance) => Unk.Instance.AlertUsingUnkMenu();
     }
 }
