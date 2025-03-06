@@ -45,6 +45,16 @@ namespace Unk.Menu.Tab
                 PlayerAvatar.instance.GetLocalPlayer().Revive();
             });
 
+            UI.Button("test 1", () =>
+            {
+                LevelGenerator.Instance.photonView.RPC("GenerateDone", RpcTarget.All);
+            });
+
+            UI.Button("test 2", () =>
+            {
+                GameDirector.instance.SetStart();
+            });
+
             // use for target enemy.SetChaseTarget
 
             UI.Button("Raycast", () =>

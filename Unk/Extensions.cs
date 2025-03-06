@@ -6,6 +6,8 @@ using Unk.Manager;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Unk.Cheats;
+using System.Runtime.CompilerServices;
+using Photon.Pun;
 
 namespace Unk
 {
@@ -69,6 +71,11 @@ namespace Unk
         public static List<PlayerAvatar> GetAlivePlayers(this PlayerAvatar player) => GameObjectManager.players.Where(p => p != null && !p.IsDead()).ToList();
         public static EnemyParent GetEnemyParent(this EnemySetup enemy) => enemy.spawnObjects.Select(o => o?.GetComponent<EnemyParent>()).FirstOrDefault(e => e != null);
         public static PhysGrabObject GetHeldObject(this PlayerAvatar player) => player.physGrabber.Reflect().GetValue<PhysGrabObject>("grabbedPhysGrabObject");
+        public static void Revive(this PlayerAvatar player)
+        {
+            if (player != null && player.IsDead()) player.photonView.RPC("ReviveRPC", RpcTarget.All, false);
+        }
+
 
         public static RaycastHit[] SphereCastForward(this Transform transform, float sphereRadius = 1.0f)
         {
