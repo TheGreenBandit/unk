@@ -1,4 +1,6 @@
-﻿using Photon.Pun;
+﻿using ExitGames.Client.Photon.StructWrapping;
+using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,7 +75,7 @@ namespace Unk.Menu.Tab
                     break;
                 case 1:
                     if (!GetEnemies().Exists(e => e.GetInstanceID() == selectedEnemySetup)) selectedEnemySetup = -1;
-                    DrawList<EnemySetup>("EnemyTab.EnemyTypes", GetEnemies().OrderBy(e => e.GetName()).ToList(), _ => false, e => e.GetName(), ref scrollPos3, ref selectedEnemySetup);
+                    DrawList<EnemySetup>("Enemy Type", GetEnemies().OrderBy(e => e.GetName()).ToList(), _ => false, e => e.GetName(), ref scrollPos3, ref selectedEnemySetup);
                    break;
             }
         }
@@ -138,6 +140,12 @@ namespace Unk.Menu.Tab
             EnemySetup enemySetup = GetEnemies().Find(x => x.GetInstanceID() == selectedEnemySetup);
             if (enemySetup == null) return;
 
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                UI.Label("Host is required", Settings.c_menuText);
+                return;
+            }
+
             UI.Header("Enemy Spawner Content");
 
             UI.Label("Selected Enemy:", enemySetup.GetName(), Settings.c_menuText);
@@ -153,11 +161,16 @@ namespace Unk.Menu.Tab
 
         private List<EnemySetup> GetEnemies()
         {
-            List<EnemySetup> enemies = new List<EnemySetup>();
-            enemies.AddRange(EnemyDirector.instance.enemiesDifficulty1);
-            enemies.AddRange(EnemyDirector.instance.enemiesDifficulty2);
-            enemies.AddRange(EnemyDirector.instance.enemiesDifficulty3);
-            return enemies;
+            HashSet<EnemySetup> enemies = new HashSet<EnemySetup>();
+            List<EnemyParent> enemiesDifficulty1 = EnemyDirector.instance.enemiesDifficulty1.Where(o => o != null && o.GetEnemyParent() != null).Select(o => o.GetEnemyParent()).ToList();
+            List<EnemyParent> enemiesDifficulty2 = EnemyDirector.instance.enemiesDifficulty2.Where(o => o != null && o.GetEnemyParent() != null).Select(o => o.GetEnemyParent()).ToList();
+            List<EnemyParent> enemiesDifficulty3 = EnemyDirector.instance.enemiesDifficulty3.Where(o => o != null && o.GetEnemyParent() != null).Select(o => o.GetEnemyParent()).ToList();
+            enemiesDifficulty1.Concat(enemiesDifficulty2).Concat(enemiesDifficulty3).Where(ep => !enemies.Any(e => e.GetEnemyParent()?.enemyName == ep.enemyName)).ToList().ForEach(ep =>
+            {
+                EnemySetup EnemySetup = EnemyDirector.instance.enemiesDifficulty1.FirstOrDefault(o => o.GetEnemyParent() == ep) ?? EnemyDirector.instance.enemiesDifficulty2.FirstOrDefault(o => o.GetEnemyParent() == ep) ?? EnemyDirector.instance.enemiesDifficulty3.FirstOrDefault(o => o.GetEnemyParent() == ep);
+                if (EnemySetup != null) enemies.Add(EnemySetup);
+            });
+            return enemies.ToList();
         }
 
         private void SpawnEnemy(EnemySetup enemy, int amount)

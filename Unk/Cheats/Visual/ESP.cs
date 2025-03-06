@@ -90,10 +90,10 @@ namespace Unk.Cheats
         private void DisplayExtractions()
         {
             DisplayObjects(
-                GameObjectManager.extractions?.Where(e => e != null && !e.isLocked), // check if isLocked works and only on alreayd ised extractions
+                GameObjectManager.extractions?.Where(e => e != null && e.roomVolume != null && e.roomVolume.activeSelf && !e.Reflect().GetValue<bool>("isShop")), 
                 extraction => "Extraction",
                 extraction => Settings.c_espExtractions
-            );
+            );           
         }
 
         private void DisplayCart()

@@ -37,12 +37,12 @@ namespace Unk.Menu.Tab
 
             UI.Button("Revive all", () =>
             {
-                GameObjectManager.players.Where(p => p != null).ToList().ForEach(p => p.Revive());
+                GameObjectManager.players.Where(p => p != null && p.IsDead()).ToList().ForEach(p => p.Revive());
             });
 
             UI.Button("Revive localPlayer", () =>
             {
-                GameObjectManager.players.FirstOrDefault(p => p != null && p.IsLocalPlayer()).Revive();
+                PlayerAvatar.instance.GetLocalPlayer().Revive();
             });
 
             // use for target enemy.SetChaseTarget

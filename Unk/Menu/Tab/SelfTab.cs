@@ -1,6 +1,12 @@
+<<<<<<< Updated upstream
 ﻿using UnityEngine;
 using Unk.Cheats.Core;
+=======
+﻿using Photon.Pun;
+using UnityEngine;
+>>>>>>> Stashed changes
 using Unk.Cheats;
+using Unk.Cheats.Core;
 using Unk.Menu.Core;
 using Unk.Util;
 
@@ -26,6 +32,7 @@ namespace Unk.Menu.Tab
                 UI.Checkbox("Rainbow Mode", Cheat.Instance<RainbowMode>());
                 UI.Textbox("Spoofed Name", ref NameSpoofer.Value, true, 100);
                 UI.Checkbox("Use Spoofed Name", Cheat.Instance<NameSpoofer>());
+                if (PhotonNetwork.IsMasterClient) UI.Checkbox("No Object Money Loss", Cheat.Instance<NoObjectMoneyLoss>());
                 UI.CheatToggleSlider(Cheat.Instance<NoClip>(), "No Clip", NoClip.Value.ToString("#"), ref NoClip.Value, 1f, 20f);
                 UI.CheatToggleSlider(Cheat.Instance<SuperSpeed>(), "Super Speed", SuperSpeed.Value.ToString("#"), ref SuperSpeed.Value, 1f, 100f);
             });

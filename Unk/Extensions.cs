@@ -55,6 +55,7 @@ namespace Unk
         public static bool IsDead(this Enemy enemy) => enemy != null && enemy.Reflect().GetValue<EnemyHealth>("Health").Reflect().GetValue<bool>("dead");
         public static bool IsLocalPlayer(this PlayerAvatar player) => player != null && player.Reflect().GetValue<bool>("isLocal");
         public static bool IsDead(this PlayerAvatar player) => player != null && player.Reflect().GetValue<bool>("deadSet");
+<<<<<<< Updated upstream
         public static string GetName(this EnemySetup enemy)
         {
             string name = enemy.name;
@@ -63,9 +64,16 @@ namespace Unk
             return name;
         }
 
+=======
+        public static string GetName(this EnemySetup enemy) => enemy.GetEnemyParent()?.enemyName;
+>>>>>>> Stashed changes
         public static string GetName(this Enemy enemy) => enemy.Reflect().GetValue<EnemyParent>("EnemyParent").enemyName;
         public static string GetName(this PlayerAvatar player) => string.IsNullOrEmpty(player.Reflect().GetValue<string>("playerName")) ? player.name : player.Reflect().GetValue<string>("playerName");
         public static string Format(this string @string) => @string.Replace("(Clone)", "").Replace("Valuable", "").Trim();
+        public static PlayerAvatar GetLocalPlayer(this PlayerAvatar player) => GameObjectManager.players.FirstOrDefault(p => p != null && p.IsLocalPlayer());
+        public static List<PlayerAvatar> GetAlivePlayers(this PlayerAvatar player) => GameObjectManager.players.Where(p => p != null && !p.IsDead()).ToList();
+        public static EnemyParent GetEnemyParent(this EnemySetup enemy) => enemy.spawnObjects.Select(o => o?.GetComponent<EnemyParent>()).FirstOrDefault(e => e != null);
+        public static PhysGrabObject GetHeldObject(this PlayerAvatar player) => player.physGrabber.Reflect().GetValue<PhysGrabObject>("grabbedPhysGrabObject");
 
         public static RaycastHit[] SphereCastForward(this Transform transform, float sphereRadius = 1.0f)
         {

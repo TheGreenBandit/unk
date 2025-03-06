@@ -59,11 +59,9 @@ namespace Unk
             menu = new UnkMenu();
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes().Where(t => String.Equals(t.Namespace, "Unk.Cheats", StringComparison.Ordinal) && t.IsSubclassOf(typeof(Cheat))))
             {
-                if (type.IsSubclassOf(typeof(ToggleCheat)))
-                    cheats.Add((ToggleCheat)Activator.CreateInstance(type));
+                if (type.IsSubclassOf(typeof(ToggleCheat))) cheats.Add((ToggleCheat)Activator.CreateInstance(type));
                 else Activator.CreateInstance(type);
-
-                Debug.LogError($"Loaded Cheat: {type.Name}");
+                Debug.Log($"Loaded Cheat: {type.Name}");
             }
         }
 

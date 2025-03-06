@@ -38,12 +38,12 @@ namespace Unk.Cheats.Core
         {
             Enabled = !Enabled;
         }
+
+
         public virtual void OnGui() { }
         public virtual void Update() { }
         public virtual void FixedUpdate() { }
-
         public virtual void OnEnable() { }
         public virtual void OnDisable() { }
-
     }
 }

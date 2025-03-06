@@ -44,9 +44,6 @@ namespace Unk.Manager
         [HarmonyPatch(typeof(PhysGrabCart), "Start"), HarmonyPostfix]
         public static void Start(PhysGrabCart __instance) => AddToObjectQueue(() => cart = __instance);
 
-        [HarmonyPatch(typeof(EnemyHealth), "Death"), HarmonyPostfix]
-        public static void Death(EnemyHealth __instance) => AddToObjectQueue(() => enemies.Remove(__instance.Reflect().GetValue<Enemy>("enemy")));
-
 
         public static void CollectObjects()
         {
