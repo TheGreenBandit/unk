@@ -58,6 +58,8 @@ namespace Unk.Menu.Tab
                 Debug.Log(debugMessage);
             });
 
+            UI.Button("Test Unk User Notify", () => { PlayerAvatar.instance.photonView.RPC("SetColorRPC", RpcTarget.All, -1); });//try int max next
+
             UI.Button("Unload test", Loader.Unload);
 
             //GUILayout.EndScrollView();

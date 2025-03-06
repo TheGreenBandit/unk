@@ -1,15 +1,12 @@
 ﻿using UnityEngine;
-<<<<<<< Updated upstream
-using System.Runtime.InteropServices;
-=======
 using UnityEngine.InputSystem;
->>>>>>> Stashed changes
 using Unk.Menu.Core;
 
 namespace Unk.Util
 {
     internal class MenuUtil
     {
+        public static bool showCursor = false;
         public static bool resizing = false;
         public static float MouseX => Input.mousePosition.x;
         public static float MouseY => Screen.height - Input.mousePosition.y;
@@ -61,15 +58,6 @@ namespace Unk.Util
             UnkMenu.Instance.Resize();
         }
 
-<<<<<<< Updated upstream
-=======
-        public static void ShowCursor()
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
-
->>>>>>> Stashed changes
         public static void HideCursor()
         {
             PlayerController.instance.cameraAim.enabled = true;
@@ -80,14 +68,9 @@ namespace Unk.Util
 
         public static void ToggleCursor()
         {
-<<<<<<< Updated upstream
             showCursor = !showCursor;
             if (!showCursor)
                 HideCursor();
-=======
-            if (Cursor.visible) HideCursor();
-            else ShowCursor();
->>>>>>> Stashed changes
         }
     }
 }

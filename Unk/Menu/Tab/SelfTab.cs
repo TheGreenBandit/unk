@@ -1,12 +1,7 @@
-<<<<<<< Updated upstream
-﻿using UnityEngine;
-using Unk.Cheats.Core;
-=======
-﻿using Photon.Pun;
 using UnityEngine;
->>>>>>> Stashed changes
-using Unk.Cheats;
 using Unk.Cheats.Core;
+﻿using Photon.Pun;
+using Unk.Cheats;
 using Unk.Menu.Core;
 using Unk.Util;
 

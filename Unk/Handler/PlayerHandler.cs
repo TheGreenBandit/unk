@@ -108,11 +108,29 @@ namespace Unk.Handler
             if (rpcHash.ContainsKey(Patches.keyByteFour))
                 parameters = (object[])rpcHash[Patches.keyByteFour];
 
-            if (rpc.Equals(""))
+            if (rpc.Equals("OutroStartRPC")) //crash game
             {
-
+                Debug.LogError($"{photonPlayer.NickName} is probably trying to crash you!");
+                rpcData.SetSuspected();
+                return false;
             }
 
+            if (rpc.Equals("SetDisabledRPC"))
+            {
+                Debug.LogError($"{photonPlayer.NickName} is probably trying to disable you!");
+                rpcData.SetSuspected();
+                return false;
+            }
+
+            if (rpc.Equals("SetColorRPC"))
+            {
+                if (((int)parameters[0] == -1) && !UnkClients.Contains(steamId))
+                {
+                    //Notifications.PushNotifcation(new Notifcation("Spooksuite User!", $"{photonPlayer.NickName} is a spooksuite user, adding them."));
+                    Debug.Log($"{photonPlayer.NickName} is a Unk User!");
+                    UnkClients.Add(steamId);
+                }
+            }
 
             GetRPCHistory().Enqueue(rpcData);
             CleanupRPCHistory();

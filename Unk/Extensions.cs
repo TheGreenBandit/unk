@@ -55,7 +55,6 @@ namespace Unk
         public static bool IsDead(this Enemy enemy) => enemy != null && enemy.Reflect().GetValue<EnemyHealth>("Health").Reflect().GetValue<bool>("dead");
         public static bool IsLocalPlayer(this PlayerAvatar player) => player != null && player.Reflect().GetValue<bool>("isLocal");
         public static bool IsDead(this PlayerAvatar player) => player != null && player.Reflect().GetValue<bool>("deadSet");
-<<<<<<< Updated upstream
         public static string GetName(this EnemySetup enemy)
         {
             string name = enemy.name;
@@ -63,10 +62,6 @@ namespace Unk
             name = Regex.Replace(name, @"Enemy Group - \d+", "").Trim();  
             return name;
         }
-
-=======
-        public static string GetName(this EnemySetup enemy) => enemy.GetEnemyParent()?.enemyName;
->>>>>>> Stashed changes
         public static string GetName(this Enemy enemy) => enemy.Reflect().GetValue<EnemyParent>("EnemyParent").enemyName;
         public static string GetName(this PlayerAvatar player) => string.IsNullOrEmpty(player.Reflect().GetValue<string>("playerName")) ? player.name : player.Reflect().GetValue<string>("playerName");
         public static string Format(this string @string) => @string.Replace("(Clone)", "").Replace("Valuable", "").Trim();

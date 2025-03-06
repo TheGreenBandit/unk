@@ -85,7 +85,6 @@ namespace Unk.Menu.Core
         public void Draw()
         {
             if (!Settings.b_isMenuOpen) return;
-<<<<<<< Updated upstream
             else if (MenuUtil.showCursor)
             {
                 CursorManager.instance.enabled = false;
@@ -95,8 +94,6 @@ namespace Unk.Menu.Core
                 Cursor.lockState = CursorLockMode.Confined;
             }
 
-=======
->>>>>>> Stashed changes
             Stylize();
             GUI.color = new Color(1f, 1f, 1f, Settings.f_menuAlpha);
             windowRect = GUILayout.Window(0, windowRect, new GUI.WindowFunction(DrawContent), "Unk");
