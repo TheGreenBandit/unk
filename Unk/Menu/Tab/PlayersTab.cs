@@ -72,11 +72,10 @@ namespace Unk.Menu.Tab
                 return;
             }
 
-            UI.Button("Clone", () => selectedPlayer.photonView.RPC("SpawnRPC", RpcTarget.All, selectedPlayer.transform.position, selectedPlayer.transform.rotation));
             UI.Button("Crash", () => selectedPlayer.photonView.RPC("OutroStartRPC", selectedPlayer.PhotonPlayer()));
             UI.Button("Disable", () => selectedPlayer.photonView.RPC("SetDisabledRPC", selectedPlayer.PhotonPlayer()));
             UI.Button("Kill", () => selectedPlayer.photonView.RPC("PlayerDeathRPC", RpcTarget.All, 0));
-            UI.Button("Revive", () => selectedPlayer.Revive());
+            UI.Button("Revive", () => selectedPlayer.RevivePlayer());
             UI.Button("Force Jump", () => selectedPlayer.photonView.RPC("JumpRPC", RpcTarget.All, true));
             UI.Button("Force Land", () => selectedPlayer.photonView.RPC("LandRPC", RpcTarget.All));
             UI.TextboxAction("Chat Message", ref message, 100,
