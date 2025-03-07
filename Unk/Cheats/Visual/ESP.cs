@@ -14,9 +14,10 @@ namespace Unk.Cheats
         public static bool displayPlayers = false;
         public static bool displayEnemies = false;
         public static bool displayItems = false;
-        public static bool displayCart = false;
+        public static bool displayCarts = false;
         public static bool displayExtractions = false;
         public static bool displayDeathHeads = false;
+        public static bool displayTruck = false;
 
         public override void OnGui()
         {
@@ -24,9 +25,10 @@ namespace Unk.Cheats
             if (displayPlayers) DisplayPlayers();
             if (displayItems) DisplayItems();
             if (displayEnemies) DisplayEnemies();
-            if (displayCart) DisplayCart();
+            if (displayCarts) DisplayCarts();
             if (displayExtractions) DisplayExtractions();
             if (displayDeathHeads) DisplayDeathHeads();
+            if (displayTruck) DisplayTruck();
         }
 
         public static void ToggleAll()
@@ -34,9 +36,10 @@ namespace Unk.Cheats
             displayPlayers = !displayPlayers;
             displayEnemies = !displayEnemies;
             displayItems = !displayItems;
-            displayCart = !displayCart;
+            displayCarts = !displayCarts;
             displayExtractions = !displayExtractions;
             displayDeathHeads = !displayDeathHeads;
+            displayTruck = !displayTruck;
         }
 
         private void DisplayObjects<T>(IEnumerable<T> objects, Func<T, string> labelSelector, Func<T, RGBAColor> colorSelector) where T : Component
@@ -90,18 +93,27 @@ namespace Unk.Cheats
         private void DisplayExtractions()
         {
             DisplayObjects(
-                GameObjectManager.extractions?.Where(e => e != null && e.roomVolume != null && e.roomVolume.activeSelf && !e.Reflect().GetValue<bool>("isShop")), 
+                GameObjectManager.extractions?.Where(e => e != null && e.Reflect().GetValue<string>("tubeScreenTextString") == "READY" || e.roomVolume != null && e.roomVolume.activeSelf && !e.Reflect().GetValue<bool>("isShop")), 
                 extraction => "Extraction",
                 extraction => Settings.c_espExtractions
             );           
         }
 
-        private void DisplayCart()
+        private void DisplayCarts()
         {
             DisplayObjects(
-                new[] { GameObjectManager.cart },
+                GameObjectManager.carts?.Where(c => c != null),
                 cart => $"Cart",
                 cart => Settings.c_espCart
+            );
+        }
+
+        private void DisplayTruck()
+        {
+            DisplayObjects(
+                new[] { GameObjectManager.truck },
+                cart => $"Truck",
+                cart => Settings.c_espTruck
             );
         }
     }

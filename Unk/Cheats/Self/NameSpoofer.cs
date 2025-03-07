@@ -1,8 +1,5 @@
 ﻿using Photon.Pun;
 using Steamworks;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Unk.Cheats.Core;
 using Unk.Handler;
 
@@ -15,8 +12,11 @@ namespace Unk.Cheats
         public override void Update()
         {
             if (!Enabled) return;
-            PhotonNetwork.LocalPlayer.NickName = Value;
-            PlayerAvatar.instance.photonView.RPC("AddToStatsManagerRPC", RpcTarget.All, Value, PlayerAvatar.instance.GetSteamID());
+            if (PhotonNetwork.LocalPlayer.NickName != Value)
+            {
+                PhotonNetwork.LocalPlayer.NickName = Value;
+                PlayerAvatar.instance.photonView.RPC("AddToStatsManagerRPC", RpcTarget.All, Value, PlayerAvatar.instance.GetSteamID());
+            }          
         }
 
         public override void OnDisable()

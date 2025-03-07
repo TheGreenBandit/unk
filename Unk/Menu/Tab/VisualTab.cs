@@ -35,9 +35,10 @@ namespace Unk.Menu.Tab
             UI.Checkbox("Display Players", ref ESP.displayPlayers);
             UI.Checkbox("Display Enemies", ref ESP.displayEnemies);
             UI.Checkbox("Display Items", ref ESP.displayItems);
-            UI.Checkbox("Display Cart", ref ESP.displayCart);
+            UI.Checkbox("Display Cart", ref ESP.displayCarts);
             UI.Checkbox("Display Extractions", ref ESP.displayExtractions);
             UI.Checkbox("Display Death Heads", ref ESP.displayDeathHeads);
+            UI.Checkbox("Display Truck", ref ESP.displayTruck);
 
             GUILayout.EndScrollView();
         }

@@ -22,7 +22,8 @@ namespace Unk.Manager
         public static List<ValuableObject> items = new List<ValuableObject>();
         public static List<ExtractionPoint> extractions = new List<ExtractionPoint>();
         public static List<PlayerDeathHead> deathHeads = new List<PlayerDeathHead>();
-        public static PhysGrabCart cart;
+        public static List<PhysGrabCart> carts = new List<PhysGrabCart>();
+        public static TruckScreenText truck;
 
         [HarmonyPatch(typeof(ValuableObject), "Awake"), HarmonyPostfix]
         public static void Awake(ValuableObject __instance) => AddToObjectQueue(() => items.Add(__instance));
@@ -43,7 +44,10 @@ namespace Unk.Manager
         public static void Start(PlayerDeathHead __instance) => AddToObjectQueue(() => deathHeads.Add(__instance));
 
         [HarmonyPatch(typeof(PhysGrabCart), "Start"), HarmonyPostfix]
-        public static void Start(PhysGrabCart __instance) => AddToObjectQueue(() => cart = __instance);
+        public static void Start(PhysGrabCart __instance) => AddToObjectQueue(() => carts.Add(__instance));
+
+        [HarmonyPatch(typeof(TruckScreenText), "Start"), HarmonyPostfix]
+        public static void Start(TruckScreenText __instance) => AddToObjectQueue(() => truck = __instance);
 
         [HarmonyPatch(typeof(PlayerAvatar), "ChatMessageSendRPC"), HarmonyPostfix]
         public static void ChatMessageSendRPC(PlayerAvatar __instance, string _message)
@@ -63,7 +67,8 @@ namespace Unk.Manager
             CollectObjects(items);
             CollectObjects(extractions);
             CollectObjects(deathHeads);
-            cart = Object.FindAnyObjectByType<PhysGrabCart>();
+            CollectObjects(carts);
+            truck = Object.FindAnyObjectByType<TruckScreenText>();
         }
 
         public static void ClearObjects()
@@ -74,7 +79,8 @@ namespace Unk.Manager
             items?.Clear();
             extractions?.Clear();
             deathHeads?.Clear();
-            cart = null;
+            carts?.Clear();
+            truck = null;
         }
 
         private static void CollectObjects<T>(List<T> list, Func<T, bool> filter = null) where T : MonoBehaviour

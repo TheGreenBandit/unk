@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Unk.Cheats.Core;
+﻿using Unk.Cheats.Core;
 
 namespace Unk.Cheats
 {

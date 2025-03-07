@@ -65,13 +65,17 @@ namespace Unk
             name = Regex.Replace(name, @"Enemy Group - \d+", "").Trim();  
             return name;
         }
+
         public static string GetName(this Enemy enemy) => enemy.Reflect().GetValue<EnemyParent>("EnemyParent").enemyName;
         public static string GetName(this PlayerAvatar player) => string.IsNullOrEmpty(player.Reflect().GetValue<string>("playerName")) ? player.name : player.Reflect().GetValue<string>("playerName");
         public static string Format(this string @string) => @string.Replace("(Clone)", "").Replace("Valuable", "").Trim();
-        public static PlayerAvatar GetLocalPlayer(this PlayerAvatar player) => GameObjectManager.players.FirstOrDefault(p => p != null && p.IsLocalPlayer());
+        public static PlayerAvatar GetLocalPlayer(this PlayerAvatar player) => GameObjectManager.players?.FirstOrDefault(p => p != null && p.IsLocalPlayer());
         public static List<PlayerAvatar> GetAlivePlayers(this PlayerAvatar player) => GameObjectManager.players.Where(p => p != null && !p.IsDead()).ToList();
         public static EnemyParent GetEnemyParent(this EnemySetup enemy) => enemy.spawnObjects.Select(o => o?.GetComponent<EnemyParent>()).FirstOrDefault(e => e != null);
         public static PhysGrabObject GetHeldObject(this PlayerAvatar player) => player.physGrabber.Reflect().GetValue<PhysGrabObject>("grabbedPhysGrabObject");
+        public static PhysGrabObject GetPhysGrabObject(this ValuableObject item) => item.Reflect().GetValue<PhysGrabObject>("physGrabObject");
+        public static PhotonTransformView GetPhotonTransformView(this ValuableObject item) => item.GetPhysGrabObject().Reflect().GetValue<PhotonTransformView>("photonTransformView");
+
         public static void RevivePlayer(this PlayerAvatar player)
         {
             if (player != null && player.IsDead()) player.photonView.RPC("ReviveRPC", RpcTarget.All, false);

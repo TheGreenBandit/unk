@@ -36,6 +36,7 @@ namespace Unk
         public static RGBAColor c_espCart = new RGBAColor(0, 0, 255, 1f);
         public static RGBAColor c_espExtractions = new RGBAColor(255, 165, 0, 1f);
         public static RGBAColor c_espDeathHeads = new RGBAColor(128, 0, 128, 1f);
+        public static RGBAColor c_espTruck = new RGBAColor(0, 255, 255, 0.5f);
 
         internal class Changelog
         {

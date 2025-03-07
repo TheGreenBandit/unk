@@ -37,7 +37,6 @@ namespace Unk.Menu.Core
             tabs.Add(new VisualTab());
             tabs.Add(new PlayersTab());
             tabs.Add(new EnemyTab());
-            tabs.Add(new LobbyManagerTab());
             tabs.Add(new DebugTab());
         }
 
@@ -85,15 +84,8 @@ namespace Unk.Menu.Core
         public void Draw()
         {
             if (!Settings.b_isMenuOpen) return;
-            else if (MenuUtil.showCursor)
-            {
-                CursorManager.instance.enabled = false;
-                PlayerController.instance.InputDisable(0.4f);
-                PlayerController.instance.cameraAim.enabled = false;
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.Confined;
-            }
-
+            if (!Cursor.visible) Cursor.visible = true;
+            if (Cursor.lockState != CursorLockMode.None) Cursor.lockState = CursorLockMode.None;
             Stylize();
             GUI.color = new Color(1f, 1f, 1f, Settings.f_menuAlpha);
             windowRect = GUILayout.Window(0, windowRect, new GUI.WindowFunction(DrawContent), "Unk");

@@ -86,8 +86,5 @@ namespace Unk
         {
             GameObjectManager.ClearObjects();
         }
-
-        [HarmonyPatch(typeof(LoadBalancingClient), "OpJoinOrCreateRoom"), HarmonyPostfix]
-        public static void OpJoinOrCreateRoom(LoadBalancingClient __instance) => Unk.Instance.AlertUsingUnkMenu();
     }
 }

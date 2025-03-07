@@ -132,6 +132,14 @@ namespace Unk.Menu.Tab
             UI.TextboxAction("Freeze", ref freeze, 3,
                 new UIButton("Time", () => enemy.Freeze(freeze))
             );
+
+            UI.Button("Debug", () =>
+            {
+                enemy.GetComponents<Component>().Where(c => c != null).ToList().ForEach(c =>
+                {
+                    Debug.Log($"{c.name} - {c.gameObject.name} - {c.GetType().Name} - {c.GetType().Assembly.GetName()} - {c.GetType().Namespace} - {c.GetType().FullName}");
+                });
+            });
         }
 
         private void EnemySpawnerContent()
@@ -140,7 +148,7 @@ namespace Unk.Menu.Tab
             EnemySetup enemySetup = GetEnemies().Find(x => x.GetInstanceID() == selectedEnemySetup);
             if (enemySetup == null) return;
 
-            if (!PhotonNetwork.IsMasterClient)
+            if (!SemiFunc.IsMasterClientOrSingleplayer())
             {
                 UI.Label("Host is required", Settings.c_menuText);
                 return;

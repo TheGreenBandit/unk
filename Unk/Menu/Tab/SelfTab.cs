@@ -1,7 +1,9 @@
+using Photon.Pun;
+using System.Linq;
 using UnityEngine;
-using Unk.Cheats.Core;
-﻿using Photon.Pun;
 using Unk.Cheats;
+using Unk.Cheats.Core;
+using Unk.Manager;
 using Unk.Menu.Core;
 using Unk.Util;
 
@@ -24,9 +26,19 @@ namespace Unk.Menu.Tab
                 UI.TextboxAction("Change Color", ref ColorChanger.Value, 1,
                     new UIButton("Change", Cheat.Instance<ColorChanger>().Execute)
                 );
+
+                UI.Button("Teleport All Items", () =>
+                {
+                    GameObjectManager.items.Where(i => i != null).ToList().ForEach(i =>
+                    {
+                        if (i.GetPhotonTransformView() != null) i.GetPhotonTransformView().Teleport(SemiFunc.MainCamera().transform.position, SemiFunc.MainCamera().transform.rotation);
+                    });
+                });
+
                 UI.Checkbox("Rainbow Mode", Cheat.Instance<RainbowMode>());
-                UI.Textbox("Spoofed Name", ref NameSpoofer.Value, true, 100);
                 UI.Checkbox("Use Spoofed Name", Cheat.Instance<NameSpoofer>());
+                UI.Textbox("Spoofed Name", ref NameSpoofer.Value, true, 100);
+
                 if (PhotonNetwork.IsMasterClient) UI.Checkbox("No Object Money Loss", Cheat.Instance<NoObjectMoneyLoss>());
                 UI.CheatToggleSlider(Cheat.Instance<NoClip>(), "No Clip", NoClip.Value.ToString("#"), ref NoClip.Value, 1f, 20f);
                 UI.CheatToggleSlider(Cheat.Instance<SuperSpeed>(), "Super Speed", SuperSpeed.Value.ToString("#"), ref SuperSpeed.Value, 1f, 100f);

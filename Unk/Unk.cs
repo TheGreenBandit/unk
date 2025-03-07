@@ -37,7 +37,6 @@ namespace Unk
             DoPatching();
             AlertUsingUnkMenu();
             GameObjectManager.CollectObjects();
-            LobbyManager.RefreshLobbies();
         }
 
         private void DoPatching()

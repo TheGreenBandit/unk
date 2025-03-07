@@ -4,7 +4,7 @@ using Unk.Menu.Core;
 
 namespace Unk.Util
 {
-    internal class MenuUtil
+    internal class MenuUtil 
     {
         public static bool showCursor = false;
         public static bool resizing = false;
@@ -58,19 +58,25 @@ namespace Unk.Util
             UnkMenu.Instance.Resize();
         }
 
+        public static void ShowCursor()
+        {
+            if (PlayerController.instance != null) PlayerController.instance.cameraAim.enabled = false;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+
         public static void HideCursor()
         {
-            PlayerController.instance.cameraAim.enabled = true;
-            CursorManager.instance.enabled = true;
+
+            if (PlayerController.instance != null) PlayerController.instance.cameraAim.enabled = true;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
 
         public static void ToggleCursor()
         {
-            showCursor = !showCursor;
-            if (!showCursor)
-                HideCursor();
+            if (!Cursor.visible) ShowCursor();
+            else HideCursor();
         }
     }
 }
