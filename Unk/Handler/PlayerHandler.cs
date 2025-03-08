@@ -107,9 +107,9 @@ namespace Unk.Handler
             if (rpcHash.ContainsKey(Patches.keyByteFour))
                 parameters = (object[])rpcHash[Patches.keyByteFour];
 
-            if (parameters != null) Debug.LogWarning($"RPC Params '{string.Join(", ", parameters.Select(p => p?.ToString() ?? "null"))}'");
+            if (!Patches.IgnoredRPCDebugs.Contains(rpc) && parameters != null) Debug.LogWarning($"RPC Params '{string.Join(", ", parameters.Select(p => p?.ToString() ?? "null"))}'");
 
-            if (rpc.Equals("OutroStartRPC") && !RunManager.instance.Reflect().GetValue<bool>("restarting")) //crash game
+            if (rpc.Equals("OutroStartRPC") && !RunManager.instance.Reflect().GetValue<bool>("restarting")) 
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to crash you!");
                 rpcData.SetSuspected();

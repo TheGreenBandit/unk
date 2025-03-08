@@ -3,6 +3,7 @@ using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Unk.Cheats;
 using Unk.Cheats.Core;
@@ -55,16 +56,21 @@ namespace Unk
             return true;
         }
 
+        public static List<string> IgnoredRPCDebugs = new List<string>
+        {
+            "IsTalkingRPC",
+        };
+
         [HarmonyPatch(typeof(PhotonNetwork), "ExecuteRpc"), HarmonyPrefix]
         public static bool ExecuteRPC(Hashtable rpcData, Player sender)
         {
-            if (sender is null || sender?.GamePlayer() is null/* || sender.GamePlayer().Handle().IsDev()*/) return true;
+            if (sender is null || sender?.GamePlayer() == null/* || sender.GamePlayer().Handle().IsDev()*/) return true;
 
             string rpc = rpcData.ContainsKey(keyByteFive) ?
                 PhotonNetwork.PhotonServerSettings.RpcList[Convert.ToByte(rpcData[keyByteFive])]
                 : rpcData[keyByteThree] as string;
 
-            Debug.LogWarning($"Processing RPC '{rpc}' From '{sender.NickName}'");
+            if (!IgnoredRPCDebugs.Contains(rpc)) Debug.LogWarning($"Processing RPC '{rpc}' From '{sender.NickName}'");
 
             if (!sender.IsLocal && sender.GamePlayer().Handle().IsRPCBlocked())
             {
