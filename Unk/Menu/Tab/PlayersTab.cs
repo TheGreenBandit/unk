@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
@@ -63,8 +64,7 @@ namespace Unk.Menu.Tab
 
                 UI.Button("Kick All", () =>
                 {
-                    PhotonNetwork.CurrentRoom.SetMasterClient(PhotonNetwork.LocalPlayer.IsMasterClient ?
-                        GameObjectManager.players.Find(x => x.GetSteamID() != PlayerAvatar.instance.GetSteamID()).PhotonPlayer() : PlayerAvatar.instance.PhotonPlayer());
+                    PhotonNetwork.CurrentRoom.SetMasterClient(PhotonNetwork.LocalPlayer.IsMasterClient ? GameObjectManager.players.Find(x => x.GetSteamID() != PlayerAvatar.instance.GetSteamID()).PhotonPlayer() : PlayerAvatar.instance.PhotonPlayer());
                 });
             }
         }
@@ -75,8 +75,11 @@ namespace Unk.Menu.Tab
 
             UI.Header("Selected Player Actions");
 
-            GUILayout.TextArea($"SteamID: {selectedPlayer.GetSteamID()}");
-            UI.Button("Go To Profile", () => Process.Start($"https://steamcommunity.com/profiles/{selectedPlayer.GetSteamID()}"));
+            UI.Label("SteamId:", selectedPlayer.GetSteamID().ToString());
+            UI.Label("Status:", selectedPlayer.IsDead() ? "Dead" : "Alive");
+            UI.Label("Health:", selectedPlayer.GetHealth().ToString());
+            UI.Label("Is Master Client:", selectedPlayer.IsLocalPlayer() ? SemiFunc.IsMasterClientOrSingleplayer().ToString() : selectedPlayer.PhotonPlayer().IsMasterClient.ToString());
+
             UI.Label("Unk User", selectedPlayer.Handle().IsUnkUser().ToString());
             UI.Button("Heal", () => selectedPlayer.playerHealth.Reflect().GetValue<PhotonView>("photonView").RPC("UpdateHealthRPC", RpcTarget.All, selectedPlayer.playerHealth.Reflect().GetValue<int>("maxHealth"), selectedPlayer.playerHealth.Reflect().GetValue<int>("maxHealth"), false));
             UI.Button("Crown", () => selectedPlayer.photonView.RPC("CrownPlayerRPC", RpcTarget.All, selectedPlayer.GetSteamID()));
@@ -112,7 +115,7 @@ namespace Unk.Menu.Tab
             GUILayout.Space(25);
             scrollPos = GUILayout.BeginScrollView(scrollPos);
 
-            foreach (PlayerAvatar player in GameObjectManager.players)
+            foreach (PlayerAvatar player in GameObjectManager.players.Where(p => p != null))
             {
                 if (selectedPlayer == null) selectedPlayer = player;
                 if (player.Handle().IsUnkUser()) GUI.contentColor = Settings.c_primary.GetColor();

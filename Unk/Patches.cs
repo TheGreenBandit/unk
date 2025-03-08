@@ -59,7 +59,7 @@ namespace Unk
         public static List<string> IgnoredRPCDebugs = new List<string>
         {
             "IsTalkingRPC",
-            "ReceiveSyncData",
+            //"ReceiveSyncData",
         };
 
         [HarmonyPatch(typeof(PhotonNetwork), "ExecuteRpc"), HarmonyPrefix]
@@ -82,10 +82,10 @@ namespace Unk
             return sender.GamePlayer().Handle().OnReceivedRPC(rpc, rpcData);
         }
 
-        [HarmonyPatch(typeof(ReloadScene), "Start"), HarmonyPostfix]
-        public static void Start()
+        [HarmonyPatch(typeof(SemiFunc), "OnSceneSwitch"), HarmonyPrefix]
+        public static void OnSceneSwitch(bool _gameOver, bool _leaveGame)
         {
-            GameObjectManager.ClearObjects();
+            if (_leaveGame) GameObjectManager.ClearObjects();
         }
     }
 }
