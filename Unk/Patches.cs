@@ -59,6 +59,7 @@ namespace Unk
         public static List<string> IgnoredRPCDebugs = new List<string>
         {
             "IsTalkingRPC",
+            "ReceiveSyncData",
         };
 
         [HarmonyPatch(typeof(PhotonNetwork), "ExecuteRpc"), HarmonyPrefix]
