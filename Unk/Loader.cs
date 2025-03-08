@@ -13,6 +13,12 @@ namespace Unk
 
         public static void Init()
         {
+            if (Load != null)
+            {
+                Debug.LogError("Unk is already inject");
+                return;
+            }
+
             LoadHarmony();
             Loader.Load = new GameObject();
             Load.AddComponent<Unk>();

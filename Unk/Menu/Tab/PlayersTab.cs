@@ -41,25 +41,32 @@ namespace Unk.Menu.Tab
 
             UI.Header("General Actions");
 
-            UI.Button("Kill All", () =>
-            {
+            UI.Button("Kill All", () => {
                 GameObjectManager.players.Where(p => p != null).ToList().ForEach(p => p.photonView.RPC("PlayerDeathRPC", RpcTarget.All, 0));
             });
 
-            UI.Button("Kill others", () =>
-            {
+            UI.Button("Kill others", () => {
                 GameObjectManager.players.Where(p => p != null && !p.IsLocalPlayer()).ToList().ForEach(p => p.photonView.RPC("PlayerDeathRPC", RpcTarget.All, 0));
             });
 
-            UI.Button("Crash All", () =>
+            if (PlayerAvatar.instance.Handle().IsDev())
             {
-                GameObjectManager.players.Where(p => p != null).ToList().ForEach(p => p.photonView.RPC("OutroStartRPC", p.PhotonPlayer()));
-            });
+                UI.Header("General Dev Options");
 
-            UI.Button("Crash others", () =>
-            {
-                GameObjectManager.players.Where(p => p != null && !p.IsLocalPlayer()).ToList().ForEach(p => p.photonView.RPC("OutroStartRPC", p.PhotonPlayer()));
-            });
+                UI.Button("Crash All", () => {
+                    GameObjectManager.players.Where(p => p != null).ToList().ForEach(p => p.photonView.RPC("OutroStartRPC", p.PhotonPlayer()));
+                });
+
+                UI.Button("Crash others", () => {
+                    GameObjectManager.players.Where(p => p != null && !p.IsLocalPlayer()).ToList().ForEach(p => p.photonView.RPC("OutroStartRPC", p.PhotonPlayer()));
+                });
+
+                UI.Button("Kick All", () =>
+                {
+                    PhotonNetwork.CurrentRoom.SetMasterClient(PhotonNetwork.LocalPlayer.IsMasterClient ?
+                        GameObjectManager.players.Find(x => x.GetSteamID() != PlayerAvatar.instance.GetSteamID()).PhotonPlayer() : PlayerAvatar.instance.PhotonPlayer());
+                });
+            }
         }
 
         private void PlayerActions()
@@ -85,8 +92,7 @@ namespace Unk.Menu.Tab
             UI.TextboxAction("Change Color", ref color, 2,
                 new UIButton("Set", () => selectedPlayer.photonView.RPC("SetColorRPC", RpcTarget.All, int.Parse(color))
             ));
-            UI.Button("Lure monsters to player", () =>
-            {
+            UI.Button("Lure monsters to player", () => {
                 GameObjectManager.enemies.Where(e => e != null && !e.IsDead()).ToList().ForEach(e => e.SetChaseTarget(selectedPlayer));
             });
             UI.CheatToggleSlider(Cheat.Instance<OverrideAnimSpeed>(), "Anim Speed Multiplier", OverrideAnimSpeed.Value.ToString(), ref OverrideAnimSpeed.Value, 0, 10);

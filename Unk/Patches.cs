@@ -2,7 +2,6 @@
 using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
-using Steamworks.ServerList;
 using System;
 using UnityEngine;
 using Unk.Cheats;
@@ -56,16 +55,16 @@ namespace Unk
             return true;
         }
 
-        // dummy this is brokenn
-        /*
         [HarmonyPatch(typeof(PhotonNetwork), "ExecuteRpc"), HarmonyPrefix]
         public static bool ExecuteRPC(Hashtable rpcData, Player sender)
         {
-            if (sender is null || sender.GamePlayer() is null || sender.GamePlayer().Handle().IsDev()) return true;
+            if (sender is null || sender.GamePlayer() is null/* || sender.GamePlayer().Handle().IsDev()*/) return true;
 
             string rpc = rpcData.ContainsKey(keyByteFive) ?
-                PhotonNetwork.PhotonServerSettings.RpcList[(int)(byte)rpcData[keyByteFive]] :
-                (string)rpcData[keyByteThree];
+                PhotonNetwork.PhotonServerSettings.RpcList[Convert.ToByte(rpcData[keyByteFive])]
+                : rpcData[keyByteThree] as string;
+
+            Debug.LogWarning($"Processing RPC '{rpc}' From '{sender.NickName}'");
 
             if (!sender.IsLocal && sender.GamePlayer().Handle().IsRPCBlocked())
             {
@@ -73,13 +72,8 @@ namespace Unk
                 return false;
             }
 
-            Debug.LogWarning($"Received RPC '{rpc}' From '{sender.NickName}'");
-
-            if (sender.GamePlayer().Handle().OnReceivedRPC(rpc, rpcData)) return true;
-
-            return false;
+            return sender.GamePlayer().Handle().OnReceivedRPC(rpc, rpcData);
         }
-        */
 
         [HarmonyPatch(typeof(GameDirector), "gameStateEnd"), HarmonyPostfix]
         public static void gameStateEnd()
