@@ -13,10 +13,11 @@ namespace Unk
 
         public static void Init()
         {
+            if (Load != null) return;
             LoadHarmony();
-            Loader.Load = new GameObject();
+            Load = new GameObject();
             Load.AddComponent<Unk>();
-            Object.DontDestroyOnLoad(Loader.Load);
+            Object.DontDestroyOnLoad(Load);
         }
 
         public static void LoadHarmony()

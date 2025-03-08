@@ -67,7 +67,6 @@ namespace Unk.Util
 
         public static void HideCursor()
         {
-
             if (PlayerController.instance != null) PlayerController.instance.cameraAim.enabled = true;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
