@@ -94,7 +94,7 @@ namespace Unk.Handler
 
         public bool OnReceivedRPC(string rpc, Hashtable rpcHash)
         {
-            if (player is null || photonPlayer is null || (player.GetSteamID() == PlayerAvatar.instance.GetSteamID())) return true;
+            if (player == null || photonPlayer == null) return true;
 
             RPCData rpcData = new RPCData(photonPlayer, rpc, rpcHash);
 
@@ -104,14 +104,16 @@ namespace Unk.Handler
 
             if (!Patches.IgnoredRPCDebugs.Contains(rpc) && parameters != null) Debug.LogWarning($"RPC Params '{string.Join(", ", parameters.Select(p => p?.ToString() ?? "null"))}'");
 
-            if (rpc.Equals("OutroStartRPC") && (!HasSentRPC("BreakerTriggerRPC", 20) || !HasSentRPC("EngineStartRPC", 5)))
+            if (player.GetSteamID() == PlayerAvatar.instance.GetSteamID()) return true;
+
+            if (rpc.Equals("OutroStartRPC") && (!HasSentRPC("BreakerTriggerRPC", 10) || !HasSentRPC("EngineStartRPC", 10) || !HasSentRPC("SetRunStatRPC", 10) || !HasSentRPC("UpdateLevelRPC", 10)))
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to crash you!");
                 rpcData.SetSuspected();
                 return false;
             }
 
-            if (rpc.Equals("SetDisabledRPC") && !HasSentRPC("OutroStartRPC", 10))
+            if (rpc.Equals("SetDisabledRPC") && !HasSentRPC("OutroStartRPC", 15))
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to disable you!");
                 rpcData.SetSuspected();

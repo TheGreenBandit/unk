@@ -58,17 +58,12 @@ namespace Unk
         public static bool IsDead(this Enemy enemy) => enemy != null && enemy.Reflect().GetValue<EnemyHealth>("Health").Reflect().GetValue<bool>("dead");
         public static bool IsLocalPlayer(this PlayerAvatar player) => player != null && player.Reflect().GetValue<bool>("isLocal");
         public static bool IsDead(this PlayerAvatar player) => player != null && player.Reflect().GetValue<bool>("deadSet");
-        public static string GetName(this EnemySetup enemy)
-        {
-            string name = enemy.name;
-            name = name.Replace("Enemy -", "").Trim();  
-            name = Regex.Replace(name, @"Enemy Group - \d+", "").Trim();  
-            return name;
-        }
+        public static string GetName(this EnemySetup enemy) => enemy.GetEnemyParent().enemyName;
 
+        public static int GetHealth(this PlayerAvatar player) => player.playerHealth.Reflect().GetValue<int>("health"); 
         public static string GetName(this Enemy enemy) => enemy.Reflect().GetValue<EnemyParent>("EnemyParent").enemyName;
         public static string GetName(this PlayerAvatar player) => string.IsNullOrEmpty(player.Reflect().GetValue<string>("playerName")) ? player.name : player.Reflect().GetValue<string>("playerName");
-        public static string Format(this string @string) => @string.Replace("(Clone)", "").Replace("Valuable", "").Trim();
+        public static string GetName(this ValuableObject item) => item.name.Replace("(Clone)", "").Replace("Valuable", "").Trim();
         public static PlayerAvatar GetLocalPlayer(this PlayerAvatar player) => GameObjectManager.players?.FirstOrDefault(p => p != null && p.IsLocalPlayer());
         public static List<PlayerAvatar> GetAlivePlayers(this PlayerAvatar player) => GameObjectManager.players.Where(p => p != null && !p.IsDead()).ToList();
         public static EnemyParent GetEnemyParent(this EnemySetup enemy) => enemy.spawnObjects.Select(o => o?.GetComponent<EnemyParent>()).FirstOrDefault(e => e != null);

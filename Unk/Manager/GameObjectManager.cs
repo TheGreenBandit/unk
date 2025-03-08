@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,38 +19,38 @@ namespace Unk.Manager
         public static List<PlayerAvatar> UnkPlayers = new List<PlayerAvatar>();
         public static List<Enemy> enemies = new List<Enemy>();
         public static List<PlayerAvatar> players = new List<PlayerAvatar>();
-        public static List<Trap> traps = new List<Trap>();
         public static List<ValuableObject> items = new List<ValuableObject>();
+        public static List<ItemAttributes> items2 = new List<ItemAttributes>();
         public static List<ExtractionPoint> extractions = new List<ExtractionPoint>();
         public static List<PlayerDeathHead> deathHeads = new List<PlayerDeathHead>();
         public static List<PhysGrabCart> carts = new List<PhysGrabCart>();
         public static TruckScreenText truck;
 
-        [HarmonyPatch(typeof(ValuableObject), "Awake"), HarmonyPostfix]
+        [HarmonyPatch(typeof(ValuableObject), "Awake"), HarmonyPrefix]
         public static void Awake(ValuableObject __instance) => AddToObjectQueue(() => items.Add(__instance));
 
-        [HarmonyPatch(typeof(PlayerAvatar), "Awake"), HarmonyPostfix]
+        [HarmonyPatch(typeof(PlayerAvatar), "Awake"), HarmonyPrefix]
         public static void Awake(PlayerAvatar __instance) => AddToObjectQueue(() => players.Add(__instance));
 
-        [HarmonyPatch(typeof(Enemy), "Awake"), HarmonyPostfix]
+        [HarmonyPatch(typeof(Enemy), "Awake"), HarmonyPrefix]
         public static void Awake(Enemy __instance) => AddToObjectQueue(() => enemies.Add(__instance));
 
-        [HarmonyPatch(typeof(Trap), "Start"), HarmonyPostfix]
-        public static void Start(Trap __instance) => AddToObjectQueue(() => traps.Add(__instance));
-
-        [HarmonyPatch(typeof(ExtractionPoint), "Start"), HarmonyPostfix]
+        [HarmonyPatch(typeof(ExtractionPoint), "Start"), HarmonyPrefix]
         public static void Start(ExtractionPoint __instance) => AddToObjectQueue(() => extractions.Add(__instance));
 
-        [HarmonyPatch(typeof(PlayerDeathHead), "Start"), HarmonyPostfix]
+        [HarmonyPatch(typeof(PlayerDeathHead), "Start"), HarmonyPrefix]
         public static void Start(PlayerDeathHead __instance) => AddToObjectQueue(() => deathHeads.Add(__instance));
 
-        [HarmonyPatch(typeof(PhysGrabCart), "Start"), HarmonyPostfix]
+        [HarmonyPatch(typeof(PhysGrabCart), "Start"), HarmonyPrefix]
         public static void Start(PhysGrabCart __instance) => AddToObjectQueue(() => carts.Add(__instance));
 
-        [HarmonyPatch(typeof(TruckScreenText), "Start"), HarmonyPostfix]
+        [HarmonyPatch(typeof(ItemAttributes), "Awake"), HarmonyPrefix]
+        public static void Awake(ItemAttributes __instance) => AddToObjectQueue(() => items2.Add(__instance));
+
+        [HarmonyPatch(typeof(TruckScreenText), "Start"), HarmonyPrefix]
         public static void Start(TruckScreenText __instance) => AddToObjectQueue(() => truck = __instance);
 
-        [HarmonyPatch(typeof(PlayerAvatar), "ChatMessageSendRPC"), HarmonyPostfix]
+        [HarmonyPatch(typeof(PlayerAvatar), "ChatMessageSendRPC"), HarmonyPrefix]
         public static void ChatMessageSendRPC(PlayerAvatar __instance, string _message)
         {
             if (_message == "" && !UnkPlayers.Contains(__instance))
@@ -59,12 +60,24 @@ namespace Unk.Manager
             }
         }
 
+        [HarmonyPatch(typeof(PhotonNetwork), "RemoveInstantiatedGO"), HarmonyPrefix]
+        public static void RemoveInstantiatedGO(GameObject go, bool localOnly)
+        {
+            if (go?.GetComponent<ValuableObject>() is { } valuableObject) items.Remove(valuableObject);
+            if (go?.GetComponent<PlayerAvatar>() is { } playerAvatar) players.Remove(playerAvatar);
+            if (go?.GetComponent<Enemy>() is { } enemy) enemies.Remove(enemy);
+            if (go?.GetComponent<ExtractionPoint>() is { } extractionPoint) extractions.Remove(extractionPoint);
+            if (go?.GetComponent<PlayerDeathHead>() is { } playerDeathHead) deathHeads.Remove(playerDeathHead);
+            if (go?.GetComponent<PhysGrabCart>() is { } physGrabCart) carts.Remove(physGrabCart);
+            if (go?.GetComponent<ItemAttributes>() is { } itemAttributes) items2.Remove(itemAttributes);
+        }
+
         public static void CollectObjects()
         {
             CollectObjects(enemies);
             CollectObjects(players);
-            CollectObjects(traps);
             CollectObjects(items);
+            CollectObjects(items2);
             CollectObjects(extractions);
             CollectObjects(deathHeads);
             CollectObjects(carts);
@@ -75,8 +88,8 @@ namespace Unk.Manager
         {
             enemies?.Clear();
             players?.Clear();
-            traps?.Clear();
             items?.Clear();
+            items2?.Clear();
             extractions?.Clear();
             deathHeads?.Clear();
             carts?.Clear();

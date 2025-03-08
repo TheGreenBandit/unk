@@ -12,6 +12,8 @@ using Unk.Manager;
 using Photon.Realtime;
 using Steamworks;
 using Steamworks.Data;
+using Object = UnityEngine.Object;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Unk.Menu.Tab
 {
