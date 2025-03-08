@@ -111,7 +111,7 @@ namespace Unk.Handler
                 return false;
             }
 
-            if (rpc.Equals("SetDisabledRPC") && GameDirector.instance.Reflect().GetValue<bool>("gameStateStartImpulse"))
+            if (rpc.Equals("SetDisabledRPC") && !HasSentRPC("OutroStartRPC", 10))
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to disable you!");
                 rpcData.SetSuspected();
