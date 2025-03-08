@@ -107,14 +107,16 @@ namespace Unk.Handler
             if (rpcHash.ContainsKey(Patches.keyByteFour))
                 parameters = (object[])rpcHash[Patches.keyByteFour];
 
-            if (rpc.Equals("OutroStartRPC")) //crash game
+            if (parameters != null) Debug.LogWarning($"RPC Params '{string.Join(", ", parameters.Select(p => p?.ToString() ?? "null"))}'");
+
+            if (rpc.Equals("OutroStartRPC") && !RunManager.instance.Reflect().GetValue<bool>("restarting")) //crash game
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to crash you!");
                 rpcData.SetSuspected();
                 return false;
             }
 
-            if (rpc.Equals("SetDisabledRPC"))
+            if (rpc.Equals("SetDisabledRPC") && GameDirector.instance.Reflect().GetValue<bool>("gameStateStartImpulse"))
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to disable you!");
                 rpcData.SetSuspected();
@@ -147,6 +149,10 @@ namespace Unk.Handler
         {
             return GamePlayer(photonPlayer).GetSteamID();
         }
-        public static PlayerAvatar GamePlayer(this Player photonPlayer) => GameObjectManager.players.Find(x => x.PhotonPlayer().ActorNumber == photonPlayer.ActorNumber);
+        public static PlayerAvatar GamePlayer(this Player photonPlayer)
+        {
+            if (GameObjectManager.players == null) return null;
+            return GameObjectManager.players.Find(x => x != null && x.PhotonPlayer() != null && x.PhotonPlayer().ActorNumber == photonPlayer.ActorNumber);
+        }
     }
 }
