@@ -1,16 +1,11 @@
 ﻿using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
-using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Unk.Cheats.Components;
-using Unk.Cheats.Core;
 using Unk.Manager;
 using Unk.Util;
 
@@ -109,7 +104,7 @@ namespace Unk.Handler
 
             if (!Patches.IgnoredRPCDebugs.Contains(rpc) && parameters != null) Debug.LogWarning($"RPC Params '{string.Join(", ", parameters.Select(p => p?.ToString() ?? "null"))}'");
 
-            if (rpc.Equals("OutroStartRPC") && !RunManager.instance.Reflect().GetValue<bool>("restarting")) 
+            if (rpc.Equals("OutroStartRPC") && !HasSentRPC("ModulesReadyRPC", 10))
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to crash you!");
                 rpcData.SetSuspected();
@@ -134,6 +129,8 @@ namespace Unk.Handler
             while (queue.Count > 0 && queue.Peek().IsExpired()) queue.Dequeue();
         }
     }
+
+    
 
     public static class PlayerExtensions
     {

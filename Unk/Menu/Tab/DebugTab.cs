@@ -9,6 +9,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 using Unk.Manager;
+using Photon.Realtime;
+using Steamworks;
+using Steamworks.Data;
 
 namespace Unk.Menu.Tab
 {
@@ -34,6 +37,12 @@ namespace Unk.Menu.Tab
             GUILayout.Label(PhotonNetwork.IsMasterClient ? "Yes" : "No");
             GUILayout.EndHorizontal();
             UI.Button("Log RPCS", () => PhotonNetwork.PhotonServerSettings.RpcList.ToList().ForEach(r => Debug.Log(r)));
+
+            UI.Button("Host Lobby", SteamManager.instance.HostLobby);
+            UI.Button("Set Lobby Public", () => SetPublic(true));
+            UI.Button("Set Lobby Private", () => SetPublic(false));
+            UI.Button("Set Lobby Joinable", () => SetJoinable(true));
+            UI.Button("Set Lobby NonJoinable", () => SetJoinable(false));
 
             UI.Button("Revive all", () =>
             {
@@ -62,5 +71,18 @@ namespace Unk.Menu.Tab
 
             //GUILayout.EndScrollView();
         }
+        internal static void SetPublic(bool value)
+        {
+            Lobby l = SteamManager.instance.Reflect().GetValue<Lobby>("currentLobby");
+            if (value) l.SetPublic();
+            else l.SetPrivate();
+        }
+
+        internal static void SetJoinable(bool value)
+        {
+            Lobby l = SteamManager.instance.Reflect().GetValue<Lobby>("currentLobby");
+            l.SetJoinable(value);
+        }
     }
+
 }
