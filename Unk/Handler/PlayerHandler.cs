@@ -104,7 +104,7 @@ namespace Unk.Handler
 
             if (!Patches.IgnoredRPCDebugs.Contains(rpc) && parameters != null) Debug.LogWarning($"RPC Params '{string.Join(", ", parameters.Select(p => p?.ToString() ?? "null"))}'");
 
-            if (rpc.Equals("OutroStartRPC") && !HasSentRPC("ModulesReadyRPC", 10))
+            if (rpc.Equals("OutroStartRPC") && (!HasSentRPC("BreakerTriggerRPC", 20) || !HasSentRPC("EngineStartRPC", 5)))
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to crash you!");
                 rpcData.SetSuspected();
@@ -129,8 +129,6 @@ namespace Unk.Handler
             while (queue.Count > 0 && queue.Peek().IsExpired()) queue.Dequeue();
         }
     }
-
-    
 
     public static class PlayerExtensions
     {
