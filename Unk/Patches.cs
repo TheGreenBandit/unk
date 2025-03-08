@@ -75,8 +75,8 @@ namespace Unk
             return sender.GamePlayer().Handle().OnReceivedRPC(rpc, rpcData);
         }
 
-        [HarmonyPatch(typeof(GameDirector), "gameStateEnd"), HarmonyPostfix]
-        public static void gameStateEnd()
+        [HarmonyPatch(typeof(ReloadScene), "Start"), HarmonyPostfix]
+        public static void Start()
         {
             GameObjectManager.ClearObjects();
         }
