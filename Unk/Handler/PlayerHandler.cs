@@ -106,7 +106,7 @@ namespace Unk.Handler
 
             if (player.GetSteamID() == PlayerAvatar.instance.GetSteamID()) return true;
 
-            if (rpc.Equals("OutroStartRPC") && !HasSentRPC("SetRunStatRPC", 10) || !HasSentRPC("SpawnRPC", 10))
+            if (rpc.Equals("OutroStartRPC") && (!HasSentRPC("SetRunStatRPC", 10) || !HasSentRPC("SpawnRPC", 10)))
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to crash you!");
                 rpcData.SetSuspected();
