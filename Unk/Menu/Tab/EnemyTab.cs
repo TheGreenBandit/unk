@@ -34,35 +34,27 @@ namespace Unk.Menu.Tab
         {
             GUILayout.BeginVertical(GUILayout.Width(UnkMenu.Instance.contentWidth - UnkMenu.Instance.spaceFromLeft));
             selectedTab = GUILayout.Toolbar(selectedTab, tabs);
-
-
             GUILayout.BeginHorizontal();
-
             GUILayout.BeginVertical(GUILayout.Width(UnkMenu.Instance.contentWidth * 0.3f - UnkMenu.Instance.spaceFromLeft));
             EnemyList();
             GUILayout.EndVertical();
-
             GUILayout.BeginVertical(GUILayout.Width(UnkMenu.Instance.contentWidth * 0.7f - UnkMenu.Instance.spaceFromLeft));
-            scrollPos2 = GUILayout.BeginScrollView(scrollPos2);
-
-            switch (selectedTab)
+            UI.VerticalSpace(ref scrollPos2, () =>
             {
-                case 0:
-                    GeneralActions();
-                    EnemyActions();
-                    break;
-                case 1:
-                    EnemySpawnerContent();
-                    break;
-            }
-
-            GUILayout.EndScrollView();
+                switch (selectedTab)
+                {
+                    case 0:
+                        GeneralActions();
+                        EnemyActions();
+                        break;
+                    case 1:
+                        EnemySpawnerContent();
+                        break;
+                }
+            });
             GUILayout.EndVertical();
-
             GUILayout.EndHorizontal();
-
             GUILayout.EndVertical();
-
         }
 
         private void EnemyList()
@@ -132,14 +124,6 @@ namespace Unk.Menu.Tab
             UI.TextboxAction("Freeze", ref freeze, 3,
                 new UIButton("Time", () => enemy.Freeze(freeze))
             );
-
-            UI.Button("Debug", () =>
-            {
-                enemy.GetComponents<Component>().Where(c => c != null).ToList().ForEach(c =>
-                {
-                    Debug.Log($"{c.name} - {c.gameObject.name} - {c.GetType().Name} - {c.GetType().Assembly.GetName()} - {c.GetType().Namespace} - {c.GetType().FullName}");
-                });
-            });
         }
 
         private void EnemySpawnerContent()

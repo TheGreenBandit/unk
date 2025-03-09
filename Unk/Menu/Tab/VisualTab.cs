@@ -9,7 +9,8 @@ namespace Unk.Menu.Tab
     internal class VisualTab : MenuTab
     {
         public VisualTab() : base("Visual") { }
-        private Vector2 scrollPos = Vector2.zero;
+        private Vector2 scrollPos = Vector2.zero; 
+        private Vector2 scrollPos2 = Vector2.zero;
 
         public override void Draw()
         {
@@ -23,12 +24,17 @@ namespace Unk.Menu.Tab
 
         private void VisualContent()
         {
+            scrollPos = GUILayout.BeginScrollView(scrollPos);
+            UI.Header("Visual", true);
             UI.CheatToggleSlider(Cheat.Instance<FOV>(), "FOV", Cheats.FOV.Value.ToString(), ref FOV.Value, 1, 140);
+            GUILayout.EndScrollView();
         }
 
         private void ESPContent()
         {
-            scrollPos = GUILayout.BeginScrollView(scrollPos);
+            scrollPos2 = GUILayout.BeginScrollView(scrollPos2);
+
+            UI.Header("ESP", true);
             UI.Checkbox("Toggle lights", Cheat.Instance<LightsOn>());
             UI.Checkbox("Enable ESP", Cheat.Instance<ESP>());
             UI.Button("Toggle All ESP", ESP.ToggleAll);

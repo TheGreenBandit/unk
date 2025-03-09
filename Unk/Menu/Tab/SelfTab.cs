@@ -16,8 +16,9 @@ namespace Unk.Menu.Tab
 
         public override void Draw()
         {
-            UI.VerticalSpace(() =>
+            UI.VerticalSpace(ref scrollPos, () =>
             {
+                UI.Header("Self", true);
                 UI.Checkbox("Unlimited Energy", Cheat.Instance<UnlimitedStamina>());
                 UI.Checkbox("Godmode", Cheat.Instance<Godmode>());
                 UI.Checkbox("No Tumble", Cheat.Instance<NoTumble>());

@@ -19,27 +19,24 @@ namespace Unk.Menu.Tab
         private Vector2 scrollPos = Vector2.zero;
         private Vector2 scrollPos2 = Vector2.zero;
         public static PlayerAvatar selectedPlayer = null;
-        private string message = "I'm dumb";
+        private string message = "R.E.P.O Menu on top!";
         private string color = "-1";
 
         public override void Draw()
         {
-            GUILayout.BeginVertical(GUILayout.Width(UnkMenu.Instance.contentWidth * 0.3f - UnkMenu.Instance.spaceFromLeft));
-            PlayersList();
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical(GUILayout.Width(UnkMenu.Instance.contentWidth * 0.7f - UnkMenu.Instance.spaceFromLeft));
-            scrollPos2 = GUILayout.BeginScrollView(scrollPos2);
-            GeneralActions();
-            PlayerActions();
-            GUILayout.EndScrollView();
-            GUILayout.EndVertical();
+            UI.VerticalSpace(ref scrollPos, () =>
+            {
+                PlayersList();
+            }, GUILayout.Width(UnkMenu.Instance.contentWidth * 0.3f - UnkMenu.Instance.spaceFromLeft));
+            UI.VerticalSpace(ref scrollPos2, () =>
+            {
+                GeneralActions();
+                PlayerActions();
+            }, GUILayout.Width(UnkMenu.Instance.contentWidth * 0.7f - UnkMenu.Instance.spaceFromLeft));
         }
 
         private void GeneralActions()
         {
-            if (!PhotonNetwork.InRoom) return;
-
             UI.Header("General Actions");
 
             UI.Button("Kill All", () => {
@@ -106,26 +103,18 @@ namespace Unk.Menu.Tab
         {
             float width = UnkMenu.Instance.contentWidth * 0.3f - UnkMenu.Instance.spaceFromLeft * 2;
             float height = UnkMenu.Instance.contentHeight - 20;
-
             Rect rect = new Rect(0, 0, width, height);
             GUI.Box(rect, "Player List");
-
             GUILayout.BeginVertical(GUILayout.Width(width), GUILayout.Height(height));
-
             GUILayout.Space(25);
-            scrollPos = GUILayout.BeginScrollView(scrollPos);
-
             foreach (PlayerAvatar player in GameObjectManager.players.Where(p => p != null))
             {
                 if (selectedPlayer == null) selectedPlayer = player;
                 if (player.Handle().IsUnkUser()) GUI.contentColor = Settings.c_primary.GetColor();
                 if (selectedPlayer.GetInstanceID() == player.GetInstanceID()) GUI.contentColor = Settings.c_espPlayers.GetColor();
                 if (GUILayout.Button(player.GetName(), GUI.skin.label)) selectedPlayer = player;
-
                 GUI.contentColor = Settings.c_menuText.GetColor();
             }
-
-            GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
     }

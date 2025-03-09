@@ -32,12 +32,20 @@ namespace Unk.Menu.Core
         public UnkMenu()
         {
             instance = this;
-            tabs.Add(new StartTab());
+            tabs.Add(new SettingsTab());
+            tabs.Add(new GeneralTab());
             tabs.Add(new SelfTab());
             tabs.Add(new VisualTab());
             tabs.Add(new PlayersTab());
             tabs.Add(new EnemyTab());
-            tabs.Add(new DebugTab());
+            tabs.Add(new ServerTab());
+            if (Settings.b_DebugMode) tabs.Add(new DebugTab());
+        }
+
+        public void ToggleDebugTab(bool enabled)
+        {
+            if (enabled && !tabs.Any(t => t is DebugTab)) tabs.Add(new DebugTab());
+            else tabs.RemoveAll(t => t is DebugTab);
         }
 
         public void Resize()

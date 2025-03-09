@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 using Unk.Menu.Core;
 using Unk.Util;
 
 namespace Unk.Menu.Tab
 {
-    internal class StartTab : MenuTab
+    internal class GeneralTab : MenuTab
     {
         Vector2 scrollPos = Vector2.zero;
-        public StartTab() : base("Start") { }
+        public GeneralTab() : base("General") { }
 
         public override void Draw()
         {
-            UI.VerticalSpace(() =>
+            UI.VerticalSpace(ref scrollPos, () =>
             {
                 UI.Header(Settings.c_primary.AsString("Welcome to Unk!"), 30);
                 GUILayout.Space(20);

@@ -157,6 +157,20 @@ namespace Unk.Util
             GUILayout.EndHorizontal();
         }
 
+        public static void Toggle(string header, ref bool value, string enabled = "Enable", string disabled = "Disable", params Action<bool>[] action)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(header);
+            GUILayout.FlexibleSpace();
+            bool newValue = !value;
+            if (GUILayout.Button(value ? disabled : enabled))
+            {
+                value = newValue;
+                action.ToList().ForEach(a => a.Invoke(newValue));
+            }
+            GUILayout.EndHorizontal();
+        }
+
         public static void CheatToggleSlider(ToggleCheat toggle, string header, string displayValue, ref float value, float min, float max, params object[] param)
         {
             GUILayout.BeginHorizontal();
@@ -327,19 +341,21 @@ namespace Unk.Util
         }
         public static void HorizontalSpace(string title, Action action)
         {
-            if (title is not null)
-                Header(title);
-
+            if (title is not null) Header(title);
             GUILayout.BeginHorizontal();
             action.Invoke();
             GUILayout.EndHorizontal();
         }
-        public static void VerticalSpace(Action action, params GUILayoutOption[] options)
+
+        public static void VerticalSpace(ref Vector2 ScrollPosition, Action action, params GUILayoutOption[] options)
         {
+            ScrollPosition = GUILayout.BeginScrollView(ScrollPosition);
             GUILayout.BeginVertical(options);
             action.Invoke();
             GUILayout.EndVertical();
+            GUILayout.EndScrollView();
         }
+
         public static void ButtonGrid<T>(List<T> objects, Func<T, string> textSelector, string search, Action<T> action, int numPerRow, int btnWidth = 175)
         {
             List<T> filtered = objects.FindAll(x => textSelector(x).ToLower().Contains(search.ToLower()));

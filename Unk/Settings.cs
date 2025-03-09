@@ -8,6 +8,8 @@ using System.Reflection;
 using UnityEngine;
 using Unk.Cheats.Core;
 using Unk.Util;
+using Audial.Utils;
+using Unk.Menu.Core;
 
 namespace Unk
 {
@@ -28,6 +30,7 @@ namespace Unk
         /* *
          * Menu Settings
          * */
+        public static bool b_DebugMode = false;
         public static float f_inputMovementSpeed = 10f;
 
         /* *    
@@ -125,6 +128,8 @@ namespace Unk
                 settings["TextboxWidth"] = i_textboxWidth.ToString();
                 settings["MenuAlpha"] = f_menuAlpha.ToString();
 
+                cheatSettings["DebugMode"] = b_DebugMode.ToString();
+
                 json["KeyBinds"] = JObject.FromObject(keybinds);
                 json["Toggles"] = JObject.FromObject(toggles);
                 json["Values"] = JObject.FromObject(cheatValues);
@@ -198,7 +203,12 @@ namespace Unk
                 if (json.TryGetValue("CheatSettings", out JToken cSettingsToken))
                 {
                     JObject cheatSettings = cSettingsToken.ToObject<JObject>();
-                    
+
+                    if (cheatSettings.TryGetValue("DebugMode", out JToken debugModeToken))
+                    {
+                        b_DebugMode = bool.Parse(debugModeToken.ToString());
+                        UnkMenu.Instance.ToggleDebugTab(b_DebugMode);
+                    }
                 }
 
                 Debug.Log("Loading Colors...");
