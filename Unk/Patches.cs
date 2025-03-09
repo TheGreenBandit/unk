@@ -85,13 +85,13 @@ namespace Unk
         [HarmonyPatch(typeof(LoadBalancingPeer), "OpRaiseEvent"), HarmonyPrefix]
         public static bool OpRaiseEvent(LoadBalancingPeer __instance, byte eventCode, object customEventContent, RaiseEventOptions raiseEventOptions, SendOptions sendOptions)
         {
-
-            Debug.Log($"Raise Event Called!\n eventcode: {eventCode}, \nraise event options| caching: {raiseEventOptions.CachingOption}" +
-                $" flags: {raiseEventOptions.Flags}\nsendoptions| channel: {sendOptions.Channel}, mode: {sendOptions.DeliveryMode}");
-            if (eventCode == 204)
-                return false;
+            // annoying asf it gets spammed
+            //Debug.Log($"Raise Event Called!\n eventcode: {eventCode}, \nraise event options| caching: {raiseEventOptions.CachingOption}" +
+            //    $" flags: {raiseEventOptions.Flags}\nsendoptions| channel: {sendOptions.Channel}, mode: {sendOptions.DeliveryMode}");
+            if (eventCode == 204) return false;
             return true;
         }
+
         [HarmonyPatch(typeof(ReloadScene), "Start"), HarmonyPostfix]
         public static void Start()
         {

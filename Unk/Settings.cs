@@ -25,6 +25,11 @@ namespace Unk
         public static int i_textboxWidth = 85;
         public static float f_menuAlpha = 1f;
 
+        /* *
+         * Menu Settings
+         * */
+        public static float f_inputMovementSpeed = 10f;
+
         /* *    
          * Color Settings
          * */

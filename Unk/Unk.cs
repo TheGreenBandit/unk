@@ -89,7 +89,7 @@ namespace Unk
                         else Debug.LogError($"Unknown Cheat Type: {c.GetType().Name}");
                     });
 
-                if (PhotonNetwork.InRoom) cheats.ForEach(cheat => cheat.Update());
+               cheats.ForEach(cheat => cheat.Update());
             }
             catch (Exception e)
             {

@@ -106,19 +106,21 @@ namespace Unk.Handler
 
             if (player.GetSteamID() == PlayerAvatar.instance.GetSteamID()) return true;
 
-            if (rpc.Equals("OutroStartRPC") && (!HasSentRPC("BreakerTriggerRPC", 10) || !HasSentRPC("EngineStartRPC", 10) || !HasSentRPC("SetRunStatRPC", 10) || !HasSentRPC("UpdateLevelRPC", 10)))
+            /*
+            if (rpc.Equals("OutroStartRPC"))
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to crash you!");
                 rpcData.SetSuspected();
                 return false;
             }
 
-            if (rpc.Equals("SetDisabledRPC") && !HasSentRPC("OutroStartRPC", 15))
+            if (rpc.Equals("SetDisabledRPC"))
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to disable you!");
                 rpcData.SetSuspected();
                 return false;
             }
+            */
 
             GetRPCHistory().Enqueue(rpcData);
             CleanupRPCHistory();
