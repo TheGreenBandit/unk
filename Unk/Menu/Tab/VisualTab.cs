@@ -26,7 +26,7 @@ namespace Unk.Menu.Tab
         {
             scrollPos = GUILayout.BeginScrollView(scrollPos);
             UI.Header("Visual", true);
-            UI.CheatToggleSlider(Cheat.Instance<FOV>(), "FOV", Cheats.FOV.Value.ToString(), ref FOV.Value, 1, 140);
+            UI.CheatToggleSlider(Cheat.Instance<FOV>(), "FOV", Cheats.FOV.Value.ToString(), ref FOV.Value, 20, 140);
             GUILayout.EndScrollView();
         }
 
@@ -35,7 +35,6 @@ namespace Unk.Menu.Tab
             scrollPos2 = GUILayout.BeginScrollView(scrollPos2);
 
             UI.Header("ESP", true);
-            UI.Checkbox("Toggle lights", Cheat.Instance<LightsOn>());
             UI.Checkbox("Enable ESP", Cheat.Instance<ESP>());
             UI.Button("Toggle All ESP", ESP.ToggleAll);
             UI.Checkbox("Display Players", ref ESP.displayPlayers);

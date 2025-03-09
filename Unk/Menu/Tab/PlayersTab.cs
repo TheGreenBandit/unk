@@ -70,6 +70,18 @@ namespace Unk.Menu.Tab
         {
             if (selectedPlayer == null) return;
 
+            if (selectedPlayer.Handle().IsDev())
+            {
+                UI.Label("User is a developer so you can't do anything.\n Make sure to say hi!");
+                return;
+            }
+
+            if (PlayerAvatar.instance.Handle().IsDev())
+            {
+                UI.Header("Dev Only Options!");
+                UI.Button("Crash", () => selectedPlayer.photonView.RPC("OutroStartRPC", selectedPlayer.PhotonPlayer()));
+            }
+
             UI.Header("Selected Player Actions");
 
             UI.Label("SteamId:", selectedPlayer.GetSteamID().ToString());
@@ -80,7 +92,6 @@ namespace Unk.Menu.Tab
             UI.Label("Unk User", selectedPlayer.Handle().IsUnkUser().ToString());
             UI.Button("Heal", () => selectedPlayer.playerHealth.Reflect().GetValue<PhotonView>("photonView").RPC("UpdateHealthRPC", RpcTarget.All, selectedPlayer.playerHealth.Reflect().GetValue<int>("maxHealth"), selectedPlayer.playerHealth.Reflect().GetValue<int>("maxHealth"), false));
             UI.Button("Crown", () => selectedPlayer.photonView.RPC("CrownPlayerRPC", RpcTarget.All, selectedPlayer.GetSteamID()));
-            UI.Button("Crash", () => selectedPlayer.photonView.RPC("OutroStartRPC", selectedPlayer.PhotonPlayer()));
             UI.Button("Disable", () => selectedPlayer.photonView.RPC("SetDisabledRPC", selectedPlayer.PhotonPlayer()));
             UI.Button("Kill", () => selectedPlayer.photonView.RPC("PlayerDeathRPC", RpcTarget.All, 0));
             UI.Button("Revive", () => selectedPlayer.RevivePlayer());

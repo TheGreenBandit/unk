@@ -8,7 +8,6 @@ namespace Unk.Menu.Core
 {
     internal class UnkMenu : MenuFragment
     {
-
         public Rect windowRect = new Rect(50f, 50f, 700f, 450f);
 
         private Vector2 scrollPos = Vector2.zero;
