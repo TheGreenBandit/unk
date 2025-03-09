@@ -60,6 +60,7 @@ namespace Unk
         {
             "IsTalkingRPC",
             "ReceiveSyncData",
+            "SetColorRPC",
         };
 
         [HarmonyPatch(typeof(PhotonNetwork), "ExecuteRpc"), HarmonyPrefix]
