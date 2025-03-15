@@ -1,2 +1,6 @@
+v1.1
+- Succesfully patched crashing and disabling!
+- reorganized gui a bit
+
 v1.0.1
 - Added a changelog

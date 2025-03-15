@@ -26,6 +26,7 @@ namespace Unk.Menu.Tab
                     {
                         UI.Header("General");
                         UI.CheckboxV("Godmode", Cheat.Instance<Godmode>());
+                        UI.CheckboxV("Unlimited Energy", Cheat.Instance<UnlimitedStamina>());
                         UI.CheckboxV("No Tumble", Cheat.Instance<NoTumble>());
                         UI.CheckboxV("Infinite Jump", Cheat.Instance<InfiniteJump>());
                     }, GUILayout.Width(100));
