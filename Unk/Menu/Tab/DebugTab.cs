@@ -28,13 +28,26 @@ namespace Unk.Menu.Tab
             GUILayout.FlexibleSpace();
             GUILayout.Label(PhotonNetwork.IsMasterClient ? "Yes" : "No");
             GUILayout.EndHorizontal();
-            UI.Button("Log RPCS", () => PhotonNetwork.PhotonServerSettings.RpcList.ToList().ForEach(r => Debug.Log(r)));
-            
+            UI.Button("Log RPCS", () => { PhotonNetwork.PhotonServerSettings.RpcList.ToList().ForEach(r => Debug.Log(r));
+                
+            });
+
+            UI.Button("Test items", () =>
+            {
+                PunManager.instance.Reflect().GetValue<PhotonView>("photonView").RPC("UpdateStatRPC", RpcTarget.All, "itemsPurchased", "Handgun", 1);
+                LevelGenerator.Instance.PhotonView.RPC("ItemSetup", RpcTarget.All);
+            });
             //	public Dictionary<string, Item> itemDictionary = new Dictionary<string, Item>(); //get item names from here
             if (StatsManager.instance.itemDictionary != null)
             {
+
                 for (int i = 0; i < StatsManager.instance.itemDictionary.Count; i++)
-                    UI.Button(StatsManager.instance.itemDictionary.ElementAt(i).Key, () => { PunManager.instance.AddingItem(StatsManager.instance.itemDictionary.ElementAt(i).Key, StatsManager.instance.GetIndexThatHoldsThisItemFromItemDictionary(StatsManager.instance.itemDictionary.ElementAt(i).Key), -1, null); });
+                    UI.Button(StatsManager.instance.itemDictionary.ElementAt(i).Key, () => 
+                    {
+
+                        PunManager.instance.AddingItem(StatsManager.instance.itemDictionary.ElementAt(i).Key,
+                            StatsManager.instance.GetIndexThatHoldsThisItemFromItemDictionary(
+                                StatsManager.instance.itemDictionary.ElementAt(i).Key), -1, null); });
             }
             //UI.Button("AddingItemRPC test", () => { PunManager.instance.AddingItem("name", StatsManager.instance.GetIndexThatHoldsThisItemFromItemDictionary("anem"), -1, null); });
 

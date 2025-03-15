@@ -142,6 +142,14 @@ namespace Unk.Util
             GUILayout.EndHorizontal();
         }
 
+        public static void CheckboxV(string header, ToggleCheat cheat)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(header);
+            cheat.Enabled = GUILayout.Toggle(cheat.Enabled, "");
+            GUILayout.EndHorizontal();
+        }
+
         public static void ToggleSlider(string header, string displayValue, ref bool enable, ref float value, float min, float max, params object[] param)
         {
             GUILayout.BeginHorizontal();
@@ -339,7 +347,7 @@ namespace Unk.Util
             buttons.ToList().ForEach(btn => btn.Draw());
             GUILayout.EndHorizontal();
         }
-        public static void HorizontalSpace(string title, Action action)
+        public static void HorizontalSpace(string title, Action action, params GUILayoutOption[] options)
         {
             if (title is not null) Header(title);
             GUILayout.BeginHorizontal();
@@ -354,6 +362,13 @@ namespace Unk.Util
             action.Invoke();
             GUILayout.EndVertical();
             GUILayout.EndScrollView();
+        }
+
+        public static void VerticalSpace(Action action, params GUILayoutOption[] options)
+        {
+            GUILayout.BeginVertical(options);
+            action.Invoke();
+            GUILayout.EndVertical();
         }
 
         public static void ButtonGrid<T>(List<T> objects, Func<T, string> textSelector, string search, Action<T> action, int numPerRow, int btnWidth = 175)

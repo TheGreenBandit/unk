@@ -69,7 +69,7 @@ namespace Unk.Menu.Core
         {
             GUI.skin = ThemeUtil.Skin;
             GUI.color = Color.white;
-
+            GUI.skin.label.wordWrap = false;
             GUI.skin.label.fontSize = Settings.i_menuFontSize;
             GUI.skin.button.fontSize = Settings.i_menuFontSize;
             GUI.skin.toggle.fontSize = Settings.i_menuFontSize;
@@ -103,7 +103,7 @@ namespace Unk.Menu.Core
         {
             GUI.color = new Color(1f, 1f, 1f, 0.1f);
             GUIStyle watermark = new GUIStyle(GUI.skin.label) { fontSize = 20, fontStyle = FontStyle.Bold };
-            string text = "TGB & Dustin";
+            string text = "TGB";
 
             GUI.Label(new Rect(windowRect.width - watermark.CalcSize(new GUIContent(text)).x - 10, windowRect.height - watermark.CalcSize(new GUIContent(text)).y - 10, watermark.CalcSize(new GUIContent(text)).x, watermark.CalcSize(new GUIContent(text)).y), text, watermark);
             GUI.color = new Color(1f, 1f, 1f, Settings.f_menuAlpha);

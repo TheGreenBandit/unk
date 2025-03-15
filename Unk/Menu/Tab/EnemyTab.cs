@@ -132,12 +132,18 @@ namespace Unk.Menu.Tab
             EnemySetup enemySetup = GetEnemies().Find(x => x.GetInstanceID() == selectedEnemySetup);
             if (enemySetup == null) return;
 
+            UI.Button("Spawnn ALLL", () =>
+            {
+                foreach (var item in GetEnemies())
+                    item.GetEnemyParent().Reflect().Invoke("Spawn");
+            });
+
             if (!SemiFunc.IsMasterClientOrSingleplayer())
             {
                 UI.Label("Host is required", Settings.c_menuText);
                 return;
             }
-
+            //add spawn on player enemyteleportedrpc
             UI.Header("Enemy Spawner Content");
 
             UI.Label("Selected Enemy:", enemySetup.GetName(), Settings.c_menuText);

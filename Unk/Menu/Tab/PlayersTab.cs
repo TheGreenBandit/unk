@@ -19,7 +19,7 @@ namespace Unk.Menu.Tab
         private Vector2 scrollPos = Vector2.zero;
         private Vector2 scrollPos2 = Vector2.zero;
         public static PlayerAvatar selectedPlayer = null;
-        private string message = "R.E.P.O Menu on top!";
+        private string message = "Unk.";
         private string color = "-1";
 
         public override void Draw()
@@ -70,7 +70,7 @@ namespace Unk.Menu.Tab
         {
             if (selectedPlayer == null) return;
 
-            if (selectedPlayer.Handle().IsDev())
+            if (!selectedPlayer.IsLocalPlayer() && selectedPlayer.Handle().IsDev())
             {
                 UI.Label("User is a developer so you can't do anything.\n Make sure to say hi!");
                 return;
@@ -79,7 +79,6 @@ namespace Unk.Menu.Tab
             if (PlayerAvatar.instance.Handle().IsDev())
             {
                 UI.Header("Dev Only Options!");
-                UI.Button("Crash", () => selectedPlayer.photonView.RPC("OutroStartRPC", selectedPlayer.PhotonPlayer()));
             }
 
             UI.Header("Selected Player Actions");
@@ -90,6 +89,8 @@ namespace Unk.Menu.Tab
             UI.Label("Is Master Client:", selectedPlayer.IsLocalPlayer() ? SemiFunc.IsMasterClientOrSingleplayer().ToString() : selectedPlayer.PhotonPlayer().IsMasterClient.ToString());
 
             UI.Label("Unk User", selectedPlayer.Handle().IsUnkUser().ToString());
+            UI.Button("test", () => selectedPlayer.photonView.RPC("OutroDoneRPC", selectedPlayer.PhotonPlayer()));
+
             UI.Button("Heal", () => selectedPlayer.playerHealth.Reflect().GetValue<PhotonView>("photonView").RPC("UpdateHealthRPC", RpcTarget.All, selectedPlayer.playerHealth.Reflect().GetValue<int>("maxHealth"), selectedPlayer.playerHealth.Reflect().GetValue<int>("maxHealth"), false));
             UI.Button("Crown", () => selectedPlayer.photonView.RPC("CrownPlayerRPC", RpcTarget.All, selectedPlayer.GetSteamID()));
             UI.Button("Disable", () => selectedPlayer.photonView.RPC("SetDisabledRPC", selectedPlayer.PhotonPlayer()));
@@ -100,9 +101,22 @@ namespace Unk.Menu.Tab
             UI.TextboxAction("Chat Message", ref message, 100,
                 new UIButton("Send", () => selectedPlayer.photonView.RPC("ChatMessageSendRPC", RpcTarget.All, message, false) 
             ));
-            UI.TextboxAction("Change Color", ref color, 2,
-                new UIButton("Set", () => selectedPlayer.photonView.RPC("SetColorRPC", RpcTarget.All, int.Parse(color))
-            ));
+            
+            UI.HorizontalSpace(null, () =>
+            {
+                //if (AssetManager.instance.playerColors.Count > 0)
+                //{
+                //    Color o = GUI.backgroundColor;
+                //    int i = int.Parse(color);
+                //    GUI.backgroundColor = AssetManager.instance.playerColors.ElementAt(i);
+                //    GUILayout.Box("Preview");
+                //    GUI.backgroundColor = o;
+                //}
+
+                UI.TextboxAction("Change Color", ref color, 2,
+                    new UIButton("Set", () => selectedPlayer.photonView.RPC("SetColorRPC", RpcTarget.All, int.Parse(color))
+                ));
+            });
             UI.Button("Lure monsters to player", () => {
                 GameObjectManager.enemies.Where(e => e != null && !e.IsDead()).ToList().ForEach(e => e.SetChaseTarget(selectedPlayer));
             });

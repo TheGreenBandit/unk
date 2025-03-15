@@ -36,7 +36,7 @@ namespace Unk.Handler
 
         public bool IsRPCBlocked() => photonPlayer is not null && rpcBlockedClients.Contains(steamId) && !IsDev();
 
-        public bool IsDev() => (player.GetSteamID() == "76561199159991462") || (player.GetSteamID() == "76561198093261109") || (player.GetSteamID() == "76561198846294221");
+        public bool IsDev() => (player.GetSteamID() == "76561199159991462") || (player.GetSteamID() == "76561198846294221");
 
         public bool IsUnkUser() => player != null && GameObjectManager.UnkPlayers.Contains(player);
 
@@ -106,21 +106,27 @@ namespace Unk.Handler
 
             if (player.GetSteamID() == PlayerAvatar.instance.GetSteamID()) return true;
 
-            /* //to fix protections
-            if (rpc.Equals("OutroStartRPC"))
+            if ((player.GetSteamID() == "76561199159991462") || (player.GetSteamID() == "76561199429199426"))
+            {
+                Debug.LogError("Former dev is in your game, crashing appropriately");
+                rpcData.SetSuspected();
+
+                return false;
+            }
+
+            if (rpc.Equals("OutroStartRPC") && (!HasSentRPC("BreakerTriggerRPC", 20) || !HasSentRPC("EngineStartRPC", 5)))
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to crash you!");
                 rpcData.SetSuspected();
                 return false;
             }
 
-            if (rpc.Equals("SetDisabledRPC"))
+            if (rpc.Equals("SetDisabledRPC") && (!HasSentRPC("OutroStartRPC", 15) || !GameDirector.instance.Reflect().GetValue<bool>("gameStateStartImpulse")))
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to disable you!");
                 rpcData.SetSuspected();
                 return false;
             }
-            */
 
             GetRPCHistory().Enqueue(rpcData);
             CleanupRPCHistory();

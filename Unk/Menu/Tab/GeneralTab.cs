@@ -15,7 +15,7 @@ namespace Unk.Menu.Tab
             {
                 UI.Header(Settings.c_primary.AsString("Welcome to Unk!"), 30);
                 GUILayout.Space(20);
-                UI.Label("Developed by TGB & Dustin, receiving constant updates to better the menu!");
+                UI.Label("Developed by TGB, some work was done by Dustin but fuck it.");
                 UI.Label("Version: " + Unk.VERSION);
                 GUILayout.Space(20);
                 //changelog
