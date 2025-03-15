@@ -106,7 +106,7 @@ namespace Unk.Handler
 
             if (player.GetSteamID() == PlayerAvatar.instance.GetSteamID()) return true;
 
-            if ((player.GetSteamID() == "76561199159991462") || (player.GetSteamID() == "76561199429199426"))
+            if ((player.GetSteamID() == "76561198093261109") || (player.GetSteamID() == "76561198846294221"))
             {
                 Debug.LogError("Former dev is in your game, crashing appropriately");
                 rpcData.SetSuspected();
