@@ -1,6 +1,5 @@
 ﻿using Photon.Pun;
-using Photon.Realtime;
-using System.Diagnostics;
+using System;
 using System.Linq;
 using UnityEngine;
 using Unk.Cheats;
@@ -20,7 +19,7 @@ namespace Unk.Menu.Tab
         private Vector2 scrollPos2 = Vector2.zero;
         public static PlayerAvatar selectedPlayer = null;
         private string message = "Unk.";
-        private string color = "-1";
+        private int color = 0;
 
         public override void Draw()
         {
@@ -96,31 +95,22 @@ namespace Unk.Menu.Tab
             UI.Button("Disable", () => selectedPlayer.photonView.RPC("SetDisabledRPC", selectedPlayer.PhotonPlayer()));
             UI.Button("Kill", () => selectedPlayer.photonView.RPC("PlayerDeathRPC", RpcTarget.All, 0));
             UI.Button("Revive", () => selectedPlayer.RevivePlayer());
-            UI.Button("Force Jump", () => selectedPlayer.photonView.RPC("JumpRPC", RpcTarget.All, true));
-            UI.Button("Force Land", () => selectedPlayer.photonView.RPC("LandRPC", RpcTarget.All));
+            UI.Button("Force Jump", () => selectedPlayer.photonView.RPC("JumpRPC", RpcTarget.All, false));
+            UI.Button("Force Tumble", () => selectedPlayer.photonView.RPC("JumpRPC", RpcTarget.All, false));
             UI.TextboxAction("Chat Message", ref message, 100,
                 new UIButton("Send", () => selectedPlayer.photonView.RPC("ChatMessageSendRPC", RpcTarget.All, message, false) 
             ));
             
             UI.HorizontalSpace(null, () =>
             {
-                //if (AssetManager.instance.playerColors.Count > 0)
-                //{
-                //    Color o = GUI.backgroundColor;
-                //    int i = int.Parse(color);
-                //    GUI.backgroundColor = AssetManager.instance.playerColors.ElementAt(i);
-                //    GUILayout.Box("Preview");
-                //    GUI.backgroundColor = o;
-                //}
-
-                UI.TextboxAction("Change Color", ref color, 2,
-                    new UIButton("Set", () => selectedPlayer.photonView.RPC("SetColorRPC", RpcTarget.All, int.Parse(color))
-                ));
+                UI.DrawColoredBox(" ", AssetManager.instance.playerColors[color], GUILayout.Width(20f), GUILayout.Height(20f));
+                UI.NumSelect("Color", ref color, 0, AssetManager.instance.playerColors.Count - 1);
+                UI.Button("Set", () => selectedPlayer.photonView.RPC("SetColorRPC", RpcTarget.All, color), null);
             });
             UI.Button("Lure monsters to player", () => {
                 GameObjectManager.enemies.Where(e => e != null && !e.IsDead()).ToList().ForEach(e => e.SetChaseTarget(selectedPlayer));
             });
-            UI.CheatToggleSlider(Cheat.Instance<OverrideAnimSpeed>(), "Anim Speed Multiplier", OverrideAnimSpeed.Value.ToString(), ref OverrideAnimSpeed.Value, 0, 10);
+            UI.CheatToggleSlider(Cheat.Instance<OverrideAnimSpeed>(), "Anim Speed Multiplier", OverrideAnimSpeed.Value.ToString(), ref OverrideAnimSpeed.Value, -10, 10);
             if (!selectedPlayer.IsLocalPlayer()) UI.Button("Block RPCs", () => selectedPlayer.Handle().ToggleRPCBlock(), selectedPlayer.Handle().IsRPCBlocked() ? "UnBlock" : "Block");
         }
 

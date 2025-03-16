@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using UnityEngine;
 using Unk.Cheats.Core;
 using Unk.Menu.Tab;
 
@@ -14,7 +12,7 @@ namespace Unk.Cheats
             if (PlayersTab.selectedPlayer is null || !Enabled) return;
 
             PlayersTab.selectedPlayer.photonView.RPC("OverrideAnimationSpeedActivateRPC", Photon.Pun.RpcTarget.All,
-                true, Value, 0f, 0f, .3f);
+                true, Value, .1f, .1f, .3f * Time.fixedDeltaTime);
         }
     }
 }

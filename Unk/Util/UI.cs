@@ -391,6 +391,17 @@ namespace Unk.Util
                 GUILayout.EndHorizontal();
             }
         }
-
+        public static void DrawColoredBox(string name, Color color, params GUILayoutOption[] options)
+        {
+            GUIStyle box = new GUIStyle();
+            Texture2D text = new Texture2D(1, 1);
+            text.SetPixel(0, 0, color);
+            text.Apply();
+            box.normal.background = text; 
+            GUIStyle ostyle = GUI.skin.box;
+            GUI.skin.box = box;
+            GUILayout.Box(name, box, options);
+            GUI.skin.box = ostyle;
+        }
     }
 }

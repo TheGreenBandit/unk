@@ -31,13 +31,14 @@ namespace Unk.Menu.Core
         public UnkMenu()
         {
             instance = this;
-            tabs.Add(new SettingsTab());
             tabs.Add(new GeneralTab());
             tabs.Add(new SelfTab());
             tabs.Add(new VisualTab());
             tabs.Add(new PlayersTab());
             tabs.Add(new EnemyTab());
             tabs.Add(new ServerTab());
+            tabs.Add(new ItemTab());
+            tabs.Add(new SettingsTab());
             if (Settings.b_DebugMode) tabs.Add(new DebugTab());
         }
 

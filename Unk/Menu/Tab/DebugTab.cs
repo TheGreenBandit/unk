@@ -32,6 +32,18 @@ namespace Unk.Menu.Tab
                 
             });
 
+            UI.Button("Join Random Game",() => { PhotonNetwork.JoinRandomOrCreateRoom(); });
+
+            UI.Button("Spawn Item", () =>
+            {
+                PhotonNetwork.Instantiate("Valuables/" + AssetManager.instance.surplusValuableSmall.name, PlayerAvatar.instance.transform.position, new Quaternion(0, 0, 0, 0));
+            });
+            //UI.Button("Spawn Item", () =>
+            //{
+            //    typeof(PhotonNetwork).Reflect().Invoke("NetworkInstantiate", new InstantiateParameters(name, PlayerAvatar.instance.transform.position, Quaternion.identity, 0, null, )("Valuables/" + AssetManager.instance.surplusValuableSmall.name, PlayerAvatar.instance.transform.position, new Quaternion(0, 0, 0, 0));
+            //});
+
+
             UI.Button("Test items", () =>
             {
                 PunManager.instance.Reflect().GetValue<PhotonView>("photonView").RPC("UpdateStatRPC", RpcTarget.All, "itemsPurchased", "Handgun", 1);

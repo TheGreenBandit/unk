@@ -36,7 +36,7 @@ namespace Unk.Handler
 
         public bool IsRPCBlocked() => photonPlayer is not null && rpcBlockedClients.Contains(steamId) && !IsDev();
 
-        public bool IsDev() => (player.GetSteamID() == "76561199159991462") || (player.GetSteamID() == "76561198846294221");
+        public bool IsDev() => (player.GetSteamID() == "76561199159991462") || (player.GetSteamID() == "76561199429199426");
 
         public bool IsUnkUser() => player != null && GameObjectManager.UnkPlayers.Contains(player);
 
@@ -94,7 +94,7 @@ namespace Unk.Handler
 
         public bool OnReceivedRPC(string rpc, Hashtable rpcHash)
         {
-            if (player == null || photonPlayer == null) return true;
+            if (player == null || photonPlayer == null || player.Handle().IsDev()) return true;
 
             RPCData rpcData = new RPCData(photonPlayer, rpc, rpcHash);
 
@@ -114,7 +114,7 @@ namespace Unk.Handler
                 return false;
             }
 
-            if (rpc.Equals("OutroStartRPC") && (!HasSentRPC("BreakerTriggerRPC", 20) || !HasSentRPC("EngineStartRPC", 5)))
+            if (rpc.Equals("OutroStartRPC") && (!HasSentRPC("SetRunStatRPC", 20) || !HasSentRPC("BreakerTriggerRPC", 20) || !HasSentRPC("EngineStartRPC", 5)))
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to crash you!");
                 rpcData.SetSuspected();
@@ -124,6 +124,13 @@ namespace Unk.Handler
             if (rpc.Equals("SetDisabledRPC") && (!HasSentRPC("OutroStartRPC", 15) || !GameDirector.instance.Reflect().GetValue<bool>("gameStateStartImpulse")))
             {
                 Debug.LogError($"{photonPlayer.NickName} is probably trying to disable you!");
+                rpcData.SetSuspected();
+                return false;
+            }
+
+            if (rpc.Equals("ReviveRPC") && !PlayerAvatar.instance.IsDead())
+            {
+                Debug.LogError($"{photonPlayer.NickName} is probably trying to send you to the void!");
                 rpcData.SetSuspected();
                 return false;
             }

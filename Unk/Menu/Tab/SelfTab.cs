@@ -62,7 +62,7 @@ namespace Unk.Menu.Tab
                 UI.Button("Teleport All Items", () =>
                 {
                     GameObjectManager.items.Where(i => i != null).ToList().ForEach(i =>
-                    {                        
+                    {
                         if (i.GetPhotonTransformView() != null) i.GetPhotonTransformView().Teleport(SemiFunc.MainCamera().transform.position, SemiFunc.MainCamera().transform.rotation);
                     });
                 });

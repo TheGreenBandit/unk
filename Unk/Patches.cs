@@ -61,12 +61,13 @@ namespace Unk
             "IsTalkingRPC",
             "ReceiveSyncData",
             "SetColorRPC",
+            ""
         };
 
         [HarmonyPatch(typeof(PhotonNetwork), "ExecuteRpc"), HarmonyPrefix]
         public static bool ExecuteRPC(Hashtable rpcData, Player sender)
         {
-            if (sender is null || sender?.GamePlayer() == null || sender.GamePlayer().Handle().IsDev()) return true;
+            if (sender is null || sender?.GamePlayer() == null || sender.GamePlayer().Handle().IsDev() || sender.IsLocal) return true;
 
             string rpc = rpcData.ContainsKey(keyByteFive) ?
                 PhotonNetwork.PhotonServerSettings.RpcList[Convert.ToByte(rpcData[keyByteFive])]
