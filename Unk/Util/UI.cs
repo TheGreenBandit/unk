@@ -265,8 +265,8 @@ namespace Unk.Util
             GUILayout.BeginHorizontal();
             GUILayout.Label(header);
             GUILayout.FlexibleSpace();
-            GUILayout.Label(value.ToString());
             if (GUILayout.Button("-")) value = Mathf.Clamp(value - 1, min, max);
+            GUILayout.Label(value.ToString());
             if (GUILayout.Button("+")) value = Mathf.Clamp(value + 1, min, max);
             GUILayout.EndHorizontal();
         }
@@ -402,6 +402,31 @@ namespace Unk.Util
             GUI.skin.box = box;
             GUILayout.Box(name, box, options);
             GUI.skin.box = ostyle;
+        }
+
+        public static Texture2D DrawCircle(Rect rect, float diameter)
+        {
+            Texture2D texture = new Texture2D((int)diameter, (int)diameter);
+            Color[] pixels = new Color[(int)diameter * (int)diameter];
+
+            float radius = diameter / 2f;
+            Vector2 center = new Vector2(radius, radius);
+
+            for (int y = 0; y < diameter; y++)
+            {
+                for (int x = 0; x < diameter; x++)
+                {
+                    Vector2 pixel = new Vector2(x, y);
+                    float distance = Vector2.Distance(pixel, center);
+                    pixels[y * (int)diameter + x] = distance <= radius ? Color.white : Color.clear;
+                }
+            }
+
+            texture.SetPixels(pixels);
+            texture.Apply();
+
+            GUI.DrawTexture(rect, texture);
+            return texture;
         }
     }
 }
