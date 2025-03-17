@@ -1,7 +1,6 @@
 using Photon.Pun;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Unk.Cheats;
 using Unk.Cheats.Core;
 using Unk.Manager;
@@ -43,7 +42,6 @@ namespace Unk.Menu.Tab
 
                 UI.HorizontalSpace(null, () =>
                 {
-
                     UI.Header("Visual");
                     UI.CheckboxV("Invisibility", Cheat.Instance<Invisibility>());
                     UI.CheckboxV("Rainbow Mode", Cheat.Instance<RainbowMode>());

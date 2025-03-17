@@ -7,18 +7,26 @@ using Object = UnityEngine.Object;
 namespace Unk
 {
     public class Loader : MonoBehaviour
-    {
+    {       
+        
         private static GameObject Load;
         public static bool harmonyLoaded = false;
+        //private ID3D11Device device;
+        //private ID3D11DeviceContext context;
+        //private ID3D11RenderTargetView renderTargetView;
+        //private ImGuiRenderer imguiRenderer;
 
         public static void Init()
         {
+            ImGuiNET.ImGui.Begin("main");
+            ImGuiNET.ImGui.LabelText("hi", "");
+            ImGuiNET.ImGui.End();
             if (Load != null)
             {
-                Debug.LogError("Unk is already inject");
+                Debug.LogError("Unk is already injected");
                 return;
             }
-
+            
             LoadHarmony();
             Loader.Load = new GameObject();
             Load.AddComponent<Unk>();
