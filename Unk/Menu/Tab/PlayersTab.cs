@@ -88,6 +88,7 @@ namespace Unk.Menu.Tab
             UI.Label("SteamId:", selectedPlayer.GetSteamID().ToString());
             UI.Label("Status:", selectedPlayer.IsDead() ? "Dead" : "Alive");
             UI.Label("Health:", selectedPlayer.GetHealth().ToString());
+            UI.Label("Position: ", selectedPlayer.playerTransform.position.ToString());
             UI.Label("Is Master Client:", selectedPlayer.IsLocalPlayer() ? SemiFunc.IsMasterClientOrSingleplayer().ToString() : selectedPlayer.PhotonPlayer().IsMasterClient.ToString());
 
             UI.Label("Unk User", selectedPlayer.Handle().IsUnkUser().ToString());
@@ -104,18 +105,12 @@ namespace Unk.Menu.Tab
                 new UIButton("Send", () => selectedPlayer.photonView.RPC("ChatMessageSendRPC", RpcTarget.All, message, false) 
             ));
 
-            UI.HorizontalSpace(null, () =>
+            UI.HorizontalSpace("Blackhole", () =>
             {
-                UI.Dropdown("Direction", ref dropdownOpened,
-                    new UIButton("UP", () => { direction = 0; }),
-                    new UIButton("DOWN", () => { direction = 1; }),
-                    new UIButton("LEFT", () => { direction = 2; }),
-                    new UIButton("RIGHT", () => { direction = 3; }),
-                    new UIButton("FOWARD", () => { direction = 4; }),
-                    new UIButton("BACKWARD", () => { direction = 5; })
-                    );
-                UI.Slider("Strength", stength.ToString(), ref stength, 1, 10);
-                //UI.Button("Launch", selectedPlayer.photonView.RPC("ForceImpulseRPC", RpcTarget.All, new Vector3()))
+                UI.Checkbox("Toggle Blackhole", Cheat.Instance<BlackHole>());
+                UI.Checkbox("Pull Me Too", ref BlackHole.self);
+                UI.Button("Set Position To Me", () => { BlackHole.pos = PlayerAvatar.instance.playerTransform.position; });
+                UI.Slider("Strength", BlackHole.strength.ToString(), ref BlackHole.strength, 1, 20);
             });
 
             UI.HorizontalSpace(null, () =>

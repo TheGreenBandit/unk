@@ -15,19 +15,8 @@ namespace Unk.Menu.Tab
         public override void Draw()
         {
             GUILayout.BeginVertical(GUILayout.Width(UnkMenu.Instance.contentWidth * 0.5f - UnkMenu.Instance.spaceFromLeft));
-            VisualContent();
-            GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUILayout.Width(UnkMenu.Instance.contentWidth * 0.5f - UnkMenu.Instance.spaceFromLeft));
             ESPContent();
             GUILayout.EndVertical();
-        }
-
-        private void VisualContent()
-        {
-            scrollPos = GUILayout.BeginScrollView(scrollPos);
-            UI.Header("Visual", true);
-            UI.CheatToggleSlider(Cheat.Instance<FOV>(), "FOV", Cheats.FOV.Value.ToString(), ref FOV.Value, 20, 140);
-            GUILayout.EndScrollView();
         }
 
         private void ESPContent()

@@ -43,33 +43,25 @@ namespace Unk.Menu.Tab
 
                 UI.HorizontalSpace(null, () =>
                 {
-
-                    UI.Header("Visual");
-                    UI.CheckboxV("Invisibility", Cheat.Instance<Invisibility>());
-                    UI.CheckboxV("Rainbow Mode", Cheat.Instance<RainbowMode>());
-                    UI.TextboxAction("Change Color", ref ColorChanger.Value, 1,
-                        new UIButton("Change", Cheat.Instance<ColorChanger>().Execute)
-                    );
-                }, GUILayout.Width(100));
-                GUILayout.FlexibleSpace();
-                UI.VerticalSpace(() =>
-                {
-                    UI.Header("Movement");
-                    UI.CheatToggleSlider(Cheat.Instance<NoClip>(), "No Clip", NoClip.Value.ToString("#"), ref NoClip.Value, 1f, 20f);
-                    UI.CheatToggleSlider(Cheat.Instance<SuperSpeed>(), "Super Speed", SuperSpeed.Value.ToString("#"), ref SuperSpeed.Value, 1f, 100f);
-                }, GUILayout.Width(100));
-            }, GUILayout.Width(UnkMenu.Instance.windowRect.size.x / 2));
-
-            UI.Button("Teleport All Items", () =>
-            {
-                GameObjectManager.items.Where(i => i != null).ToList().ForEach(i =>
-                {
-                    if (i.GetPhotonTransformView() != null) i.GetPhotonTransformView().Teleport(SemiFunc.MainCamera().transform.position, SemiFunc.MainCamera().transform.rotation);
-                });
+                    UI.VerticalSpace(() =>
+                    {
+                        UI.Header("Visual");
+                        UI.CheckboxV("Invisibility (wip)", Cheat.Instance<Invisibility>());
+                        UI.CheatToggleSlider(Cheat.Instance<FOV>(), "FOV", Cheats.FOV.Value.ToString(), ref FOV.Value, 20, 140);
+                        UI.CheckboxV("Rainbow Mode", Cheat.Instance<RainbowMode>());
+                        UI.TextboxAction("Change Color", ref ColorChanger.Value, 1,
+                            new UIButton("Change", Cheat.Instance<ColorChanger>().Execute)
+                        );
+                    });
+                    GUILayout.FlexibleSpace();
+                    UI.VerticalSpace(() =>
+                    {
+                        UI.Header("Movement");
+                        UI.CheatToggleSlider(Cheat.Instance<NoClip>(), "No Clip", NoClip.Value.ToString("#"), ref NoClip.Value, 1f, 20f);
+                        UI.CheatToggleSlider(Cheat.Instance<SuperSpeed>(), "Super Speed", SuperSpeed.Value.ToString("#"), ref SuperSpeed.Value, 1f, 100f);
+                    }, GUILayout.Width(100));
+                }, GUILayout.Width(UnkMenu.Instance.windowRect.size.x / 2));
             });
-
-            if (PhotonNetwork.IsMasterClient) UI.Checkbox("(Host) No Object Money Loss", Cheat.Instance<NoObjectMoneyLoss>());
-
         }
     }
 }

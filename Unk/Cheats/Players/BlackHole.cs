@@ -9,29 +9,27 @@ namespace Unk.Cheats
 {
     internal class BlackHole : ToggleCheat
     {
-        Vector3 pos;
-
-        public override void OnEnable()
-        {
-
-            //spawn blackhole object
-        }
+        public static Vector3 pos = new Vector3(0, 0, 0);
+        public static bool self = false;
+        public static float strength = 1;
 
         public override void Update()
         {
             foreach (PlayerAvatar p in GameObjectManager.players.Where(x => !x.IsDead()))
             {
-                Vector3 force = new Vector3(p.transform.position.x - pos.x, p.transform.position.y - pos.y, p.transform.position.z - pos.z);
-
+                if (!Enabled) return;
+                if ((p == PlayerAvatar.instance) && !self) return;
+                Vector3 force = new Vector3(pos.x - p.playerTransform.position.x, pos.y - p.playerTransform.position.y, pos.z - p.playerTransform.position.z);
+                force = (force / 20) * strength;
                 p.photonView.RPC("ForceImpulseRPC", RpcTarget.All, force);
             }
         }
 
         public override void OnGui()
-        {
-            Vector3 c = Camera.current.WorldToScreenPoint(pos, Camera.MonoOrStereoscopicEye.Mono);
-
-            UI.DrawCircle(new Rect(c.x, c.y, 20, 20), 20 / GetDistanceToPos(PlayerAvatar.instance.transform.position));
+        {           
+            if (!Enabled) return;//todo fix drawing circle shit
+            if (WorldToScreen(pos, out Vector3 c))
+                UI.DrawCircle(new Rect(c.x, c.y, 20, 20), 200 / (1 * GetDistanceToPos(PlayerAvatar.instance.playerTransform.position)), Color.black);
         }
     }
 }

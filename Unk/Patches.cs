@@ -42,9 +42,9 @@ namespace Unk
                 stream.SendNext(__instance.Reflect().GetValue<Vector3>("InputDirection"));
                 stream.SendNext(PlayerController.instance.VelocityRelative);
                 stream.SendNext(__instance.Reflect().GetValue<Vector3>("rbVelocityRaw"));
-                stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10000, 100000, 10000) : PlayerController.instance.transform.position); //this also makes it so they cant hear u i think
+                stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10, 10, 30) : PlayerController.instance.transform.position); //this also makes it so they cant hear u i think
                 stream.SendNext(PlayerController.instance.transform.rotation);
-                stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10000, 100000, 10000) : __instance.Reflect().GetValue<Quaternion>("localCameraPosition"));
+                stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10, 10, 30) : __instance.Reflect().GetValue<Quaternion>("localCameraPosition"));
                 stream.SendNext(__instance.Reflect().GetValue<Quaternion>("localCameraRotation"));
                 stream.SendNext(PlayerController.instance.CollisionGrounded.physRiding);
                 stream.SendNext(PlayerController.instance.CollisionGrounded.physRidingID);

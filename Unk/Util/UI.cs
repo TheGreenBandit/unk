@@ -404,7 +404,7 @@ namespace Unk.Util
             GUI.skin.box = ostyle;
         }
 
-        public static Texture2D DrawCircle(Rect rect, float diameter)
+        public static Texture2D DrawCircle(Rect rect, float diameter, Color color)
         {
             Texture2D texture = new Texture2D((int)diameter, (int)diameter);
             Color[] pixels = new Color[(int)diameter * (int)diameter];
@@ -418,7 +418,7 @@ namespace Unk.Util
                 {
                     Vector2 pixel = new Vector2(x, y);
                     float distance = Vector2.Distance(pixel, center);
-                    pixels[y * (int)diameter + x] = distance <= radius ? Color.white : Color.clear;
+                    pixels[y * (int)diameter + x] = distance <= radius ? color : Color.clear;
                 }
             }
 

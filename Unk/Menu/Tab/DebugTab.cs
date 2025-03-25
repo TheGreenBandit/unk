@@ -1,6 +1,8 @@
 ﻿using Photon.Pun;
 using System.Linq;
 using UnityEngine;
+using Unk.Cheats;
+using Unk.Cheats.Core;
 using Unk.Manager;
 using Unk.Menu.Core;
 using Unk.Util;
@@ -29,11 +31,10 @@ namespace Unk.Menu.Tab
             GUILayout.Label(PhotonNetwork.IsMasterClient ? "Yes" : "No");
             GUILayout.EndHorizontal();
             UI.Button("Log RPCS", () => { PhotonNetwork.PhotonServerSettings.RpcList.ToList().ForEach(r => Debug.Log(r));
-                
             });
 
             UI.Button("Join Random Game",() => { PhotonNetwork.JoinRandomOrCreateRoom(); });
-
+            UI.Button("Spawn again", () => { PlayerAvatar.instance.playerTransform.position = new Vector3(0, 0, 0); });
             UI.Button("Spawn Item", () =>
             {
                 PhotonNetwork.Instantiate("Valuables/" + AssetManager.instance.surplusValuableSmall.name, PlayerAvatar.instance.transform.position, new Quaternion(0, 0, 0, 0));
