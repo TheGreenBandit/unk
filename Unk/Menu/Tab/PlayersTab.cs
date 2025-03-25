@@ -20,9 +20,6 @@ namespace Unk.Menu.Tab
         public static PlayerAvatar selectedPlayer = null;
         private string message = "Unk.";
         private int color = 0;
-        private bool dropdownOpened = false;
-        private int direction = 0;
-        private float stength = 1;
 
         public override void Draw()
         {
@@ -40,6 +37,14 @@ namespace Unk.Menu.Tab
         private void GeneralActions()
         {
             UI.Header("General Actions");
+
+            UI.HorizontalSpace("Blackhole", () =>
+            {
+                UI.Checkbox("Toggle Blackhole", Cheat.Instance<BlackHole>());
+                UI.Checkbox("Pull Me Too", ref BlackHole.self);
+                UI.Button("Set Position To Me", () => { BlackHole.pos = PlayerAvatar.instance.playerTransform.position; });
+                UI.Slider("Strength", BlackHole.strength.ToString(), ref BlackHole.strength, 1, 20);
+            });
 
             UI.Button("Kill All", () => {
                 GameObjectManager.players.Where(p => p != null).ToList().ForEach(p => p.photonView.RPC("PlayerDeathRPC", RpcTarget.All, 0));
@@ -104,14 +109,6 @@ namespace Unk.Menu.Tab
             UI.TextboxAction("Chat Message", ref message, 100,
                 new UIButton("Send", () => selectedPlayer.photonView.RPC("ChatMessageSendRPC", RpcTarget.All, message, false) 
             ));
-
-            UI.HorizontalSpace("Blackhole", () =>
-            {
-                UI.Checkbox("Toggle Blackhole", Cheat.Instance<BlackHole>());
-                UI.Checkbox("Pull Me Too", ref BlackHole.self);
-                UI.Button("Set Position To Me", () => { BlackHole.pos = PlayerAvatar.instance.playerTransform.position; });
-                UI.Slider("Strength", BlackHole.strength.ToString(), ref BlackHole.strength, 1, 20);
-            });
 
             UI.HorizontalSpace(null, () =>
             {

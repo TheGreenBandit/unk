@@ -1,3 +1,9 @@
+v1.2
+- Added blackhole
+- reorganized things
+- added item options
+- shiiit
+
 v1.1
 - Succesfully patched crashing and disabling!
 - reorganized gui a bit
