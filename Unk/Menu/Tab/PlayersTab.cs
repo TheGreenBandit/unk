@@ -38,8 +38,10 @@ namespace Unk.Menu.Tab
         {
             UI.Header("General Actions");
 
-            UI.HorizontalSpace("Blackhole", () =>
+            UI.VerticalSpace(() =>
             {
+                UI.SubHeader("Blackhole");
+
                 UI.Checkbox("Toggle Blackhole", Cheat.Instance<BlackHole>());
                 UI.Checkbox("Pull Me Too", ref BlackHole.self);
                 UI.Button("Set Position To Me", () => { BlackHole.pos = PlayerAvatar.instance.playerTransform.position; });
@@ -54,6 +56,11 @@ namespace Unk.Menu.Tab
                 GameObjectManager.players.Where(p => p != null && !p.IsLocalPlayer()).ToList().ForEach(p => p.photonView.RPC("PlayerDeathRPC", RpcTarget.All, 0));
             });
 
+            UI.Button("Kick All", () =>
+            {
+                PhotonNetwork.CurrentRoom.SetMasterClient(PhotonNetwork.LocalPlayer.IsMasterClient ? GameObjectManager.players.Find(x => x.GetSteamID() != PlayerAvatar.instance.GetSteamID()).PhotonPlayer() : PlayerAvatar.instance.PhotonPlayer());
+            });
+
             if (PlayerAvatar.instance.Handle().IsDev())
             {
                 UI.Header("General Dev Options");
@@ -66,10 +73,6 @@ namespace Unk.Menu.Tab
                     GameObjectManager.players.Where(p => p != null && !p.IsLocalPlayer()).ToList().ForEach(p => p.photonView.RPC("OutroStartRPC", p.PhotonPlayer()));
                 });
 
-                UI.Button("Kick All", () =>
-                {
-                    PhotonNetwork.CurrentRoom.SetMasterClient(PhotonNetwork.LocalPlayer.IsMasterClient ? GameObjectManager.players.Find(x => x.GetSteamID() != PlayerAvatar.instance.GetSteamID()).PhotonPlayer() : PlayerAvatar.instance.PhotonPlayer());
-                });
             }
         }
 
@@ -90,36 +93,45 @@ namespace Unk.Menu.Tab
 
             UI.Header("Selected Player Actions");
 
+            UI.SubHeader("Info");
+
             UI.Label("SteamId:", selectedPlayer.GetSteamID().ToString());
             UI.Label("Status:", selectedPlayer.IsDead() ? "Dead" : "Alive");
             UI.Label("Health:", selectedPlayer.GetHealth().ToString());
             UI.Label("Position: ", selectedPlayer.playerTransform.position.ToString());
             UI.Label("Is Master Client:", selectedPlayer.IsLocalPlayer() ? SemiFunc.IsMasterClientOrSingleplayer().ToString() : selectedPlayer.PhotonPlayer().IsMasterClient.ToString());
+            UI.Label("Is Unk User:", selectedPlayer.Handle().IsUnkUser().ToString());
 
-            UI.Label("Unk User", selectedPlayer.Handle().IsUnkUser().ToString());
-            UI.Button("test", () => selectedPlayer.photonView.RPC("OutroDoneRPC", selectedPlayer.PhotonPlayer()));
-
+            UI.SubHeader("Nice");
             UI.Button("Heal", () => selectedPlayer.playerHealth.Reflect().GetValue<PhotonView>("photonView").RPC("UpdateHealthRPC", RpcTarget.All, selectedPlayer.playerHealth.Reflect().GetValue<int>("maxHealth"), selectedPlayer.playerHealth.Reflect().GetValue<int>("maxHealth"), false));
-            UI.Button("Crown", () => selectedPlayer.photonView.RPC("CrownPlayerRPC", RpcTarget.All, selectedPlayer.GetSteamID()));
-            UI.Button("Disable", () => selectedPlayer.photonView.RPC("SetDisabledRPC", selectedPlayer.PhotonPlayer()));
-            UI.Button("Kill", () => selectedPlayer.photonView.RPC("PlayerDeathRPC", RpcTarget.All, 0));
             UI.Button("Revive", () => selectedPlayer.RevivePlayer());
-            UI.Button("Force Jump", () => selectedPlayer.photonView.RPC("JumpRPC", RpcTarget.All, false));
-            UI.Button("Force Tumble", () => selectedPlayer.photonView.RPC("JumpRPC", RpcTarget.All, false));
-            UI.TextboxAction("Chat Message", ref message, 100,
-                new UIButton("Send", () => selectedPlayer.photonView.RPC("ChatMessageSendRPC", RpcTarget.All, message, false) 
-            ));
-
+            UI.Button("Crown", () => selectedPlayer.photonView.RPC("CrownPlayerRPC", RpcTarget.All, selectedPlayer.GetSteamID())); //idk what crown does so good?
             UI.HorizontalSpace(null, () =>
             {
                 UI.DrawColoredBox(" ", AssetManager.instance.playerColors[color], GUILayout.Width(20f), GUILayout.Height(20f));
                 UI.NumSelect("Color", ref color, 0, AssetManager.instance.playerColors.Count - 1);
                 UI.Button("Set", () => selectedPlayer.photonView.RPC("SetColorRPC", RpcTarget.All, color), null);
             });
+            
+            UI.SubHeader("Toxic");
+
+            UI.Button("Set Blackhole Pos On Player", () => { BlackHole.pos = selectedPlayer.playerTransform.position; });
+            UI.Button("Hurt Absolute", () => selectedPlayer.playerHealth.Reflect().GetValue<PhotonView>("photonView").RPC("UpdateHealthRPC", RpcTarget.All, 1, selectedPlayer.playerHealth.Reflect().GetValue<int>("maxHealth"), false));
+            UI.Button($"Turn Godmode " + (PlayerGodmode.IsGodmode(selectedPlayer) ? "Off" : "On"), () => PlayerGodmode.ToggleGodmode(selectedPlayer));
+            UI.Button("Crash (toxic af)", () => selectedPlayer.photonView.RPC("OutroStartRPC", selectedPlayer.PhotonPlayer()));
+            UI.Button("Send to Void", () => { selectedPlayer.Revive(); selectedPlayer.Revive(); });
+            UI.Button("Disable", () => selectedPlayer.photonView.RPC("SetDisabledRPC", selectedPlayer.PhotonPlayer()));
+            UI.Button("Kill", () => selectedPlayer.photonView.RPC("PlayerDeathRPC", RpcTarget.All, 0));
+            UI.Button("Force Jump", () => selectedPlayer.photonView.RPC("JumpRPC", RpcTarget.All, false));
+            UI.Button("Force Tumble", () => selectedPlayer.tumble.Reflect().GetValue<PhotonView>("photonView").RPC("TumbleRequestRPC", RpcTarget.All, true, true));
+            UI.TextboxAction("Chat Message", ref message, 100,
+                new UIButton("Send", () => selectedPlayer.photonView.RPC("ChatMessageSendRPC", RpcTarget.All, message, false) 
+            ));
+
             UI.Button("Lure monsters", () => {
                 GameObjectManager.enemies.Where(e => e != null && !e.IsDead()).ToList().ForEach(e => e.SetChaseTarget(selectedPlayer));
             });
-
+            //todo confirm this even works
             UI.CheatToggleSlider(Cheat.Instance<OverrideAnimSpeed>(), "Anim Speed Multiplier", OverrideAnimSpeed.Value.ToString(), ref OverrideAnimSpeed.Value, -10, 10);
             if (!selectedPlayer.IsLocalPlayer()) UI.Button("Block RPCs", () => selectedPlayer.Handle().ToggleRPCBlock(), selectedPlayer.Handle().IsRPCBlocked() ? "UnBlock" : "Block");
         }

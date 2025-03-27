@@ -3,6 +3,7 @@ using Unk.Cheats.Core;
 using Unk.Cheats;
 using Unk.Util;
 using Unk.Menu.Core;
+using System.Collections.Generic;
 
 namespace Unk.Menu.Tab
 {
@@ -14,27 +15,40 @@ namespace Unk.Menu.Tab
 
         public override void Draw()
         {
-            GUILayout.BeginVertical(GUILayout.Width(UnkMenu.Instance.contentWidth * 0.5f - UnkMenu.Instance.spaceFromLeft));
-            ESPContent();
-            GUILayout.EndVertical();
+            UI.VerticalSpace(ref scrollPos, VisualContent,
+                GUILayout.Width(UnkMenu.Instance.contentWidth * 0.5f - UnkMenu.Instance.spaceFromLeft));
+            UI.VerticalSpace(ref scrollPos, ESPContent,
+                GUILayout.Width(UnkMenu.Instance.contentWidth * 0.5f - UnkMenu.Instance.spaceFromLeft));
+        }
+
+        private void VisualContent()
+        {
+            UI.ScrollView(ref scrollPos, () =>
+            {
+                UI.Header("Stuff", true);
+                UI.Checkbox("Light testing", Cheat.Instance<Fullbright>());
+                if (!PlayerAvatar.instance.Reflect().GetValue<bool>("spectating"))
+                    UI.Button("Begin Spectate", () => PlayerAvatar.instance.SetSpectate());
+                else
+                    UI.Button("End Spectate", () => { PlayerAvatar.instance.Reflect().SetValue("spectating", false); });
+            });
         }
 
         private void ESPContent()
         {
-            scrollPos2 = GUILayout.BeginScrollView(scrollPos2);
-
-            UI.Header("ESP", true);
-            UI.Checkbox("Enable ESP", Cheat.Instance<ESP>());
-            UI.Button("Toggle All ESP", ESP.ToggleAll);
-            UI.Checkbox("Display Players", ref ESP.displayPlayers);
-            UI.Checkbox("Display Enemies", ref ESP.displayEnemies);
-            UI.Checkbox("Display Items", ref ESP.displayItems);
-            UI.Checkbox("Display Cart", ref ESP.displayCarts);
-            UI.Checkbox("Display Extractions", ref ESP.displayExtractions);
-            UI.Checkbox("Display Death Heads", ref ESP.displayDeathHeads);
-            UI.Checkbox("Display Truck", ref ESP.displayTruck);
-
-            GUILayout.EndScrollView();
+            UI.ScrollView(ref scrollPos2, () =>
+            {
+                UI.Header("ESP", true);
+                UI.Checkbox("Enable ESP", Cheat.Instance<ESP>());
+                UI.Button("Toggle All ESP", ESP.ToggleAll);
+                UI.Checkbox("Display Players", ref ESP.displayPlayers);
+                UI.Checkbox("Display Enemies", ref ESP.displayEnemies);
+                UI.Checkbox("Display Items", ref ESP.displayItems);
+                UI.Checkbox("Display Cart", ref ESP.displayCarts);
+                UI.Checkbox("Display Extractions", ref ESP.displayExtractions);
+                UI.Checkbox("Display Death Heads", ref ESP.displayDeathHeads);
+                UI.Checkbox("Display Truck", ref ESP.displayTruck);
+            });
         }
     }
 }

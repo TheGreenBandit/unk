@@ -135,6 +135,13 @@ namespace Unk.Handler
                 return false;
             }
 
+            if (rpc.Equals("ReviveRPC") && !PlayerAvatar.instance.IsDead())
+            {
+                Debug.LogError($"{photonPlayer.NickName} is probably trying to send you to the void!");
+                rpcData.SetSuspected();
+                return false;
+            }
+
             GetRPCHistory().Enqueue(rpcData);
             CleanupRPCHistory();
             return true;
