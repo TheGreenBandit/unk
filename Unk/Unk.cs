@@ -15,7 +15,7 @@ namespace Unk
 {
     public class Unk : MonoBehaviour
     {
-        public const string VERSION = "1.2";
+        public const string VERSION = "1.3";
         private List<ToggleCheat> cheats;
         private Harmony harmony;
         private UnkMenu menu;
