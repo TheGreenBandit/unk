@@ -56,6 +56,7 @@ namespace Unk
 
         private void LoadCheats()
         {
+            Settings.Changelog.ReadChanges();
             cheats = new List<ToggleCheat>();
             menu = new UnkMenu();
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes().Where(t => String.Equals(t.Namespace, "Unk.Cheats", StringComparison.Ordinal) && t.IsSubclassOf(typeof(Cheat))))

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Unk.Menu.Core;
 using Unk.Util;
 
@@ -6,7 +7,7 @@ namespace Unk.Menu.Tab
 {
     internal class GeneralTab : MenuTab
     {
-        Vector2 scrollPos = Vector2.zero;
+        Vector2 scrollPos = Vector2.zero, scrollPos2 = Vector2.zero;
         public GeneralTab() : base("General") { }
 
         public override void Draw()
@@ -18,7 +19,23 @@ namespace Unk.Menu.Tab
                 UI.Label("Developed by TGB, some work was done by Dustin but fuck it.");
                 UI.Label("Version: " + Unk.VERSION);
                 GUILayout.Space(20);
-                //changelog
+                try
+                {
+                    UI.ScrollView(ref scrollPos2, () =>
+                    {
+                        foreach (string line in Settings.Changelog.changes)
+                        {
+                            GUIStyle style = new GUIStyle(GUI.skin.label);
+
+                            if (line.StartsWith("v")) style.fontStyle = FontStyle.Bold;
+                            GUILayout.Label(line.StartsWith("v") ? "Changelog " + line : line, style);
+                        }
+                    });
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e);
+                }
             });
         }
     }

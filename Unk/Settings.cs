@@ -52,15 +52,22 @@ namespace Unk
 
             public static void ReadChanges()
             {
-                changes = new List<string>();
-
-                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Unk.Resources.Changelog.txt"))
-                using (StreamReader reader = new StreamReader(stream))
+                try
                 {
-                    while (!reader.EndOfStream)
+                    changes = new List<string>();
+
+                    using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Unk.Resources.Changelog.txt"))
+                    using (StreamReader reader = new StreamReader(stream))
                     {
-                        changes.Add(reader.ReadLine());
+                        while (!reader.EndOfStream)
+                        {
+                            changes.Add(reader.ReadLine());
+                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e);
                 }
             }
         }

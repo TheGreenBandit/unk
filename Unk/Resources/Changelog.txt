@@ -1,3 +1,11 @@
+v1.3
+- Added fullbright
+- reorganized self tab again, trying to make it look better unity gui sucks.
+- fixed tumble
+- player crashing and kicking is now non dev
+- added spectatormode in visual
+- added godmode others
+
 v1.2
 - Added blackhole
 - reorganized things

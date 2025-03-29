@@ -26,9 +26,9 @@ namespace Unk.Menu.Tab
             UI.ScrollView(ref scrollPos, () =>
             {
                 UI.Header("Stuff", true);
-                UI.Checkbox("Light testing", Cheat.Instance<Fullbright>());
+                UI.Checkbox("Fullbright", Cheat.Instance<Fullbright>());
                 if (!PlayerAvatar.instance.Reflect().GetValue<bool>("spectating"))
-                    UI.Button("Begin Spectate", () => PlayerAvatar.instance.SetSpectate());
+                    UI.Button("Begin Spectate (wip)", () => PlayerAvatar.instance.SetSpectate());
                 else
                     UI.Button("End Spectate", () => { PlayerAvatar.instance.Reflect().SetValue("spectating", false); });
             });

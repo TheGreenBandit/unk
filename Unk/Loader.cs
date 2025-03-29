@@ -15,8 +15,9 @@ namespace Unk
         {
             if (Load != null)
             {
+                GameObject.Destroy(Load);
                 Debug.LogError("Unk is already inject");
-                return;
+                //return;
             }
 
             LoadHarmony();

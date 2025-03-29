@@ -31,16 +31,16 @@ namespace Unk.Menu.Tab
                         UI.Checkbox("No Tumble", Cheat.Instance<NoTumble>());
                         UI.Checkbox("Infinite Jump", Cheat.Instance<InfiniteJump>());
                         //});
-                    }, GUILayout.Width(100));
+                    }, GUILayout.Width(UnkMenu.Instance.windowRect.size.x / 2.5f));
                     GUILayout.FlexibleSpace();
                     UI.VerticalSpace(() =>
                     {
                         UI.Header("Network");
                         UI.Checkbox("Use Spoofed Name", Cheat.Instance<NameSpoofer>());
                         UI.Textbox("Spoofed Name", ref NameSpoofer.Value, true, 100);
-                    }, GUILayout.Width(100));
-                }, GUILayout.Width(UnkMenu.Instance.windowRect.size.x / 2));
-
+                    }, GUILayout.Width(UnkMenu.Instance.windowRect.size.x / 2.5f));
+                }, GUILayout.Height(UnkMenu.Instance.windowRect.size.y / 2));
+                GUILayout.FlexibleSpace();
                 UI.HorizontalSpace(null, () =>
                 {
                     UI.VerticalSpace(() =>
@@ -52,15 +52,15 @@ namespace Unk.Menu.Tab
                         UI.TextboxAction("Change Color", ref ColorChanger.Value, 1,
                             new UIButton("Change", Cheat.Instance<ColorChanger>().Execute)
                         );
-                    });
+                    }, GUILayout.Width(UnkMenu.Instance.windowRect.size.x / 2.5f));
                     GUILayout.FlexibleSpace();
                     UI.VerticalSpace(() =>
                     {
                         UI.Header("Movement");
                         UI.CheatToggleSlider(Cheat.Instance<NoClip>(), "No Clip", NoClip.Value.ToString("#"), ref NoClip.Value, 1f, 20f);
                         UI.CheatToggleSlider(Cheat.Instance<SuperSpeed>(), "Super Speed", SuperSpeed.Value.ToString("#"), ref SuperSpeed.Value, 1f, 100f);
-                    }, GUILayout.Width(100));
-                }, GUILayout.Width(UnkMenu.Instance.windowRect.size.x / 2));
+                    }, GUILayout.Width(UnkMenu.Instance.windowRect.size.x / 2.5f));
+                }, GUILayout.Height(UnkMenu.Instance.windowRect.size.y / 2));
             });
         }
     }
