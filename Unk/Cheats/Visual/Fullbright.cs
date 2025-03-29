@@ -1,23 +1,42 @@
-﻿using Mono.Security.Authenticode;
+﻿using HarmonyLib;
+using Mono.Security.Authenticode;
 using Photon.Pun;
+using System.Reflection;
 using UnityEngine;
 using Unk.Cheats.Core;
+using Unk.Util;
 
 namespace Unk.Cheats
 {
+    [HarmonyPatch]
     class Fullbright : ToggleCheat
     {
+        private float og_intensity = 0;
+        private Color og_color = Color.white;
+        
+        public override void OnEnable()
+        {
+            og_color = RenderSettings.ambientLight;
+            og_intensity = RenderSettings.ambientIntensity = 100;
+        }
+
         public override void Update()
         {
             if (Enabled)
             {
-                FlashlightController.Instance.spotlight.enabled = true;
-                FlashlightController.Instance.spotlight.intensity = 100000;
-                FlashlightController.Instance.spotlight.range = 100000;
-                FlashlightController.Instance.spotlight.transform.localScale = new Vector3(10000, 1000001, 100000);
-                FlashlightController.Instance.spotlight.bounceIntensity = 100000;
-                FlashlightController.Instance.spotlight.cookieSize = 10000000;
+                FlashlightController.Instance.spotlight.enabled = false;
+                RenderSettings.fog = false;
+                RenderSettings.ambientLight = Color.white;
+                RenderSettings.ambientIntensity = 100;
             }
+        }
+
+        public override void OnDisable()
+        {
+            FlashlightController.Instance.spotlight.enabled = true;
+            RenderSettings.fog = true;
+            RenderSettings.ambientLight = og_color;
+            RenderSettings.ambientIntensity = og_intensity;
         }
     }
 }
