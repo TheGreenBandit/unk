@@ -17,7 +17,7 @@ namespace Unk.Cheats
         {
             foreach (PlayerAvatar p in GameObjectManager.players.Where(x => !x.IsDead()))
             {
-                if (!Enabled) return;
+                if (!Enabled || !PhotonNetwork.InRoom) return;
                 if ((p == PlayerAvatar.instance) && !self) return;
                 Vector3 force = new Vector3(pos.x - p.playerTransform.position.x, pos.y - p.playerTransform.position.y, pos.z - p.playerTransform.position.z);
                 force = (force / 20) * strength;
@@ -27,7 +27,7 @@ namespace Unk.Cheats
 
         public override void OnGui()
         {           
-            if (!Enabled) return;//todo fix drawing circle shit
+            if (!Enabled || !PhotonNetwork.InRoom) return;//todo fix drawing circle shit
             if (WorldToScreen(pos, out Vector3 c))
                 UI.DrawCircle(new Rect(c.x, c.y, 20, 20), 200 / (1 * GetDistanceToPos(PlayerAvatar.instance.playerTransform.position)), Color.black);
         }

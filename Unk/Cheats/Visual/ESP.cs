@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace Unk.Cheats
 
         public override void OnGui()
         {
-            if (!Cheat.Instance<ESP>().Enabled) return;
+            if (!Cheat.Instance<ESP>().Enabled || !PhotonNetwork.InRoom) return;
             if (displayPlayers) DisplayPlayers();
             if (displayItems) DisplayItems();
             if (displayEnemies) DisplayEnemies();

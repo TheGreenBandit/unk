@@ -32,7 +32,7 @@ namespace Unk.Menu.Tab
             GUILayout.EndHorizontal();
             UI.Button("Log RPCS", () => { PhotonNetwork.PhotonServerSettings.RpcList.ToList().ForEach(r => Debug.Log(r));
             });
-
+            UI.Button("Infintie Value", () => { });
             UI.Button("Join Random Game",() => { PhotonNetwork.JoinRandomOrCreateRoom(); });
             UI.Button("Spawn again", () => { PlayerAvatar.instance.playerTransform.position = new Vector3(0, 0, 0); });
             UI.Button("Spawn Item", () =>

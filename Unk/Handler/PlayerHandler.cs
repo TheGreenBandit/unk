@@ -94,7 +94,7 @@ namespace Unk.Handler
 
         public bool OnReceivedRPC(string rpc, Hashtable rpcHash)
         {
-            if (player == null || photonPlayer == null || player.Handle().IsDev()) return true;
+            if (player == null || photonPlayer == null) return true;
 
             RPCData rpcData = new RPCData(photonPlayer, rpc, rpcHash);
 
@@ -114,25 +114,32 @@ namespace Unk.Handler
                 return false;
             }
 
-            if (rpc.Equals("OutroStartRPC") && (!HasSentRPC("SetRunStatRPC", 20) || !HasSentRPC("BreakerTriggerRPC", 20) || !HasSentRPC("EngineStartRPC", 5)))
+            if (rpc.Equals("OutroStartRPC"))
             {
-                Debug.LogError($"{photonPlayer.NickName} is probably trying to crash you!");
-                rpcData.SetSuspected();
-                return false;
+                if (PhotonNetwork.IsMasterClient && (!HasSentRPC("SetRunStatRPC", 20) || !HasSentRPC("BreakerTriggerRPC", 20) || !HasSentRPC("EngineStartRPC", 5)))
+                {
+                    Debug.LogError($"{photonPlayer.NickName} is probably trying to crash you! 1");
+                    rpcData.SetSuspected();
+                    return false;
+                }
+                else if (!HasSentRPC("SetRunStatRPC", 20) || !HasSentRPC("UpdateLevelRPC", 5)) //test
+                {
+                    Debug.LogError($"{photonPlayer.NickName} is probably trying to crash you! 2");
+                    rpcData.SetSuspected();
+                    return false;
+                }
+                return true;
             }
 
-            if (rpc.Equals("SetDisabledRPC") && (!HasSentRPC("OutroStartRPC", 15) || !GameDirector.instance.Reflect().GetValue<bool>("gameStateStartImpulse")))
+            if (rpc.Equals("SetDisabledRPC"))
             {
-                Debug.LogError($"{photonPlayer.NickName} is probably trying to disable you!");
-                rpcData.SetSuspected();
-                return false;
-            }
-
-            if (rpc.Equals("ReviveRPC") && !PlayerAvatar.instance.IsDead())
-            {
-                Debug.LogError($"{photonPlayer.NickName} is probably trying to send you to the void!");
-                rpcData.SetSuspected();
-                return false;
+                if (PhotonNetwork.IsMasterClient && (!HasSentRPC("OutroStartRPC", 15) || !GameDirector.instance.Reflect().GetValue<bool>("gameStateStartImpulse")))
+                {
+                    Debug.LogError($"{photonPlayer.NickName} is probably trying to disable you!");
+                    rpcData.SetSuspected();
+                    return false;
+                }
+                //else if (!) todo
             }
 
             if (rpc.Equals("ReviveRPC") && !PlayerAvatar.instance.IsDead())
