@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Unk.Cheats.Core;
+﻿using Unk.Cheats.Core;
+using Unk.Handler;
+using Unk.Util;
 
 namespace Unk.Cheats
 {
-    class Strength : ToggleCheat
+    class Strength : ToggleCheat, IVariableCheat<float>
     {
-        public override void OnEnable()
+        public static float Value = 1;
+        public override void Update()
         {
-            //PlayerAvatar.instance.physGrabber.
+            if (!Enabled) return;
+            PlayerAvatar.instance.physGrabber.grabStrength = Value;
+            PlayerAvatar.instance.physGrabber.Reflect().GetValue<PhysGrabObject>("grabbedPhysGrabObject")?.OverrideGrabStrength(Value);
+        }
+        public override void OnDisable()
+        {//resets to player stat so no worry about to low strength after upgrading.
+            PlayerAvatar.instance.physGrabber.grabStrength = StatsManager.instance.playerUpgradeStrength[PlayerAvatar.instance.GetSteamID()];
         }
     }
 }

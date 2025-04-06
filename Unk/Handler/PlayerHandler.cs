@@ -29,7 +29,7 @@ namespace Unk.Handler
         public static void ClearRPCHistory() => rpcHistory.Clear();
 
         public Enemy GetClosestEnemy() => GameObjectManager.enemies.OrderBy(x => Vector3.Distance(x.transform.position, player.transform.position)).FirstOrDefault();
-        //todo
+        public ExtractionPoint GetClosestExtraction() => GameObjectManager.extractions.OrderBy(x => Vector3.Distance(x.transform.position, player.transform.position)).FirstOrDefault();
         public PlayerAvatar GetClosestPlayer() => GetAlivePlayers().Where(x => x.GetInstanceID() != player.GetInstanceID()).OrderBy(x => Vector3.Distance(x.transform.position, player.transform.position)).FirstOrDefault();
 
         public void RPC(string name, RpcTarget target, params object[] args) => player.photonView.RPC(name, target, args);

@@ -19,6 +19,7 @@ namespace Unk.Menu.Tab
         private Vector2 scrollPos2 = Vector2.zero;
         public static PlayerAvatar selectedPlayer = null;
         private string message = "Unk.";
+        private bool teleportdrop = false;
         private int color = 0;
 
         public override void Draw()
@@ -112,7 +113,17 @@ namespace Unk.Menu.Tab
                 UI.NumSelect("Color", ref color, 0, AssetManager.instance.playerColors.Count - 1);
                 UI.Button("Set", () => selectedPlayer.photonView.RPC("SetColorRPC", RpcTarget.All, color), null);
             });
-            
+
+            UI.SubHeader("Teleporting");
+            UI.Button("Teleport To Player", () => GameUtil.Teleport(PlayerAvatar.instance, selectedPlayer.playerTransform.position));
+            UI.Button("Bring To Me", () => GameUtil.Teleport(selectedPlayer, PlayerAvatar.instance.playerTransform.position));
+            UI.Dropdown("Other Teleports", ref teleportdrop,
+                new UIButton("To Void", () => GameUtil.Teleport(selectedPlayer, new Vector3(100, 100, 100))),
+                new UIButton("To Nearest Enemy", () => GameUtil.Teleport(selectedPlayer, selectedPlayer.Handle().GetClosestEnemy().CenterTransform.position)),
+                new UIButton("To Nearest Extraction", () => GameUtil.Teleport(selectedPlayer, selectedPlayer.Handle().GetClosestExtraction().transform.position.Offset(0, 0, 10))),
+                new UIButton("To Truck", () => GameUtil.Teleport(selectedPlayer, new Vector3(0, 0, 0))
+                ));
+
             UI.SubHeader("Toxic");
 
             UI.Button("Set Blackhole Pos On Player", () => { BlackHole.pos = selectedPlayer.playerTransform.position; });

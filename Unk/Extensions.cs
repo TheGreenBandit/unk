@@ -4,11 +4,7 @@ using System.Collections.Generic;
 using System;
 using Unk.Manager;
 using System.Linq;
-using System.Text.RegularExpressions;
-using Unk.Cheats;
-using System.Runtime.CompilerServices;
 using Photon.Pun;
-using static UnityEngine.InputSystem.InputRemoting;
 
 namespace Unk
 {
@@ -34,6 +30,22 @@ namespace Unk
         //    return mainCamera.Reflect().GetValue<Camera>("cam");
         //}
         public static Vector3 GetClosestMonster(this Vector3 point) => GameObjectManager.enemies.OrderBy(x => Vector3.Distance(x.transform.position, point)).FirstOrDefault().transform.position;
+        public static Vector3 Offset(this Vector3 vector, Vector3 offset)
+        {
+            Vector3 ov = vector;
+            ov.x += offset.x;
+            ov.y += offset.y;
+            ov.z += offset.z;
+            return ov;
+        }
+        public static Vector3 Offset(this Vector3 vector, float x, float y, float z)
+        {
+            Vector3 ov = vector;
+            ov.x += x;
+            ov.y += y;
+            ov.z += z;
+            return ov;
+        }
 
         public static void Kill(this Enemy enemy)
         {
@@ -59,7 +71,6 @@ namespace Unk
         public static bool IsLocalPlayer(this PlayerAvatar player) => player != null && player.Reflect().GetValue<bool>("isLocal");
         public static bool IsDead(this PlayerAvatar player) => player != null && player.Reflect().GetValue<bool>("deadSet");
         public static string GetName(this EnemySetup enemy) => enemy.GetEnemyParent().enemyName;
-
         public static int GetHealth(this PlayerAvatar player) => player.playerHealth.Reflect().GetValue<int>("health"); 
         public static string GetName(this Enemy enemy) => enemy.Reflect().GetValue<EnemyParent>("EnemyParent").enemyName;
         public static string GetName(this PlayerAvatar player) => string.IsNullOrEmpty(player.Reflect().GetValue<string>("playerName")) ? player.name : player.Reflect().GetValue<string>("playerName");
@@ -68,8 +79,9 @@ namespace Unk
         public static List<PlayerAvatar> GetAlivePlayers(this PlayerAvatar player) => GameObjectManager.players.Where(p => p != null && !p.IsDead()).ToList();
         public static EnemyParent GetEnemyParent(this EnemySetup enemy) => enemy.spawnObjects.Select(o => o?.GetComponent<EnemyParent>()).FirstOrDefault(e => e != null);
         public static PhysGrabObject GetHeldObject(this PlayerAvatar player) => player.physGrabber.Reflect().GetValue<PhysGrabObject>("grabbedPhysGrabObject");
-        public static PhysGrabObject GetPhysGrabObject(this ValuableObject item) => item.Reflect().GetValue<PhysGrabObject>("physGrabObject");
-        public static PhotonTransformView GetPhotonTransformView(this ValuableObject item) => item.GetPhysGrabObject().Reflect().GetValue<PhotonTransformView>("photonTransformView");
+        public static PhysGrabObject GetObject(this ValuableObject item) => item.Reflect().GetValue<PhysGrabObject>("physGrabObject");
+        public static PhysGrabObject GetObject(this PlayerAvatar player) => player.tumble.Reflect().GetValue<PhysGrabObject>("physGrabObject");
+        public static PhotonTransformView GetPhotonTransformView(this ValuableObject item) => item.GetObject().Reflect().GetValue<PhotonTransformView>("photonTransformView");
 
         public static void RevivePlayer(this PlayerAvatar player)
         {

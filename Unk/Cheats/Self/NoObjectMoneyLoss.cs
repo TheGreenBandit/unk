@@ -1,17 +1,20 @@
-﻿using HarmonyLib;
-using UnityEngine;
+﻿using Photon.Pun;
 using Unk.Cheats.Core;
+using Unk.Manager;
+using Unk.Util;
 
 namespace Unk.Cheats
 {
-    [HarmonyPatch]
     internal class NoObjectMoneyLoss : ToggleCheat
     {
-        [HarmonyPatch(typeof(PhysGrabObjectImpactDetector), "OnCollisionStay"), HarmonyPrefix]
-        public static bool OnCollisionStay(PhysGrabObjectImpactDetector __instance, Collision collision)
+        public override void Update()//make it so items no longer break also, probably patch out impacts
         {
-            if (Instance<NoObjectMoneyLoss>().Enabled) return false;
-            return true;
+            foreach (ValuableObject item in GameObjectManager.items)
+            {
+                if (item is null || !Enabled) continue;
+                if (item.dollarValueCurrent != item.valuePreset.valueMax)////we want max standard value, not MAX value eg 999999999
+                    item.Reflect().GetValue<PhotonView>("photonView").RPC("DollarValueSetRPC", RpcTarget.All, item.valuePreset.valueMax);
+            }
         }
     }
 }
