@@ -1,3 +1,10 @@
+v1.4
+- Reworked NoObjectMoneyLost to work as nohost
+- Added Strength
+- Teleporting Items, enemies, EVERYTHING(including doors lol)
+- Teleporting Players
+- Spectate is no longer a wip and is fully working
+
 v1.3
 - Added fullbright
 - reorganized self tab again, trying to make it look better unity gui sucks.
