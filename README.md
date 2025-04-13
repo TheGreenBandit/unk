@@ -14,5 +14,4 @@ Paste the following into command prompt with all the smi stuff in the same folde
 smi.exe inject -a Unk.dll -n Unk -c Loader -m Init
 ```
 
-Hashtags(ignore)
 <!-- REPO, R.E.P.O, REPO mod menu, REPO Hack, REPO Cheat -->
