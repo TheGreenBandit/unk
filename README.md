@@ -7,7 +7,9 @@ The most simple way to use is to use my [loader](https://github.com/thegreenband
 which auto updates itself.
 
 If you prefer just using the dll however you can download the latest from [releases](https://thegreenbandit/unk/releases)
-Using (SMI)[https://github.com/warbler/SharpMonoInjector/releases) paste the following into command prompt with all the smi stuff in the same folder as the dll
+Using [SMI](https://github.com/warbler/SharpMonoInjector/releases) 
+
+Paste the following into command prompt with all the smi stuff in the same folder as the dll
 ```
 smi.exe inject -a Unk.dll -n Unk -c Loader -m Init
 ```
