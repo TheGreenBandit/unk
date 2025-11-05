@@ -20,7 +20,7 @@ namespace Unk.Util
             Debug.Log($"Attemping Spawn: {name}, pos {pos}, amount {amount}, equip {equip}");
             for (int i = 0; i < amount; i++)
             {
-                GameObject obj = GetItemByName(name).prefab;
+                GameObject obj = GetItemByName(name).prefab.Prefab;
                 if (PhotonNetwork.IsConnected)
                 {
                     Debug.Log("Online");

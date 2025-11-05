@@ -1,5 +1,5 @@
 ﻿using Photon.Pun;
-using System;
+using Photon.Realtime;
 using System.Linq;
 using UnityEngine;
 using Unk.Cheats;
@@ -18,10 +18,9 @@ namespace Unk.Menu.Tab
         private Vector2 scrollPos = Vector2.zero;
         private Vector2 scrollPos2 = Vector2.zero;
         public static PlayerAvatar selectedPlayer = null;
-        private string message = "Unk.";
+        private string message = "<b><i><color=green><size=25>https://github.com/TheGreenBandit/unk<br>https://discord.gg/bqzdNxS6";
+        private int color = StatsManager.instance.GetPlayerColor(PlayerAvatar.instance.GetSteamID());
         private bool teleportdrop = false;
-        private int color = 0;
-
         public override void Draw()
         {
             UI.VerticalSpace(ref scrollPos, () =>
@@ -95,11 +94,9 @@ namespace Unk.Menu.Tab
             UI.Header("Selected Player Actions");
 
             UI.SubHeader("Info");
-
             UI.Label("SteamId:", selectedPlayer.GetSteamID().ToString());
             UI.Label("Status:", selectedPlayer.IsDead() ? "Dead" : "Alive");
             UI.Label("Health:", selectedPlayer.GetHealth().ToString());
-            UI.Label("Position: ", selectedPlayer.playerTransform.position.ToString());
             UI.Label("Is Master Client:", selectedPlayer.IsLocalPlayer() ? SemiFunc.IsMasterClientOrSingleplayer().ToString() : selectedPlayer.PhotonPlayer().IsMasterClient.ToString());
             UI.Label("Is Unk User:", selectedPlayer.Handle().IsUnkUser().ToString());
 
@@ -107,12 +104,12 @@ namespace Unk.Menu.Tab
             UI.Button("Heal", () => selectedPlayer.playerHealth.Reflect().GetValue<PhotonView>("photonView").RPC("UpdateHealthRPC", RpcTarget.All, selectedPlayer.playerHealth.Reflect().GetValue<int>("maxHealth"), selectedPlayer.playerHealth.Reflect().GetValue<int>("maxHealth"), false));
             UI.Button("Revive", () => selectedPlayer.RevivePlayer());
             UI.Button("Crown", () => selectedPlayer.photonView.RPC("CrownPlayerRPC", RpcTarget.All, selectedPlayer.GetSteamID())); //idk what crown does so good?
-            UI.HorizontalSpace(null, () =>
-            {
-                UI.DrawColoredBox(" ", AssetManager.instance.playerColors[color], GUILayout.Width(20f), GUILayout.Height(20f));
-                UI.NumSelect("Color", ref color, 0, AssetManager.instance.playerColors.Count - 1);
-                UI.Button("Set", () => selectedPlayer.photonView.RPC("SetColorRPC", RpcTarget.All, color), null);
-            });
+            //UI.HorizontalSpace(null, () =>
+            //{
+            //    UI.DrawColoredBox(" ", AssetManager.instance.playerColors[color], GUILayout.Width(20f), GUILayout.Height(20f));
+            //    UI.NumSelect("Color", ref color, 0, AssetManager.instance.playerColors.Count - 1);
+            //    UI.Button("Set", () => selectedPlayer.photonView.RPC("SetColorRPC", RpcTarget.All, color), null);
+            //});
 
             UI.SubHeader("Teleporting");
             UI.Button("Teleport To Player", () => GameUtil.Teleport(PlayerAvatar.instance, selectedPlayer.playerTransform.position));
@@ -121,23 +118,34 @@ namespace Unk.Menu.Tab
                 new UIButton("To Void", () => GameUtil.Teleport(selectedPlayer, new Vector3(100, 100, 100))),
                 new UIButton("To Nearest Enemy", () => GameUtil.Teleport(selectedPlayer, selectedPlayer.Handle().GetClosestEnemy().CenterTransform.position)),
                 new UIButton("To Nearest Extraction", () => GameUtil.Teleport(selectedPlayer, selectedPlayer.Handle().GetClosestExtraction().transform.position.Offset(0, 0, 10))),
-                new UIButton("To Truck", () => GameUtil.Teleport(selectedPlayer, new Vector3(0, 0, 0))
-                ));
+                new UIButton("To Truck", () => GameUtil.Teleport(selectedPlayer, new Vector3(0, 0, 0))),
+                new UIButton("Everything To Player", () => UnityEngine.Object.FindObjectsOfType<PhysGrabObject>().Where(x => x.spawned).ToList().ForEach(i => GameUtil.Teleport(i, selectedPlayer.playerTransform.position))),
+                //new UIButton("Enemies To Player", () => GameObjectManager.enemies.ToList().ForEach(i => GameUtil.Teleport(i.p, selectedPlayer.playerTransform.position)),
+                new UIButton("Valuables To Player", () => GameObjectManager.items.ToList().ForEach(i => GameUtil.Teleport(i, selectedPlayer.playerTransform.position))),
+                new UIButton("Players To Player", () => GameObjectManager.players.Where(i => i.GetInstanceID() != selectedPlayer.GetInstanceID()).ToList().ForEach(i => GameUtil.Teleport(i, selectedPlayer.playerTransform.position)))
+                );
 
             UI.SubHeader("Toxic");
-
+            
             UI.Button("Set Blackhole Pos On Player", () => { BlackHole.pos = selectedPlayer.playerTransform.position; });
             UI.Button("Hurt Absolute", () => selectedPlayer.playerHealth.Reflect().GetValue<PhotonView>("photonView").RPC("UpdateHealthRPC", RpcTarget.All, 1, selectedPlayer.playerHealth.Reflect().GetValue<int>("maxHealth"), false));
             UI.Button($"Turn Godmode " + (PlayerGodmode.IsGodmode(selectedPlayer) ? "Off" : "On"), () => PlayerGodmode.ToggleGodmode(selectedPlayer));
             UI.Button("Crash (toxic af)", () => selectedPlayer.photonView.RPC("OutroStartRPC", selectedPlayer.PhotonPlayer()));
-            UI.Button("Send to Void", () => { selectedPlayer.Revive(); selectedPlayer.Revive(); });
+            UI.Button("Kick (toxic af)", () => PhotonNetwork.RaiseEvent(200, selectedPlayer, RaiseEventOptions.Default, ExitGames.Client.Photon.SendOptions.SendReliable));
             UI.Button("Disable", () => selectedPlayer.photonView.RPC("SetDisabledRPC", selectedPlayer.PhotonPlayer()));
             UI.Button("Kill", () => selectedPlayer.photonView.RPC("PlayerDeathRPC", RpcTarget.All, 0));
             UI.Button("Force Jump", () => selectedPlayer.photonView.RPC("JumpRPC", RpcTarget.All, false));
             UI.Button("Force Tumble", () => selectedPlayer.tumble.Reflect().GetValue<PhotonView>("photonView").RPC("TumbleRequestRPC", RpcTarget.All, true, true));
-            UI.TextboxAction("Chat Message", ref message, 100,
-                new UIButton("Send", () => selectedPlayer.photonView.RPC("ChatMessageSendRPC", RpcTarget.All, message, false) 
-            ));
+            UI.HorizontalSpace(null, () => 
+            {
+                UI.TextboxAction("Chat Message", ref message, 100,
+                    new UIButton("Send", () => selectedPlayer.photonView.RPC("ChatMessageSendRPC", RpcTarget.All, message, false)           
+                ));
+                
+            });
+            UI.Button("Send to all", () => {
+                GameObjectManager.players.Where(p => p != null && !p.IsLocalPlayer()).ToList().ForEach(i => i.photonView.RPC("ChatMessageSendRPC", RpcTarget.All, message, false));
+            });
 
             UI.Button("Lure monsters", () => {
                 GameObjectManager.enemies.Where(e => e != null && !e.IsDead()).ToList().ForEach(e => e.SetChaseTarget(selectedPlayer));
@@ -157,6 +165,7 @@ namespace Unk.Menu.Tab
             GUILayout.Space(25);
             foreach (PlayerAvatar player in GameObjectManager.players.Where(p => p != null))
             {
+                if (player.GetName() == "Player Avatar Controller") continue;
                 if (selectedPlayer == null) selectedPlayer = player;
                 if (player.Handle().IsUnkUser()) GUI.contentColor = Settings.c_primary.GetColor();
                 if (selectedPlayer.GetInstanceID() == player.GetInstanceID()) GUI.contentColor = Settings.c_espPlayers.GetColor();

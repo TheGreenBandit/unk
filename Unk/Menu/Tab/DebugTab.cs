@@ -1,8 +1,7 @@
 ﻿using Photon.Pun;
 using System.Linq;
 using UnityEngine;
-using Unk.Cheats;
-using Unk.Cheats.Core;
+using Unk.Handler;
 using Unk.Manager;
 using Unk.Menu.Core;
 using Unk.Util;
@@ -32,7 +31,7 @@ namespace Unk.Menu.Tab
             GUILayout.EndHorizontal();
             UI.Button("Log RPCS", () => { PhotonNetwork.PhotonServerSettings.RpcList.ToList().ForEach(r => Debug.Log(r));
             });
-            UI.Button("Infintie Value", () => { });
+            UI.Button("Infintie Value", () => { PlayerAvatar.instance.Handle().GetClosestValuable().Reflect().GetValue<PhotonView>("photonview").RPC("DollarValueSetRPC", RpcTarget.All, 99999999999); });
             UI.Button("Join Random Game",() => { PhotonNetwork.JoinRandomOrCreateRoom(); });
             UI.Button("Spawn again", () => { PlayerAvatar.instance.playerTransform.position = new Vector3(0, 0, 0); });
             UI.Button("Spawn Item", () =>

@@ -36,7 +36,7 @@ namespace Unk
             ThemeUtil.SetTheme();
             LoadCheats();
             DoPatching();
-            AlertUsingUnkMenu();
+            //AlertUsingUnkMenu();
             GameObjectManager.CollectObjects();
         }
 

@@ -27,33 +27,37 @@ namespace Unk
         internal static readonly object keyByteEight = (object)(byte)8;
 
         [HarmonyPatch(typeof(PlayerAvatar), "OnPhotonSerializeView"), HarmonyPrefix]
-        public static bool OnPhotonSerializeView(PlayerAvatar __instance, PhotonStream stream, PhotonMessageInfo info)
+        public static bool OnPhotonSerializeView(PlayerAvatar __instance, ref PhotonStream stream, ref PhotonMessageInfo info)
         {
-            if (__instance != PlayerController.instance.playerAvatar) return true;
-            if (stream.IsWriting)
-            {
-                stream.SendNext(__instance.Reflect().GetValue("isCrouching"));
-                stream.SendNext(__instance.Reflect().GetValue("isSprinting"));
-                stream.SendNext(__instance.Reflect().GetValue("isCrawling"));
-                stream.SendNext(__instance.Reflect().GetValue("isSliding"));
-                stream.SendNext(__instance.Reflect().GetValue("isMoving"));
-                stream.SendNext(__instance.Reflect().GetValue("isGrounded"));
-                stream.SendNext(__instance.Reflect().GetValue("Interact"));
-                stream.SendNext(__instance.Reflect().GetValue<Vector3>("InputDirection"));
-                stream.SendNext(PlayerController.instance.VelocityRelative);
-                stream.SendNext(__instance.Reflect().GetValue<Vector3>("rbVelocityRaw"));
-                stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10, 10, 30) : PlayerController.instance.transform.position); //this also makes it so they cant hear u i think
-                stream.SendNext(PlayerController.instance.transform.rotation);
-                stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10, 10, 30) : __instance.Reflect().GetValue<Quaternion>("localCameraPosition"));
-                stream.SendNext(__instance.Reflect().GetValue<Quaternion>("localCameraRotation"));
-                stream.SendNext(PlayerController.instance.CollisionGrounded.physRiding);
-                stream.SendNext(PlayerController.instance.CollisionGrounded.physRidingID);
-                stream.SendNext(PlayerController.instance.CollisionGrounded.physRidingPosition);
-                stream.SendNext(__instance.flashlightLightAim.clientAimPoint);
-                stream.SendNext(__instance.Reflect().GetValue<int>("playerPing"));
-                return false;
+            try
+            {              
+                if (stream.IsWriting)
+                {
+
+                    stream.SendNext(__instance.Reflect().GetValue<bool>("isCrouching"));
+                    stream.SendNext(__instance.Reflect().GetValue<bool>("isSprinting"));
+                    stream.SendNext(__instance.Reflect().GetValue<bool>("isCrawling"));
+                    stream.SendNext(__instance.Reflect().GetValue<bool>("isSliding"));
+                    stream.SendNext(__instance.Reflect().GetValue<bool>("isMoving"));
+                    stream.SendNext(__instance.Reflect().GetValue<bool>("isGrounded"));
+                    stream.SendNext(__instance.Reflect().GetValue<bool>("Interact"));
+                    stream.SendNext(__instance.Reflect().GetValue<Vector3>("InputDirection"));
+                    stream.SendNext(PlayerController.instance.VelocityRelative);
+                    stream.SendNext(__instance.Reflect().GetValue<Vector3>("rbVelocityRaw"));
+                    stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10, 10, 30) : PlayerController.instance.transform.position); //this also makes it so they cant hear u i think
+                    stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10, 10, 30) : PlayerController.instance.transform.rotation);
+                    stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10, 10, 30) : __instance.Reflect().GetValue<Quaternion>("localCameraPosition"));
+                    stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10, 10, 30) : __instance.Reflect().GetValue<Quaternion>("localCameraRotation"));
+                    stream.SendNext(PlayerController.instance.CollisionGrounded.physRiding);
+                    stream.SendNext(PlayerController.instance.CollisionGrounded.physRidingID);
+                    stream.SendNext(Cheat.Instance<Invisibility>().Enabled ? new Vector3(10, 10, 30) : PlayerController.instance.CollisionGrounded.physRidingPosition);
+                    stream.SendNext(__instance.flashlightLightAim.clientAimPoint);
+                    stream.SendNext(-999999);
+                    return false;
+                }
+                return true;
             }
-            return true;
+            catch(Exception e) { Debug.LogException(e); return true; }
         }
 
         public static List<string> IgnoredRPCDebugs = new List<string>
@@ -67,20 +71,18 @@ namespace Unk
         [HarmonyPatch(typeof(PhotonNetwork), "ExecuteRpc"), HarmonyPrefix]
         public static bool ExecuteRPC(Hashtable rpcData, Player sender)
         {
-            if (sender is null || sender?.GamePlayer() == null || sender.GamePlayer().Handle().IsDev() || sender.IsLocal) return true;
-
-            string rpc = rpcData.ContainsKey(keyByteFive) ?
-                PhotonNetwork.PhotonServerSettings.RpcList[Convert.ToByte(rpcData[keyByteFive])]
+            if (sender is null || sender?.GamePlayer() == null) return true;
+            //Debug.LogError("Content: " + SupportClass.DictionaryToString(rpcData, true));
+            string rpc = rpcData.ContainsKey(keyByteFive)
+                ? PhotonNetwork.PhotonServerSettings.RpcList[(int)(short)rpcData[keyByteFive]]
                 : rpcData[keyByteThree] as string;
-
             if (!IgnoredRPCDebugs.Contains(rpc)) Debug.LogWarning($"Processing RPC '{rpc}' From '{sender.NickName}'");
-
+            if (sender.GamePlayer().Handle().IsDev() || sender.IsLocal) return true; //log first before returning to know what was sent
             if (!sender.IsLocal && sender.GamePlayer().Handle().IsRPCBlocked())
             {
                 Debug.LogError($"RPC {rpc} was blocked from {sender.NickName}.");
                 return false;
             }
-
             return sender.GamePlayer().Handle().OnReceivedRPC(rpc, rpcData);
         }
 

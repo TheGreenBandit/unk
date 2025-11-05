@@ -22,7 +22,7 @@ namespace Unk.Cheats
 
         public override void Update()
         {
-            if (Enabled)
+            if (Enabled && PhotonNetwork.InRoom)
             {
                 FlashlightController.Instance.spotlight.enabled = false;
                 RenderSettings.fog = false;

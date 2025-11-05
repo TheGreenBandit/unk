@@ -67,7 +67,7 @@ namespace Unk.Cheats
         {
             DisplayObjects(
                 GameObjectManager.items?.Where(i => i != null),
-                item => $"{item.GetName()} {(item.GetComponent<ValuableObject>() is ValuableObject valuableObject ? $"( {valuableObject.dollarValueCurrent} )" : "")} {(item.GetComponent<Trap>() ? "(Trap)" : "")}".Trim(),
+                item => $"{item.GetName()} {(item.GetComponent<ValuableObject>() is ValuableObject valuableObject ? $"( {valuableObject.Reflect().GetValue<float>("dollarValueCurrent")} )" : "")} {(item.GetComponent<Trap>() ? "(Trap)" : "")}".Trim(),
                 item => Settings.c_espItems
             );
             DisplayObjects(

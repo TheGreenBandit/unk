@@ -94,6 +94,8 @@ namespace Unk.Menu.Core
             if (!Settings.b_isMenuOpen) return;
             if (!Cursor.visible) Cursor.visible = true;
             if (Cursor.lockState != CursorLockMode.None) Cursor.lockState = CursorLockMode.None;
+            if (PlayerController.instance != null) PlayerController.instance.cameraAim.enabled = false;
+            
             Stylize();
             GUI.color = new Color(1f, 1f, 1f, Settings.f_menuAlpha);
             windowRect = GUILayout.Window(0, windowRect, new GUI.WindowFunction(DrawContent), "Unk");

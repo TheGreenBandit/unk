@@ -5,6 +5,7 @@ using System;
 using Unk.Manager;
 using System.Linq;
 using Photon.Pun;
+using Photon.Realtime;
 
 namespace Unk
 {
@@ -38,14 +39,11 @@ namespace Unk
             ov.z += offset.z;
             return ov;
         }
-        public static Vector3 Offset(this Vector3 vector, float x, float y, float z)
-        {
-            Vector3 ov = vector;
-            ov.x += x;
-            ov.y += y;
-            ov.z += z;
-            return ov;
-        }
+        public static Vector3 Offset(this Vector3 vector, float x, float y, float z) => new Vector3(vector.x + x, vector.y + y, vector.z + z);
+        public static Vector3 Add(this Vector3 o, float x) => new Vector3(o.x + x, o.y + x, o.z + x);
+        public static Vector3 Subtract(this Vector3 o, float x) => new Vector3(o.x - x, o.y - x, o.z - x);
+        public static Vector3 Multiply(this Vector3 o, float x) => new Vector3(o.x * x, o.y * x, o.z * x);
+        public static Vector3 Divide(this Vector3 o, float x) => new Vector3(o.x / x, o.y / x, o.z / x);
 
         public static void Kill(this Enemy enemy)
         {
@@ -77,7 +75,7 @@ namespace Unk
         public static string GetName(this ValuableObject item) => item.name.Replace("(Clone)", "").Replace("Valuable", "").Trim();
         public static PlayerAvatar GetLocalPlayer(this PlayerAvatar player) => GameObjectManager.players?.FirstOrDefault(p => p != null && p.IsLocalPlayer());
         public static List<PlayerAvatar> GetAlivePlayers(this PlayerAvatar player) => GameObjectManager.players.Where(p => p != null && !p.IsDead()).ToList();
-        public static EnemyParent GetEnemyParent(this EnemySetup enemy) => enemy.spawnObjects.Select(o => o?.GetComponent<EnemyParent>()).FirstOrDefault(e => e != null);
+        public static EnemyParent GetEnemyParent(this EnemySetup enemy) => enemy.spawnObjects.Select(o => o.Prefab?.GetComponent<EnemyParent>()).FirstOrDefault(e => e != null);
         public static PhysGrabObject GetHeldObject(this PlayerAvatar player) => player.physGrabber.Reflect().GetValue<PhysGrabObject>("grabbedPhysGrabObject");
         public static PhysGrabObject GetObject(this ValuableObject item) => item.Reflect().GetValue<PhysGrabObject>("physGrabObject");
         public static PhysGrabObject GetObject(this PlayerAvatar player) => player.tumble.Reflect().GetValue<PhysGrabObject>("physGrabObject");

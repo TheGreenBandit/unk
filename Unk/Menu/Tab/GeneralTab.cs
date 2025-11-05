@@ -16,7 +16,7 @@ namespace Unk.Menu.Tab
             {
                 UI.Header(Settings.c_primary.AsString("Welcome to Unk!"), 30);
                 GUILayout.Space(20);
-                UI.Label("Developed by TGB, some work was done by Dustin but fuck it.");
+                UI.Label("Developed by TGB and some contributions by Corrupt.");
                 UI.Label("Version: " + Unk.VERSION);
                 GUILayout.Space(20);
                 try

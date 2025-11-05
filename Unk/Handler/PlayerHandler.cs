@@ -3,6 +3,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using UnityEngine;
 using Unk.Cheats.Components;
@@ -29,8 +30,12 @@ namespace Unk.Handler
         public static void ClearRPCHistory() => rpcHistory.Clear();
 
         public Enemy GetClosestEnemy() => GameObjectManager.enemies.OrderBy(x => Vector3.Distance(x.transform.position, player.transform.position)).FirstOrDefault();
-        public ExtractionPoint GetClosestExtraction() => GameObjectManager.extractions.OrderBy(x => Vector3.Distance(x.transform.position, player.transform.position)).FirstOrDefault();
+        //todo
         public PlayerAvatar GetClosestPlayer() => GetAlivePlayers().Where(x => x.GetInstanceID() != player.GetInstanceID()).OrderBy(x => Vector3.Distance(x.transform.position, player.transform.position)).FirstOrDefault();
+        
+        public ValuableObject GetClosestValuable() => GameObjectManager.items.OrderBy(x => Vector3.Distance(x.transform.position, player.transform.position)).FirstOrDefault();
+
+        public ExtractionPoint GetClosestExtraction() => GameObjectManager.extractions.OrderBy(x => Vector3.Distance(x.transform.position, player.transform.position)).FirstOrDefault();
 
         public void RPC(string name, RpcTarget target, params object[] args) => player.photonView.RPC(name, target, args);
 
@@ -111,6 +116,14 @@ namespace Unk.Handler
                 Debug.LogError("Former dev is in your game, crashing appropriately");
                 rpcData.SetSuspected();
 
+                return false;
+            }
+
+            if (rpc.Equals("PlayerDeathRPC"))
+            {
+                Debug.LogError($"{photonPlayer.NickName} is probably trying to kill you!");
+                rpcData.SetSuspected();
+                PlayerAvatar.instance.photonView.RPC("ReviveRPC", RpcTarget.Others, false);
                 return false;
             }
 

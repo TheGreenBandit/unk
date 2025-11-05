@@ -50,15 +50,15 @@ namespace Unk.Manager
         [HarmonyPatch(typeof(TruckScreenText), "Start"), HarmonyPrefix]
         public static void Start(TruckScreenText __instance) => AddToObjectQueue(() => truck = __instance);
 
-        [HarmonyPatch(typeof(PlayerAvatar), "ChatMessageSendRPC"), HarmonyPrefix]
-        public static void ChatMessageSendRPC(PlayerAvatar __instance, string _message)
-        {
-            if (_message == "" && !UnkPlayers.Contains(__instance))
-            {
-                UnkPlayers.Add(__instance);
-                if (!__instance.GetLocalPlayer()) Unk.Instance.AlertUsingUnkMenu();
-            }
-        }
+        //[HarmonyPatch(typeof(PlayerAvatar), "ChatMessageSendRPC"), HarmonyPrefix]
+        //public static void ChatMessageSendRPC(PlayerAvatar __instance, string _message)
+        //{
+        //    if (_message == "" && !UnkPlayers.Contains(__instance))
+        //    {
+        //        UnkPlayers.Add(__instance);
+        //        if (!__instance.GetLocalPlayer()) Unk.Instance.AlertUsingUnkMenu();
+        //    }
+        //}
 
         [HarmonyPatch(typeof(PhotonNetwork), "RemoveInstantiatedGO"), HarmonyPrefix]
         public static void RemoveInstantiatedGO(GameObject go, bool localOnly)

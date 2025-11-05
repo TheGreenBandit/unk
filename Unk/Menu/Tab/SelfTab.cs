@@ -1,10 +1,6 @@
-using Photon.Pun;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Unk.Cheats;
 using Unk.Cheats.Core;
-using Unk.Manager;
 using Unk.Menu.Core;
 using Unk.Util;
 
@@ -30,6 +26,7 @@ namespace Unk.Menu.Tab
                         UI.Checkbox("Unlimited Energy", Cheat.Instance<UnlimitedStamina>());
                         UI.Checkbox("No Tumble", Cheat.Instance<NoTumble>());
                         UI.Checkbox("Infinite Jump", Cheat.Instance<InfiniteJump>());
+                        UI.CheatToggleSlider(Cheat.Instance<Strength>(), "Strength", Cheats.Strength.Value.ToString(), ref Strength.Value, 1, 4);
                         //});
                     }, GUILayout.Width(UnkMenu.Instance.windowRect.size.x / 2.5f));
                     GUILayout.FlexibleSpace();

@@ -15,8 +15,8 @@ namespace Unk.Menu.Tab
             {
                 UI.Header("Server", true);
 
-                UI.Button("Voice Chat All", () => PlayerAvatar.instance.Reflect().GetValue<PlayerVoiceChat>("playerVoice").ToggleLobby(true));
-                UI.Button("Voice Chat Proximity", () => PlayerAvatar.instance.Reflect().GetValue<PlayerVoiceChat>("playerVoice").ToggleLobby(false));
+                //UI.Button("Voice Chat All", () => PlayerAvatar.instance.Reflect().GetValue<PlayerVoiceChat>("playerVoice").ToggleLobby(true));
+                //UI.Button("Voice Chat Proximity", () => PlayerAvatar.instance.Reflect().GetValue<PlayerVoiceChat>("playerVoice").ToggleLobby(false));
             });
         }
     }

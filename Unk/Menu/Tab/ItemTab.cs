@@ -23,12 +23,28 @@ namespace Unk.Menu.Tab
         {
             UI.VerticalSpace(() =>
             {
-                UI.Checkbox("(Host) No Object Money Loss", Cheat.Instance<NoObjectMoneyLoss>());
-                UI.Button("(Host) Teleport All Items", () =>
+                UI.Checkbox("No Object Money Loss", Cheat.Instance<NoObjectMoneyLoss>());
+                UI.Button("Teleport All Items", () =>
                 {
-                    GameObjectManager.items.Where(i => i != null).ToList().ForEach(i =>
+                    GameObjectManager.items.ToList().ForEach(i =>
                     {
-                        if (i.GetPhotonTransformView() != null) i.GetPhotonTransformView().Teleport(SemiFunc.MainCamera().transform.position, SemiFunc.MainCamera().transform.rotation);
+                        i.GetComponent<PhysGrabObject>().Reflect().GetValue<PhotonView>("photonView").RPC("SetPositionRPC", RpcTarget.All, PlayerAvatar.instance.playerTransform.position, Quaternion.identity);
+                    });
+                });
+
+                UI.Button("Teleport EVERYTHING", () =>
+                {
+                    Object.FindObjectsOfType<PhysGrabObject>().Where(i => i.spawned).ToList().ForEach(i =>
+                    {
+                        i.Reflect().GetValue<PhotonView>("photonView").RPC("SetPositionRPC", RpcTarget.All, PlayerAvatar.instance.playerTransform.position, Quaternion.identity);
+                    });
+                });
+
+                UI.Button("Teleport Players To Me", () =>
+                {
+                    GameObjectManager.players.Where(i => !i.IsLocalPlayer()).ToList().ForEach(i =>
+                    {
+                        GameUtil.Teleport(i, PlayerAvatar.instance.playerTransform.position);
                     });
                 });
 
